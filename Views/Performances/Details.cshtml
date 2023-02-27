@@ -1,0 +1,36 @@
+﻿@model musicShop.Models.Performance
+
+@{
+    ViewData["Title"] = "Подробности";
+}
+
+<h1>Подробности</h1>
+
+<div>
+    <h4>Исполнения</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Date)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Date)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ensemble)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ensemble.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Composition)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Composition.Name)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-action="Edit" asp-route-id="@Model?.Id">Изменить</a> |
+    <a asp-action="Index">Вернуться назад</a>
+</div>

@@ -14,6 +14,8 @@ base(options)
                 .HasKey(mr => new { mr.MusicianId, mr.RoleId });
             modelBuilder.Entity<MusicianEnsemble>()
                 .HasKey(mr => new { mr.MusicianId, mr.EnsembleId });
+            modelBuilder.Entity<RecordPerformance>()
+                .HasKey(mr => new { mr.RecordId, mr.PerformanceId });
         }
         public DbSet<Musician> Musicians { get; set; }
         public DbSet<MusicianRole> MusicianRoles { get; set; }

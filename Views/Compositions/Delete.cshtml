@@ -1,15 +1,14 @@
-﻿@model musicShop.Models.Musician
+﻿@model musicShop.Models.Composition
 
 @{
     ViewData["Title"] = "Удалить";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Удалить</h1>
 
 <h3>Вы уверены, что хотите удалить это?</h3>
 <div>
-    <h4>Музыкант</h4>
+    <h4>Произведение</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
@@ -19,22 +18,28 @@
             @Html.DisplayFor(model => model.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Surname)
+            @Html.DisplayNameFor(model => model.NameAuthor)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Surname)
+            @Html.DisplayFor(model => model.NameAuthor)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Patronymic)
+            @Html.DisplayNameFor(model => model.SurnameAuthor)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Patronymic)
+            @Html.DisplayFor(model => model.SurnameAuthor)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PhotePath)
+            @Html.DisplayNameFor(model => model.PatronymicAuthor)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PhotePath)
+            @Html.DisplayFor(model => model.PatronymicAuthor)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.DateCreate)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.DateCreate)
         </dd>
     </dl>
     

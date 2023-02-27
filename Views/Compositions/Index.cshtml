@@ -1,8 +1,7 @@
-﻿@model IEnumerable<musicShop.Models.Musician>
+﻿@model IEnumerable<musicShop.Models.Composition>
 
 @{
     ViewData["Title"] = "Индекс";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Индекс</h1>
@@ -17,13 +16,16 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Surname)
+                @Html.DisplayNameFor(model => model.NameAuthor)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Patronymic)
+                @Html.DisplayNameFor(model => model.SurnameAuthor)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PhotePath)
+                @Html.DisplayNameFor(model => model.PatronymicAuthor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreate)
             </th>
             <th></th>
         </tr>
@@ -35,13 +37,16 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Surname)
+                @Html.DisplayFor(modelItem => item.NameAuthor)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Patronymic)
+                @Html.DisplayFor(modelItem => item.SurnameAuthor)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PhotePath)
+                @Html.DisplayFor(modelItem => item.PatronymicAuthor)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateCreate)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |

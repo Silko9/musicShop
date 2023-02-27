@@ -7,10 +7,11 @@ namespace musicShop.Models
     {
         [Key]
         public int Id { get; set; }
-        [Required]
+        [Required, Display(Name = "Название")]
         public string Name { get; set; }
         [Required, Display(Name = "Тип")]
         public int TypeEnsembleId { get; set; }
+        [Display(Name = "Тип")]
         public TypeEnsemble TypeEnsemble { get; set; }
         public ICollection<MusicianEnsemble>? MusicianEnsembles { get; set; }
         public ICollection<Performance>? Performances { get; set; }

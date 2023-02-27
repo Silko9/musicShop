@@ -1,29 +1,28 @@
-﻿@model IEnumerable<musicShop.Models.Musician>
+﻿@model IEnumerable<musicShop.Models.Logging>
 
 @{
     ViewData["Title"] = "Индекс";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Индекс</h1>
 
 <p>
-    <a asp-action="Create">Добавить</a>
+    <a asp-action="Create">Добравить</a>
 </p>
 <table class="table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Name)
+                @Html.DisplayNameFor(model => model.Record)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Surname)
+                @Html.DisplayNameFor(model => model.Date)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Patronymic)
+                @Html.DisplayNameFor(model => model.Amount)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.PhotePath)
+                @Html.DisplayNameFor(model => model.TypeLogging)
             </th>
             <th></th>
         </tr>
@@ -32,16 +31,16 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.Record.Number)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Surname)
+                @Html.DisplayFor(modelItem => item.Date)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Patronymic)
+                @Html.DisplayFor(modelItem => item.Amount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PhotePath)
+                @Html.DisplayFor(modelItem => item.TypeLogging.Name)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |

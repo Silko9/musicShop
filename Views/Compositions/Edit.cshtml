@@ -1,13 +1,12 @@
-﻿@model musicShop.Models.Musician
+﻿@model musicShop.Models.Composition
 
 @{
     ViewData["Title"] = "Изменить";
-    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Изменить</h1>
 
-<h4>Музыканта</h4>
+<h4>Произведение</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -20,19 +19,24 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Surname" class="control-label"></label>
-                <input asp-for="Surname" class="form-control" />
-                <span asp-validation-for="Surname" class="text-danger"></span>
+                <label asp-for="NameAuthor" class="control-label"></label>
+                <input asp-for="NameAuthor" class="form-control" />
+                <span asp-validation-for="NameAuthor" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Patronymic" class="control-label"></label>
-                <input asp-for="Patronymic" class="form-control" />
-                <span asp-validation-for="Patronymic" class="text-danger"></span>
+                <label asp-for="SurnameAuthor" class="control-label"></label>
+                <input asp-for="SurnameAuthor" class="form-control" />
+                <span asp-validation-for="SurnameAuthor" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PhotePath" class="control-label"></label>
-                <input asp-for="PhotePath" class="form-control" />
-                <span asp-validation-for="PhotePath" class="text-danger"></span>
+                <label asp-for="PatronymicAuthor" class="control-label"></label>
+                <input asp-for="PatronymicAuthor" class="form-control" />
+                <span asp-validation-for="PatronymicAuthor" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="DateCreate" class="control-label"></label>
+                <input asp-for="DateCreate" class="form-control" />
+                <span asp-validation-for="DateCreate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Сохранить" class="btn btn-primary" />

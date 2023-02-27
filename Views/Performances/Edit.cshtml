@@ -1,0 +1,44 @@
+﻿@model musicShop.Models.Performance
+
+@{
+    ViewData["Title"] = "Изменить";
+}
+
+<h1>Изменить</h1>
+
+<h4>Исполнение</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label asp-for="Date" class="control-label"></label>
+                <input asp-for="Date" class="form-control" />
+                <span asp-validation-for="Date" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="EnsembleId" class="control-label"></label>
+                <select asp-for="EnsembleId" class="form-control" asp-items="ViewBag.EnsembleId"></select>
+                <span asp-validation-for="EnsembleId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CompositionId" class="control-label"></label>
+                <select asp-for="CompositionId" class="form-control" asp-items="ViewBag.CompositionId"></select>
+                <span asp-validation-for="CompositionId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Вернуться назад</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

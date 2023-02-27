@@ -4,21 +4,28 @@ namespace musicShop.Models
 {
     public class Record
     {
-        [Required]
+        [Key]
         public int Id { get; set; }
+
         [Required, MaxLength(10), Display(Name = "Номер"), DataType(DataType.Text)]
         public string Number { get; set; }
+
         [Required, Display(Name = "Розничная цена"), DataType(DataType.Currency)]
         public decimal RetailPrice { get; set; }
+
         [Required, Display(Name = "Оптовая цена"), DataType(DataType.Currency)]
         public decimal WholesalePrice { get; set; }
-        public ICollection<Performance> Performances { get; set; }
+
+        public ICollection<RecordPerformance>? RecordPerformances { get; set; }
+
         [Required, Display(Name = "Произведение")]
         public int CompositionId { get; set; }
+
         public Composition Composition { get; set; }
+
         public Record()
         {
-            Performances = new List<Performance>();
+            RecordPerformances = new List<RecordPerformance>();
         }
     }
 }
