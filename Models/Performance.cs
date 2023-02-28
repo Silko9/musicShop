@@ -14,7 +14,8 @@ namespace musicShop.Models
         [Required, Display(Name = "Ансамбль")]
         public int EnsembleId { get; set; }
 
-        public Ensemble Ensemble { get; set; }
+        [Display(Name = "Ансамбль")]
+        public Ensemble? Ensemble { get; set; }
 
         [MaxLength(200), Display(Name = "Обстоятельства исполнения"), DataType(DataType.MultilineText)]
         public string CircumstancesExecution;
@@ -22,7 +23,8 @@ namespace musicShop.Models
         [Required, Display(Name = "Произведение")]
         public int CompositionId { get; set; }
 
-        public Composition Composition { get; set; }
+        [Display(Name = "Произведение")]
+        public Composition? Composition { get; set; }
 
         public ICollection<RecordPerformance>? RecordPerformances { get; set; }
 

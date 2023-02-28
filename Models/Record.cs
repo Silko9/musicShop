@@ -21,7 +21,8 @@ namespace musicShop.Models
         [Required, Display(Name = "Произведение")]
         public int CompositionId { get; set; }
 
-        public Composition Composition { get; set; }
+        [Display(Name = "Произведение")]
+        public Composition? Composition { get; set; }
 
         public Record()
         {

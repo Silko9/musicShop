@@ -12,7 +12,7 @@ namespace musicShop.Models
         public int RecordId { get; set; }
 
         [Display(Name = "Пластинка")]
-        public Record Record { get; set; }
+        public Record? Record { get; set; }
 
         [Required, Display(Name = "Дата"), DataType(DataType.Date)]
         public DateTime Date { get; set; }
@@ -24,6 +24,6 @@ namespace musicShop.Models
         public int TypeLoggingId { get; set; }
 
         [Display(Name = "Операция")]
-        public TypeLogging TypeLogging { get; set; }
+        public TypeLogging? TypeLogging { get; set; }
     }
 }
