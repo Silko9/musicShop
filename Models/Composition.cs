@@ -1,5 +1,4 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.Xml.Linq;
 
 namespace musicShop.Models
 {
@@ -26,6 +25,7 @@ namespace musicShop.Models
         public ICollection<Performance>? Performances;
 
         public ICollection<Record>? Records;
+
         public Composition()
         {
             Performances = new List<Performance>();

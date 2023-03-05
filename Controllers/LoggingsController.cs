@@ -21,7 +21,7 @@ namespace musicShop.Controllers
         // GET: Loggings
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Loggings.Include(l => l.Record).Include(l => l.TypeLogging);
+            var appDbContext = _context.Loggings.Include(l => l.Record);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -35,7 +35,6 @@ namespace musicShop.Controllers
 
             var logging = await _context.Loggings
                 .Include(l => l.Record)
-                .Include(l => l.TypeLogging)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (logging == null)
             {
@@ -49,7 +48,6 @@ namespace musicShop.Controllers
         public IActionResult Create()
         {
             ViewData["RecordId"] = new SelectList(_context.Records, "Id", "Number");
-            ViewData["TypeLoggingId"] = new SelectList(_context.TypeLoggings, "Id", "Name");
             return View();
         }
 
@@ -58,7 +56,7 @@ namespace musicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RecordId,Date,Amount,TypeLoggingId")] Logging logging)
+        public async Task<IActionResult> Create([Bind("Id,RecordId,Amount")] Logging logging)
         {
             if (ModelState.IsValid)
             {
@@ -67,7 +65,6 @@ namespace musicShop.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["RecordId"] = new SelectList(_context.Records, "Id", "Number", logging.RecordId);
-            ViewData["TypeLoggingId"] = new SelectList(_context.TypeLoggings, "Id", "Name", logging.TypeLoggingId);
             return View(logging);
         }
 
@@ -85,7 +82,6 @@ namespace musicShop.Controllers
                 return NotFound();
             }
             ViewData["RecordId"] = new SelectList(_context.Records, "Id", "Number", logging.RecordId);
-            ViewData["TypeLoggingId"] = new SelectList(_context.TypeLoggings, "Id", "Name", logging.TypeLoggingId);
             return View(logging);
         }
 
@@ -94,7 +90,7 @@ namespace musicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,RecordId,Date,Amount,TypeLoggingId")] Logging logging)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,RecordId,Amount")] Logging logging)
         {
             if (id != logging.Id)
             {
@@ -122,7 +118,6 @@ namespace musicShop.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["RecordId"] = new SelectList(_context.Records, "Id", "Number", logging.RecordId);
-            ViewData["TypeLoggingId"] = new SelectList(_context.TypeLoggings, "Id", "Name", logging.TypeLoggingId);
             return View(logging);
         }
 
@@ -136,7 +131,6 @@ namespace musicShop.Controllers
 
             var logging = await _context.Loggings
                 .Include(l => l.Record)
-                .Include(l => l.TypeLogging)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (logging == null)
             {

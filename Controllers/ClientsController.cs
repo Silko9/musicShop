@@ -9,85 +9,92 @@ using musicShop.Models;
 
 namespace musicShop.Controllers
 {
-    public class TypeLoggingsController : Controller
+    public class ClientsController : Controller
     {
         private readonly AppDbContext _context;
 
-        public TypeLoggingsController(AppDbContext context)
+        public ClientsController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: TypeLoggings
+        // GET: Clients
         public async Task<IActionResult> Index()
         {
-              return View(await _context.TypeLoggings.ToListAsync());
+              return View(await _context.Clients.ToListAsync());
         }
 
-        // GET: TypeLoggings/Details/5
+        // GET: Clients/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.TypeLoggings == null)
+            if (id == null || _context.Clients == null)
             {
                 return NotFound();
             }
 
-            var typeLogging = await _context.TypeLoggings
+            var client = await _context.Clients
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (typeLogging == null)
+            if (client == null)
             {
                 return NotFound();
             }
 
-            return View(typeLogging);
+            return View(client);
         }
 
-        // GET: TypeLoggings/Create
-        public IActionResult Create()
+        // GET: Clients/Create
+        public IActionResult Create(bool? fromCreateOrder)
         {
+            if (fromCreateOrder == true)
+                ViewBag.ToCreateOrder = true;
+            else
+                ViewBag.ToCreateOrder = false;
             return View();
         }
 
-        // POST: TypeLoggings/Create
+        // POST: Clients/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] TypeLogging typeLogging)
+        public async Task<IActionResult> Create([Bind("Id,Name,Surname,Patronymic,PhoneNumber,Address, ToCreateOrder")] Client client)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(typeLogging);
+                _context.Add(client);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (client.ToCreateOrder == true)
+                    return RedirectToAction("Index", "CreateOrder");
+                else
+                    return RedirectToAction(nameof(Index));
             }
-            return View(typeLogging);
+            return View(client);
         }
 
-        // GET: TypeLoggings/Edit/5
+        // GET: Clients/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.TypeLoggings == null)
+            if (id == null || _context.Clients == null)
             {
                 return NotFound();
             }
 
-            var typeLogging = await _context.TypeLoggings.FindAsync(id);
-            if (typeLogging == null)
+            var client = await _context.Clients.FindAsync(id);
+            if (client == null)
             {
                 return NotFound();
             }
-            return View(typeLogging);
+            return View(client);
         }
 
-        // POST: TypeLoggings/Edit/5
+        // POST: Clients/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] TypeLogging typeLogging)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Surname,Patronymic,PhoneNumber,Address")] Client client)
         {
-            if (id != typeLogging.Id)
+            if (id != client.Id)
             {
                 return NotFound();
             }
@@ -96,12 +103,12 @@ namespace musicShop.Controllers
             {
                 try
                 {
-                    _context.Update(typeLogging);
+                    _context.Update(client);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!TypeLoggingExists(typeLogging.Id))
+                    if (!ClientExists(client.Id))
                     {
                         return NotFound();
                     }
@@ -112,49 +119,49 @@ namespace musicShop.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(typeLogging);
+            return View(client);
         }
 
-        // GET: TypeLoggings/Delete/5
+        // GET: Clients/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.TypeLoggings == null)
+            if (id == null || _context.Clients == null)
             {
                 return NotFound();
             }
 
-            var typeLogging = await _context.TypeLoggings
+            var client = await _context.Clients
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (typeLogging == null)
+            if (client == null)
             {
                 return NotFound();
             }
 
-            return View(typeLogging);
+            return View(client);
         }
 
-        // POST: TypeLoggings/Delete/5
+        // POST: Clients/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.TypeLoggings == null)
+            if (_context.Clients == null)
             {
-                return Problem("Entity set 'AppDbContext.TypeLoggings'  is null.");
+                return Problem("Entity set 'AppDbContext.Clients'  is null.");
             }
-            var typeLogging = await _context.TypeLoggings.FindAsync(id);
-            if (typeLogging != null)
+            var client = await _context.Clients.FindAsync(id);
+            if (client != null)
             {
-                _context.TypeLoggings.Remove(typeLogging);
+                _context.Clients.Remove(client);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TypeLoggingExists(int id)
+        private bool ClientExists(int id)
         {
-          return _context.TypeLoggings.Any(e => e.Id == id);
+          return _context.Clients.Any(e => e.Id == id);
         }
     }
 }

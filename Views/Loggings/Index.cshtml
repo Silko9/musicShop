@@ -1,13 +1,14 @@
 ﻿@model IEnumerable<musicShop.Models.Logging>
 
 @{
-    ViewData["Title"] = "Операции";
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Операции</h1>
+<h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Добравить</a>
+    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
@@ -16,13 +17,7 @@
                 @Html.DisplayNameFor(model => model.Record)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Date)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Amount)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.TypeLogging)
             </th>
             <th></th>
         </tr>
@@ -34,18 +29,12 @@
                 @Html.DisplayFor(modelItem => item.Record.Number)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.Amount)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.TypeLogging.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Подробности</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
 }

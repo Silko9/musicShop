@@ -26,6 +26,8 @@ base(options)
         public DbSet<Record> Records { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<TypeEnsemble> TypeEnsembles { get; set; }
-        public DbSet<TypeLogging> TypeLoggings { get; set; }
-}
+
+        public DbSet<Client> Clients { get; set; }
+        public DbSet<Delivery> Deliveries { get; set; }
+    }
 }

@@ -1,8 +1,9 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace musicShop.Models
 {
-    public class Musician
+    public class Client
     {
         [Key]
         public int Id { get; set; }
@@ -16,17 +17,13 @@ namespace musicShop.Models
         [MaxLength(15), Display(Name = "Отчество"), DataType(DataType.Text)]
         public string Patronymic { get; set; }
 
-        [DataType(DataType.Text), Display(Name = "Фото")]
-        public string PhotePath { get; set; }
+        [Required, MaxLength(11), Display(Name = "Телефон"), DataType(DataType.PhoneNumber)]
+        public string PhoneNumber { get; set; }
 
-        public ICollection<MusicianRole>? MusicianRoles { get; set; }
+        [Required, MaxLength(40), Display(Name = "Адрес"), DataType(DataType.Text)]
+        public string Address { get; set; }
 
-        public ICollection<MusicianEnsemble>? MusicianEnsembles { get; set; }
-
-        public Musician()
-        {
-            MusicianRoles = new List<MusicianRole>();
-            MusicianEnsembles = new List<MusicianEnsemble>();
-        }
+        [NotMapped]
+        public bool? ToCreateOrder { get; set; }
     }
 }

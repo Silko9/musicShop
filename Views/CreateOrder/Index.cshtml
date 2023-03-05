@@ -1,0 +1,43 @@
+﻿@model IEnumerable<musicShop.Models.Client>
+
+@{
+    ViewData["Title"] = "Клиенты";
+}
+
+<h1>Покупка пластинки</h1>
+<h3>Выбор клиента</h3>
+
+<p>
+    <div class="form-group">
+        <a asp-controller="Clients" asp-action="Create" asp-route-fromCreateOrder="true" class="btn btn-info">
+            Добавить</a>
+    </div>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                    @using (Html.BeginForm())
+                    {
+                        <div>
+                            <input type="hidden" name="ClientId" value="@item.Id" />
+                            <input type="submit" value="Выбрать" class="btn btn-primary" />
+                        </div>
+                    }
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
