@@ -17,6 +17,7 @@ namespace musicShop.Controllers
         {
             return View(await _context.Clients.ToListAsync());
         }
+
         [HttpPost]
         public async Task<IActionResult> Index(int clientId)
         {
@@ -26,6 +27,24 @@ namespace musicShop.Controllers
             ViewBag.ClientId = clientId;
             ViewBag.Client = client;
             return View("ChooseAddress");
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> ChooseAddress(int clientId, string address)
+        {
+            Client client = await _context.Clients.FindAsync(clientId);
+            ViewBag.ClientId = clientId;
+            ViewBag.Address = address;
+            ViewBag.Client = $"{client.Name} {client.Surname} {client.Patronymic}";
+            var appDbContext = _context.Records.Include(p => p.Composition);
+            return View("ChooseRecords", await appDbContext.ToListAsync());
+            //return View("ChooseRecords", await _context.Records.ToListAsync());
+        }
+
+        public IActionResult selectedRecords(int[] selectedNumbers)
+        {
+            // обработка выбранных пластинок
+            return View("Index", "Client");
         }
     }
 }

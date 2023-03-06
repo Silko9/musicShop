@@ -28,7 +28,7 @@ namespace musicShop.Controllers
         // GET: Records/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Records == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -36,13 +36,21 @@ namespace musicShop.Controllers
             var @record = await _context.Records
                 .Include(p => p.Composition)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
             if (@record == null)
             {
                 return NotFound();
             }
 
+            // Load the Composition entity explicitly if it was not loaded with the Record
+            if (@record.Composition == null)
+            {
+                @record.Composition = await _context.Compositions.FirstOrDefaultAsync(c => c.Id == @record.CompositionId);
+            }
+
             return View(@record);
         }
+
 
         // GET: Records/Create
         public IActionResult Create()

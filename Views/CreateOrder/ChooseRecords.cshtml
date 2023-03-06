@@ -1,0 +1,53 @@
+﻿@model IEnumerable<musicShop.Models.Record>
+@{
+    ViewData["Title"] = "Выбор пластинки";
+}
+<h1>Выбор пластинок</h1>
+<div class="form-group">
+    <label class="control-label">ФИО покупателя</label>
+    <label class="control-label">@ViewBag.Client</label>
+</div>
+<div class="form-group">
+    <label class="control-label">Адрес доставки:</label>
+    <label class="control-label">@ViewBag.Address</label>
+</div>
+<form asp-action="ChooseRecords" method="post">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Number)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.RetailPrice)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Composition)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Number)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RetailPrice)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Composition.Name)
+                    </td>
+                    <td>
+                        <input type="checkbox" name="selectedRecords" value="@item.Number" />
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <div class="form-group pt-3">
+        <input type="submit" value="Далее" class="btn btn-primary" />
+    </div>
+</form>
