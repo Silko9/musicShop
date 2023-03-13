@@ -9,10 +9,17 @@ namespace musicShop.Models
 
         [Required, Display(Name = "Пластинка")]
         public int RecordId { get; set; }
+
         [Display(Name = "Пластинка")]
         public Record? Record { get; set; }
 
         [Required, Display(Name = "Кол-во")]
         public int Amount { get; set; }
+
+        [Required, Display(Name = "Заказ")]
+        public int OrderId { get; set; }
+
+        [Display(Name = "Заказ")]
+        public Order? Order { get; set; }
     }
 }

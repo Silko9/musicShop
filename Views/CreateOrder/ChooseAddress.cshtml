@@ -1,4 +1,4 @@
-﻿<h2>Оформление доставки: выбор адреса</h2>
+﻿<h1>Оформление заказа</h1>
 <form asp-action="ChooseAddress" class="form-group">
 	<input type="hidden" name="ClientId" value="@ViewBag.ClientId" />
 	<div class="form-group">
@@ -6,7 +6,7 @@
 		<label class="control-label">@ViewBag.Client.Name @ViewBag.Client.Surname @ViewBag.Client.Patronymic</label>
 	</div>
 	<div class="form-inline">
-		<label class="control-label col-md-4">Адрес:</label>
+		<label class="control-label col-md-4">Адрес доставки:</label>
 		<div class="col-md-8">
 			<input type="text" name="Address" class="form-control" value="@ViewBag.Client.Address" />
 		</div>

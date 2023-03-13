@@ -20,5 +20,10 @@ namespace musicShop.Models
 
         [MaxLength(40), Display(Name = "Адрес доставки"), DataType(DataType.Text)]
         public string Address { get; set; }
+
+        public Order()
+        {
+            Loggings = new List<Logging>();
+        }
     }
 }

@@ -38,13 +38,47 @@ namespace musicShop.Controllers
             ViewBag.Client = $"{client.Name} {client.Surname} {client.Patronymic}";
             var appDbContext = _context.Records.Include(p => p.Composition);
             return View("ChooseRecords", await appDbContext.ToListAsync());
-            //return View("ChooseRecords", await _context.Records.ToListAsync());
         }
 
-        public IActionResult selectedRecords(int[] selectedNumbers)
+        [HttpPost]
+        public async Task<IActionResult> ChooseRecords(List<RecordSelection> records, int clientId, string address)
         {
-            // обработка выбранных пластинок
-            return View("Index", "Client");
+            var selectedRecords = records.Where(r => r.Count > 0).ToList();
+            ICollection<Logging> loggings = new List<Logging>();
+
+            Order order = new Order
+            {
+                Loggings = loggings,
+                Client = await _context.Clients.FindAsync(clientId),
+                ClientId = clientId,
+                Address = address
+            };
+            _context.Orders.Add(order);
+            _context.SaveChanges();
+
+            foreach (var record in selectedRecords)
+            {
+                Logging logging = new Logging
+                {
+                    Record = await _context.Records.FindAsync(record.Id),
+                    Amount = record.Count,
+                    Order = await _context.Orders.FindAsync(order.Id)
+                };
+                _context.Loggings.Add(logging);
+                _context.SaveChanges();
+            }
+
+            return View("ViewOrder", order);
+        }
+
+
+        public class RecordSelection
+        {
+            public int Id { get; set; }
+            public string Number { get; set; }
+            public decimal RetailPrice { get; set; }
+            public string CompositionName { get; set; }
+            public int Count { get; set; }
         }
     }
 }

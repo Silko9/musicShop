@@ -23,7 +23,7 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Главная</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="CreateOrder" asp-action="Index">Купить пластинку</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="CreateOrder" asp-action="Index">Новый заказ</a>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="@Url.Action("Index", "Musicians")" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -39,6 +39,8 @@
                                 <a class="dropdown-item" href="@Url.Action("Index", "Records")">Пластинки</a>
                                 <a class="dropdown-item" href="@Url.Action("Index", "Loggings")">Операции</a>
                                 <a class="dropdown-item" href="@Url.Action("Index", "TypeLoggings")">Тип операции</a>
+                                <a class="dropdown-item" href="@Url.Action("Index", "Orders")">Заказы</a>
+                                <a class="dropdown-item" href="@Url.Action("Index", "Clients")">Клиенты</a>
                                 <!-- Добавьте другие элементы списка здесь -->
                             </div>
                         </li>
