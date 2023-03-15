@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using musicShop.Models;
+using musicShop.Models.ViewModal;
 
 namespace musicShop.Controllers
 {
@@ -39,7 +41,38 @@ namespace musicShop.Controllers
                 return NotFound();
             }
 
-            return View(musician);
+            MusicianDetailsViewModel viewModel = new MusicianDetailsViewModel();
+            viewModel.Musician = musician;
+
+            List<Role> roles = new List<Role>();
+            foreach (var role in musician.Roles)
+                roles.Add(await _context.Roles.FindAsync(role.Id));
+            viewModel.Roles = roles;
+
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> AddRoleToMusician(int id)
+        {
+            ViewBag.MusicianId = id;
+            Musician musician = await _context.Musicians.FindAsync(id);
+            List<Role> roles = roles = _context.Roles.ToList();
+            foreach (var role in musician.Roles)
+                roles.Remove(role);
+            return View(roles);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddRoleToMusician(int musicianId, int roleId)
+        {
+            Musician musician = _context.Musicians.Find(musicianId);
+            musician.Roles.Add(_context.Roles.Find(roleId));
+            Role role = _context.Roles.Find(roleId);
+            role.Musicians.Add(_context.Musicians.Find(musicianId));
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", new { id = musicianId });
         }
 
         // GET: Musicians/Create

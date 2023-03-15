@@ -25,11 +25,11 @@ namespace musicShop.Models
         [Display(Name = "Произведение")]
         public Composition? Composition { get; set; }
 
-        public ICollection<RecordPerformance>? RecordPerformances { get; set; }
+        public ICollection<Record>? Records { get; set; }
 
         public Performance()
         {
-            RecordPerformances = new List<RecordPerformance>();
+            Records = new List<Record>();
         }
     }
 }

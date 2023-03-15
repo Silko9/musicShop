@@ -10,11 +10,11 @@ namespace musicShop.Models
         [Required, MaxLength(15), Display(Name = "Название"), DataType(DataType.Text)]
         public string Name { get; set; }
 
-        public ICollection<MusicianRole>? MusicianRoles { get; set; }
+        public ICollection<Musician>? Musicians { get; set; }
 
         public Role()
         {
-            MusicianRoles = new List<MusicianRole>();
+            Musicians = new List<Musician>();
         }
     }
 }

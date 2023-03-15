@@ -10,15 +10,8 @@ base(options)
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<MusicianRole>()
-                .HasKey(mr => new { mr.MusicianId, mr.RoleId });
-            modelBuilder.Entity<MusicianEnsemble>()
-                .HasKey(mr => new { mr.MusicianId, mr.EnsembleId });
-            modelBuilder.Entity<RecordPerformance>()
-                .HasKey(mr => new { mr.RecordId, mr.PerformanceId });
         }
         public DbSet<Musician> Musicians { get; set; }
-        public DbSet<MusicianRole> MusicianRoles { get; set; }
         public DbSet<Composition> Compositions { get; set; }
         public DbSet<Ensemble> Ensembles { get; set; }
         public DbSet<Logging> Loggings { get; set; }

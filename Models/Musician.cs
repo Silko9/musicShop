@@ -19,14 +19,14 @@ namespace musicShop.Models
         [DataType(DataType.Text), Display(Name = "Фото")]
         public string PhotePath { get; set; }
 
-        public ICollection<MusicianRole>? MusicianRoles { get; set; }
+        public ICollection<Role>? Roles { get; set; }
 
-        public ICollection<MusicianEnsemble>? MusicianEnsembles { get; set; }
+        public ICollection<Ensemble>? Ensembles { get; set; }
 
         public Musician()
         {
-            MusicianRoles = new List<MusicianRole>();
-            MusicianEnsembles = new List<MusicianEnsemble>();
+            Roles = new List<Role>();
+            Ensembles = new List<Ensemble>();
         }
     }
 }

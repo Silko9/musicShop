@@ -1,0 +1,36 @@
+﻿@model IEnumerable<musicShop.Models.Role>
+
+@{
+    ViewData["Title"] = "Жобавить роль музыканту";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Добавить роль музыканту</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    <form method="post">
+                        <input type="hidden" name="musicianId" value="@ViewBag.MusicianId">
+                        <input type="hidden" name="roleId" value="@item.Id">
+                        <input type="submit" value="Выбрать" class="btn btn-success">
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

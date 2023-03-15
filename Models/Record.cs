@@ -16,7 +16,7 @@ namespace musicShop.Models
         [Required, Display(Name = "Оптовая цена"), DataType(DataType.Currency)]
         public decimal WholesalePrice { get; set; }
 
-        public ICollection<RecordPerformance>? RecordPerformances { get; set; }
+        public ICollection<Performance>? Performances { get; set; }
 
         [Required, Display(Name = "Произведение")]
         public int CompositionId { get; set; }
@@ -26,7 +26,7 @@ namespace musicShop.Models
 
         public Record()
         {
-            RecordPerformances = new List<RecordPerformance>();
+            Performances = new List<Performance>();
         }
     }
 }

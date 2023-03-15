@@ -16,13 +16,13 @@ namespace musicShop.Models
         [Display(Name = "Тип")]
         public TypeEnsemble? TypeEnsemble { get; set; }
 
-        public ICollection<MusicianEnsemble>? MusicianEnsembles { get; set; }
+        public ICollection<Musician>? Musicians { get; set; }
 
         public ICollection<Performance>? Performances { get; set; }
 
         public Ensemble()
         {
-            MusicianEnsembles = new List<MusicianEnsemble>();
+            Musicians = new List<Musician>();
             Performances = new List<Performance>();
         }
     }
