@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using musicShop.Models;
+using musicShop.Models.ViewModal;
+using musicShop.Models.ViewModels;
 
 namespace musicShop.Controllers
 {
@@ -38,8 +40,38 @@ namespace musicShop.Controllers
             {
                 return NotFound();
             }
+            TypeEnsembleDetailsViewModel viewModel = new TypeEnsembleDetailsViewModel();
+            viewModel.TypeEnsemble = typeEnsemble;
 
-            return View(typeEnsemble);
+            List<Ensemble> ensembles = new List<Ensemble>();
+            foreach (var ensemble in typeEnsemble.Ensembles)
+                ensembles.Add(await _context.Ensembles.FindAsync(ensemble.Id));
+            viewModel.Ensembles = ensembles;
+
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> AddEnsembleToTypeEnsemble(int id)
+        {
+            ViewBag.TypeEnsembleId = id;
+            TypeEnsemble typeEnsemble = await _context.TypeEnsembles.FindAsync(id);
+            List<Ensemble> ensembles = _context.Ensembles.ToList();
+            foreach (var ensemble in typeEnsemble.Ensembles)
+                ensembles.Remove(ensemble);
+            return View(ensembles);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddEnsembleToTypeEnsemble(int ensembleId, int typeEnsembleId)
+        {
+            TypeEnsemble typeEnsemble = _context.TypeEnsembles.Find(typeEnsembleId);
+            typeEnsemble.Ensembles.Add(_context.Ensembles.Find(ensembleId));
+            Ensemble ensemble = _context.Ensembles.Find(ensembleId);
+            ensemble.TypeEnsemble = typeEnsemble;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", new { id = typeEnsembleId });
         }
 
         // GET: TypeEnsembles/Create

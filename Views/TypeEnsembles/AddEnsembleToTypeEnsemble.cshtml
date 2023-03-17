@@ -1,11 +1,11 @@
-﻿@model IEnumerable<musicShop.Models.Role>
+﻿@model IEnumerable<musicShop.Models.Ensemble>
 
 @{
-    ViewData["Title"] = "Добавить роль музыканту";
+    ViewData["Title"] = "Добавить ансамблю тип";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Добавить роль музыканту</h1>
+<h1>Добавить ансамблю тип</h1>
 
 <table class="table">
     <thead>
@@ -25,8 +25,8 @@
                 </td>
                 <td>
                     <form method="post">
-                        <input type="hidden" name="musicianId" value="@ViewBag.MusicianId">
-                        <input type="hidden" name="roleId" value="@item.Id">
+                        <input type="hidden" name="typeEnsembleId" value="@ViewBag.TypeEnsembleId">
+                        <input type="hidden" name="ensembleId" value="@item.Id">
                         <input type="submit" value="Выбрать" class="btn btn-success">
                     </form>
                 </td>

@@ -56,7 +56,7 @@ namespace musicShop.Controllers
         {
             ViewBag.MusicianId = id;
             Musician musician = await _context.Musicians.FindAsync(id);
-            List<Role> roles = roles = _context.Roles.ToList();
+            List<Role> roles = _context.Roles.ToList();
             foreach (var role in musician.Roles)
                 roles.Remove(role);
             return View(roles);
