@@ -42,11 +42,7 @@ namespace musicShop.Controllers
             }
             TypeEnsembleDetailsViewModel viewModel = new TypeEnsembleDetailsViewModel();
             viewModel.TypeEnsemble = typeEnsemble;
-
-            List<Ensemble> ensembles = new List<Ensemble>();
-            foreach (var ensemble in typeEnsemble.Ensembles)
-                ensembles.Add(await _context.Ensembles.FindAsync(ensemble.Id));
-            viewModel.Ensembles = ensembles;
+            viewModel.Ensembles = _context.Ensembles.Where(p => p.TypeEnsembleId == typeEnsemble.Id); ;
 
             return View(viewModel);
         }
@@ -55,9 +51,7 @@ namespace musicShop.Controllers
         {
             ViewBag.TypeEnsembleId = id;
             TypeEnsemble typeEnsemble = await _context.TypeEnsembles.FindAsync(id);
-            List<Ensemble> ensembles = _context.Ensembles.ToList();
-            foreach (var ensemble in typeEnsemble.Ensembles)
-                ensembles.Remove(ensemble);
+            List<Ensemble> ensembles = _context.Ensembles.Where(p => p.TypeEnsembleId != typeEnsemble.Id).ToList();
             return View(ensembles);
         }
 
@@ -65,10 +59,8 @@ namespace musicShop.Controllers
         [HttpPost]
         public async Task<IActionResult> AddEnsembleToTypeEnsemble(int ensembleId, int typeEnsembleId)
         {
-            TypeEnsemble typeEnsemble = _context.TypeEnsembles.Find(typeEnsembleId);
-            typeEnsemble.Ensembles.Add(_context.Ensembles.Find(ensembleId));
             Ensemble ensemble = _context.Ensembles.Find(ensembleId);
-            ensemble.TypeEnsemble = typeEnsemble;
+            ensemble.TypeEnsembleId = typeEnsembleId;
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Details", new { id = typeEnsembleId });

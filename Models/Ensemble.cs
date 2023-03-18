@@ -11,7 +11,7 @@ namespace musicShop.Models
         public string Name { get; set; }
 
         [Required, Display(Name = "Тип")]
-        public int TypeEnsembleId { get; set; }
+        public int? TypeEnsembleId { get; set; }
 
         [Display(Name = "Тип")]
         public TypeEnsemble? TypeEnsemble { get; set; }
