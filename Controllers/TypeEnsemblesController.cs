@@ -51,8 +51,7 @@ namespace musicShop.Controllers
         {
             ViewBag.TypeEnsembleId = id;
             TypeEnsemble typeEnsemble = await _context.TypeEnsembles.FindAsync(id);
-            List<Ensemble> ensembles = _context.Ensembles.Where(p => p.TypeEnsembleId != typeEnsemble.Id).ToList();
-            return View(ensembles);
+            return View(_context.Ensembles.Where(p => p.TypeEnsembleId != typeEnsemble.Id).ToList());
         }
 
 
