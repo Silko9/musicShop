@@ -45,54 +45,45 @@ namespace musicShop.Controllers
         }
 
         // GET: Ensembles/Create
-        public IActionResult Create()
+        public IActionResult Create(int? typeEnsembleId)
         {
-            Ensemble model = new Ensemble(); // создание нового экземпляра модели
-            return View(model);
+            ViewBag.TypeEnsembleName = _context.TypeEnsembles.Find(typeEnsembleId);
+            return View();
         }
 
         // POST: Ensembles/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        public IActionResult Create(Ensemble ensemble)
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Create([Bind("Id,Name,TypeEnsembleId")] Ensemble ensemble)
         {
             if (ModelState.IsValid)
             {
                 _context.Ensembles.Add(ensemble);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
                 return RedirectToAction("Index");
-            }
+            } 
 
             return View(ensemble);
         }
 
-        [HttpPost]
-        public IActionResult SelectTypeEnsemble(string name)
-        {
-            var types = _context.TypeEnsembles.ToList();
-            TempData["EnsembleName"] = name;
-            return View(types);
-        }
-        [HttpPost]
         public IActionResult SelectTypeEnsemble()
         {
-            // Получить список типов ансамблей
             var types = _context.TypeEnsembles.ToList();
-
-            // Сохраняем значение Name в TempData
-            TempData["EnsembleName"] = Request.Form["Name"];
-
-            // Передать список типов ансамблей в представление
-            ViewData["TypeEnsembles"] = types;
-
             return View(types);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SelectTypeEnsemble(int typeEnsembleId)
+        {
+            return View();
         }
 
 
 
         // GET: Ensembles/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int? typeEnsembleId)
         {
             if (id == null || _context.Ensembles == null)
             {
@@ -104,6 +95,7 @@ namespace musicShop.Controllers
             {
                 return NotFound();
             }
+            ViewBag.TypeEnsembleName = _context.TypeEnsembles.Find(typeEnsembleId);
             ViewData["TypeEnsembleId"] = new SelectList(_context.TypeEnsembles, "Id", "Name", ensemble.TypeEnsembleId);
             return View(ensemble);
         }

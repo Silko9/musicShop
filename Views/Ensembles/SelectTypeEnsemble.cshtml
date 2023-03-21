@@ -24,7 +24,13 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    <a asp-action="Create" asp-route-name="@TempData["EnsembleName"]" asp-route-typeEnsembleId="@item.Id">Select</a>
+                    @if (ViewBag.fromCreate != "true")
+                    {
+                        <a asp-action="Create" asp-route-name="@TempData["EnsembleName"]" asp-route-typeEnsembleId="@item.Id">Select</a>
+                    }
+                    else{
+                        <a asp-action="Edit" asp-route-name="@TempData["EnsembleName"]" asp-route-typeEnsembleId="@item.Id">Select</a>
+                    }
                 </td>
             </tr>
         }
@@ -32,5 +38,11 @@
 </table>
 
 <div>
-    <a asp-action="Create" asp-route-name="@TempData["EnsembleName"]">Back to Ensemble Creation</a>
+    @if (ViewBag.fromCreate == "true")
+    {
+        <a asp-action="Create" asp-route-name="@TempData["EnsembleName"]">Back to Ensemble Creation</a>
+    }
+    else{
+        <a asp-action="Edit" asp-route-name="@TempData["EnsembleName"]">Back to Ensemble Edit</a>
+    }
 </div>

@@ -21,7 +21,8 @@ namespace musicShop.Controllers
         // GET: Roles
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Roles.ToListAsync());
+            var appDbContext = _context.Roles.Include(e => e.Musicians);
+            return View(await appDbContext.ToListAsync());
         }
 
         // GET: Roles/Details/5

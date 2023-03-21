@@ -5,6 +5,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
 using musicShop.Models;
 using musicShop.Models.ViewModal;
@@ -23,7 +24,9 @@ namespace musicShop.Controllers
         // GET: Musicians
         public async Task<IActionResult> Index()
         {
-              return View(await _context.Musicians.ToListAsync());
+            var appDbContext = _context.Musicians.Include(e => e.Roles);
+
+            return View(await appDbContext.ToListAsync());
         }
 
         // GET: Musicians/Details/5
@@ -34,7 +37,7 @@ namespace musicShop.Controllers
                 return NotFound();
             }
 
-            var musician = await _context.Musicians
+            var musician = await _context.Musicians.Include(m  => m.Roles)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (musician == null)
             {
@@ -55,7 +58,8 @@ namespace musicShop.Controllers
         public async Task<IActionResult> AddRoleToMusician(int id)
         {
             ViewBag.MusicianId = id;
-            Musician musician = await _context.Musicians.FindAsync(id);
+            Musician musician = await _context.Musicians.Include(m => m.Roles)
+                .FirstOrDefaultAsync(m => m.Id == id);
             List<Role> roles = _context.Roles.ToList();
             foreach (var role in musician.Roles)
                 roles.Remove(role);
@@ -66,10 +70,14 @@ namespace musicShop.Controllers
         [HttpPost]
         public async Task<IActionResult> AddRoleToMusician(int musicianId, int roleId)
         {
-            Musician musician = _context.Musicians.Find(musicianId);
-            musician.Roles.Add(_context.Roles.Find(roleId));
-            Role role = _context.Roles.Find(roleId);
-            role.Musicians.Add(_context.Musicians.Find(musicianId));
+
+            Role role = _context.Roles.Include(sp => sp.Musicians).FirstOrDefault(sp => sp.Id == roleId);
+            Musician musician = _context.Musicians.Include(d => d.Roles).FirstOrDefault(d => d.Id == musicianId);
+
+            /*Musician musician = _context.Musicians.Find(musicianId);
+            Role role = _context.Roles.Find(roleId);*/
+            musician.Roles.Add(role);
+            role.Musicians.Add(musician);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Details", new { id = musicianId });
