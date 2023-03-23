@@ -10,7 +10,7 @@ namespace musicShop.Models
         [Required, MaxLength(15), Display(Name = "Название")]
         public string Name { get; set; }
 
-        [Required, Display(Name = "Тип")]
+        [Display(Name = "Тип")]
         public int? TypeEnsembleId { get; set; }
 
         [Display(Name = "Тип")]

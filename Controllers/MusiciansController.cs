@@ -74,8 +74,6 @@ namespace musicShop.Controllers
             Role role = _context.Roles.Include(sp => sp.Musicians).FirstOrDefault(sp => sp.Id == roleId);
             Musician musician = _context.Musicians.Include(d => d.Roles).FirstOrDefault(d => d.Id == musicianId);
 
-            /*Musician musician = _context.Musicians.Find(musicianId);
-            Role role = _context.Roles.Find(roleId);*/
             musician.Roles.Add(role);
             role.Musicians.Add(musician);
             await _context.SaveChangesAsync();

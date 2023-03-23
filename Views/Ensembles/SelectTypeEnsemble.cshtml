@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<musicShop.Models.TypeEnsemble>
 
 @{
-    ViewData["Title"] = "Select Type Ensemble";
+    ViewData["Title"] = "Выбрать тип ансамбля";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Select Type Ensemble</h1>
+<h1>Выбрать тип ансамбля</h1>
 
 <table class="table">
     <thead>
@@ -24,12 +24,12 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @if (ViewBag.fromCreate != "true")
+                    @if (ViewBag.fromCreate == true)
                     {
-                        <a asp-action="Create" asp-route-name="@TempData["EnsembleName"]" asp-route-typeEnsembleId="@item.Id">Select</a>
+                        <a asp-action="Create" asp-route-name="@TempData["EnsembleName"]" asp-route-typeEnsembleId="@item.Id">Выбрать</a>
                     }
                     else{
-                        <a asp-action="Edit" asp-route-name="@TempData["EnsembleName"]" asp-route-typeEnsembleId="@item.Id">Select</a>
+                        <a asp-action="Edit" asp-route-name="@TempData["EnsembleName"]" asp-route-typeEnsembleId="@item.Id" asp-route-id="@ViewBag.id">Выбрать</a>
                     }
                 </td>
             </tr>
@@ -38,11 +38,11 @@
 </table>
 
 <div>
-    @if (ViewBag.fromCreate == "true")
+    @if (ViewBag.fromCreate == true)
     {
-        <a asp-action="Create" asp-route-name="@TempData["EnsembleName"]">Back to Ensemble Creation</a>
+        <a asp-action="Create" asp-route-name="@TempData["EnsembleName"]">Вернуться назад к добавлению</a>
     }
     else{
-        <a asp-action="Edit" asp-route-name="@TempData["EnsembleName"]">Back to Ensemble Edit</a>
+        <a asp-action="Edit" asp-route-id="@ViewBag.id" asp-route-name="@TempData["EnsembleName"]">Вернуться назад к изменению</a>
     }
 </div>

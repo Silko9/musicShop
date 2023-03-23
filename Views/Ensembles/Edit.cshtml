@@ -1,13 +1,13 @@
 ﻿@model musicShop.Models.Ensemble
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Изменить";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1>Изменить</h1>
 
-<h4>Ensemble</h4>
+<h4>Ансамбль</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -20,7 +20,7 @@
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label class="control-label">Type Ensemble</label>
+                <label class="control-label">Тип ансамбля</label>
                 <p>
                     @if (ViewBag.TypeEnsembleName != null)
                     {
@@ -32,17 +32,17 @@
                         <input type="text" value="" class="form-control" readonly="readonly" />
                     }
                 </p>
-                <a asp-action="SelectTypeEnsemble" class="btn btn-secondary">Select Type Ensemble</a>
+                <a asp-action="SelectTypeEnsemble" asp-route-id="@ViewBag.id" class="btn btn-secondary">Выбрать тип ансамбля</a>
             </div>
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Сохранить" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Вернуться назад</a>
 </div>
 
 @section Scripts {

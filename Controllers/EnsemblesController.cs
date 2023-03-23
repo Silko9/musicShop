@@ -68,8 +68,10 @@ namespace musicShop.Controllers
             return View(ensemble);
         }
 
-        public IActionResult SelectTypeEnsemble()
+        public IActionResult SelectTypeEnsemble(int? id, bool? fromCreate)
         {
+            ViewBag.id = id;
+            ViewBag.fromCreate = fromCreate;
             var types = _context.TypeEnsembles.ToList();
             return View(types);
         }
@@ -95,6 +97,7 @@ namespace musicShop.Controllers
             {
                 return NotFound();
             }
+            ViewBag.id = id;
             ViewBag.TypeEnsembleName = _context.TypeEnsembles.Find(typeEnsembleId);
             ViewData["TypeEnsembleId"] = new SelectList(_context.TypeEnsembles, "Id", "Name", ensemble.TypeEnsembleId);
             return View(ensemble);
