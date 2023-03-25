@@ -79,3 +79,48 @@
         }
     </tbody>
 </table>
+
+<hr>
+<div class="container p-0">
+    <div class="row pb-3">
+        <div class="col-md-9">
+            <h4>Ансамбли</h4>
+        </div>
+        <div class="col-md-3 text-end">
+            <a asp-action="AddEnsembleToMusician" asp-route-id="@Model.Musician.Id" class="btn btn-info">Добавить ансамбль</a>
+        </div>
+
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Ensembles.First().Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Ensembles.First().TypeEnsemble)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Ensembles)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TypeEnsemble.Name)
+                </td>
+                <td>
+                    <a asp-controller="Ensembles" asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
+                    <a asp-controller="Ensembles" asp-action="Details" asp-route-id="@item.Id">Подробности</a> |
+                    <a asp-controller="Ensembles" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

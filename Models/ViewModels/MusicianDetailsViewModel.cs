@@ -5,5 +5,6 @@ namespace musicShop.Models.ViewModal
     {
         public Musician Musician { get; set; }
         public IEnumerable<Role> Roles { get; set; }
+        public IEnumerable<Ensemble> Ensembles { get; set; }
     }
 }

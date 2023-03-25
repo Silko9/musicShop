@@ -24,7 +24,9 @@ namespace musicShop.Controllers
         // GET: Musicians
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Musicians.Include(e => e.Roles);
+            var appDbContext = _context.Musicians.Include(e => e.Roles).Include(e => e.Ensembles);
+            /*var appDbContext2 = _context.Ensembles.Include(e => e.TypeEnsemble);
+            var combinedDbContext = appDbContext.Concat(appDbContext2);*/
 
             return View(await appDbContext.ToListAsync());
         }
@@ -37,7 +39,7 @@ namespace musicShop.Controllers
                 return NotFound();
             }
 
-            var musician = await _context.Musicians.Include(m  => m.Roles)
+            var musician = await _context.Musicians.Include(m => m.Roles).Include(m => m.Ensembles)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (musician == null)
             {
@@ -50,7 +52,11 @@ namespace musicShop.Controllers
             List<Role> roles = new List<Role>();
             foreach (var role in musician.Roles)
                 roles.Add(await _context.Roles.FindAsync(role.Id));
+            List<Ensemble> ensembles = new List<Ensemble>();
+            foreach (var ensemble in musician.Ensembles)
+                ensembles.Add(await _context.Ensembles.FindAsync(ensemble.Id));
             viewModel.Roles = roles;
+            viewModel.Ensembles = ensembles;
 
             return View(viewModel);
         }
@@ -76,6 +82,32 @@ namespace musicShop.Controllers
 
             musician.Roles.Add(role);
             role.Musicians.Add(musician);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", new { id = musicianId });
+        }
+
+        public async Task<IActionResult> AddEnsembleToMusician(int id)
+        {
+            ViewBag.MusicianId = id;
+            Musician musician = await _context.Musicians.Include(m => m.Ensembles)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            List<Ensemble> ensembles = _context.Ensembles.ToList();
+            foreach (var ensemble in musician.Ensembles)
+                ensembles.Remove(ensemble);
+            return View(ensembles);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddEnsembleToMusician(int musicianId, int ensembleId)
+        {
+
+            Ensemble ensemble = _context.Ensembles.Include(sp => sp.Musicians).FirstOrDefault(sp => sp.Id == ensembleId);
+            Musician musician = _context.Musicians.Include(d => d.Ensembles).FirstOrDefault(d => d.Id == musicianId);
+
+            musician.Ensembles.Add(ensemble);
+            ensemble.Musicians.Add(musician);
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Details", new { id = musicianId });
