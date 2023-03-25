@@ -46,9 +46,9 @@ namespace musicShop.Controllers
         }
 
         // GET: Performances/Create
-        public IActionResult Create(int? ensembleId)
+        public IActionResult Create(int? ensembleId, int? compositionId)
         {
-            ViewData["CompositionId"] = new SelectList(_context.Compositions, "Id", "Name");
+            ViewBag.Composition = _context.Compositions.Find(compositionId);
             ViewBag.EnsembleName = _context.Ensembles.Find(ensembleId);
             return View();
         }
@@ -66,7 +66,6 @@ namespace musicShop.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompositionId"] = new SelectList(_context.Compositions, "Id", "Name", performance.CompositionId);
             return View(performance);
         }
 
@@ -84,8 +83,22 @@ namespace musicShop.Controllers
             return View();
         }
 
+        public IActionResult SelectComposition(int? id, bool? fromCreate)
+        {
+            ViewBag.id = id;
+            ViewBag.fromCreate = fromCreate;
+            var composition = _context.Compositions.ToList();
+            return View(composition);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SelectComposition(int compositionId)
+        {
+            return View();
+        }
+
         // GET: Performances/Edit/5
-        public async Task<IActionResult> Edit(int? id, int? ensembleId)
+        public async Task<IActionResult> Edit(int? id, int? ensembleId, int? compositionId)
         {
             if (id == null || _context.Performances == null)
             {
@@ -97,9 +110,9 @@ namespace musicShop.Controllers
             {
                 return NotFound();
             }
-            ViewData["CompositionId"] = new SelectList(_context.Compositions, "Id", "Name", performance.CompositionId);
             ViewBag.id = id;
             ViewBag.EnsembleName = _context.Ensembles.Find(ensembleId);
+            ViewBag.Composition = _context.Compositions.Find(compositionId);
             return View(performance);
         }
 
@@ -135,7 +148,6 @@ namespace musicShop.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompositionId"] = new SelectList(_context.Compositions, "Id", "Name", performance.CompositionId);
             return View(performance);
         }
 
