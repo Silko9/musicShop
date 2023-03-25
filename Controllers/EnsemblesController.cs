@@ -118,8 +118,6 @@ namespace musicShop.Controllers
             return View();
         }
 
-
-
         // GET: Ensembles/Edit/5
         public async Task<IActionResult> Edit(int? id, int? typeEnsembleId)
         {
@@ -135,7 +133,8 @@ namespace musicShop.Controllers
             }
             ViewBag.id = id;
             ViewBag.TypeEnsembleName = _context.TypeEnsembles.Find(typeEnsembleId);
-            ViewData["TypeEnsembleId"] = new SelectList(_context.TypeEnsembles, "Id", "Name", ensemble.TypeEnsembleId);
+            //ViewData["TypeEnsembleId"] = new SelectList(_context.TypeEnsembles, "Id", "Name", ensemble.TypeEnsembleId);
+            //удалить если через время ни чего не поломается
             return View(ensemble);
         }
 
@@ -171,7 +170,6 @@ namespace musicShop.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["TypeEnsembleId"] = new SelectList(_context.TypeEnsembles, "Id", "Name", ensemble.TypeEnsembleId);
             return View(ensemble);
         }
 

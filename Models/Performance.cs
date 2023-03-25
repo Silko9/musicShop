@@ -17,7 +17,7 @@ namespace musicShop.Models
         public Ensemble? Ensemble { get; set; }
 
         [MaxLength(200), Display(Name = "Обстоятельства исполнения"), DataType(DataType.MultilineText)]
-        public string CircumstancesExecution;
+        public string CircumstancesExecution { get; set; }
 
         [Required, Display(Name = "Произведение")]
         public int CompositionId { get; set; }

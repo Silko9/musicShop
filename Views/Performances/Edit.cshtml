@@ -2,11 +2,12 @@
 
 @{
     ViewData["Title"] = "Изменить";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Изменить</h1>
 
-<h4>Исполнение</h4>
+<h4>Исполнения</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -19,9 +20,24 @@
                 <span asp-validation-for="Date" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="EnsembleId" class="control-label"></label>
-                <select asp-for="EnsembleId" class="form-control" asp-items="ViewBag.EnsembleId"></select>
-                <span asp-validation-for="EnsembleId" class="text-danger"></span>
+                <label class="control-label">Ансамбль</label>
+                <p>
+                    @if (ViewBag.EnsembleName != null)
+                    {
+                        <input type="text" value="@ViewBag.EnsembleName.Name" class="form-control" readonly="readonly" />
+                        <input type="hidden" asp-for="EnsembleId" value="@ViewBag.EnsembleName.Id" class="form-control" />
+                    }
+                    else
+                    {
+                        <input type="text" value="" class="form-control" readonly="readonly" />
+                    }
+                </p>
+                <a asp-action="SelectEnsemble" asp-route-fromCreate="false" asp-route-id="@ViewBag.id" class="btn btn-secondary">Выбрать ансамбль</a>
+            </div>
+            <div class="form-group">
+                <label asp-for="CircumstancesExecution" class="control-label"></label>
+                <textarea asp-for="CircumstancesExecution" class="form-control"></textarea>
+                <span asp-validation-for="CircumstancesExecution" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="CompositionId" class="control-label"></label>

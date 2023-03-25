@@ -26,10 +26,10 @@
                 <td>
                     @if (ViewBag.fromCreate == true)
                     {
-                        <a asp-action="Create" asp-route-name="@TempData["EnsembleName"]" asp-route-typeEnsembleId="@item.Id">Выбрать</a>
+                        <a asp-action="Create" asp-route-typeEnsembleId="@item.Id">Выбрать</a>
                     }
                     else{
-                        <a asp-action="Edit" asp-route-name="@TempData["EnsembleName"]" asp-route-typeEnsembleId="@item.Id" asp-route-id="@ViewBag.id">Выбрать</a>
+                        <a asp-action="Edit" asp-route-typeEnsembleId="@item.Id" asp-route-id="@ViewBag.id">Выбрать</a>
                     }
                 </td>
             </tr>
@@ -40,9 +40,9 @@
 <div>
     @if (ViewBag.fromCreate == true)
     {
-        <a asp-action="Create" asp-route-name="@TempData["EnsembleName"]">Вернуться назад к добавлению</a>
+        <a asp-action="Create">Вернуться назад к добавлению</a>
     }
     else{
-        <a asp-action="Edit" asp-route-id="@ViewBag.id" asp-route-name="@TempData["EnsembleName"]">Вернуться назад к изменению</a>
+        <a asp-action="Edit" asp-route-id="@ViewBag.id">Вернуться назад к изменению</a>
     }
 </div>

@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Удалить";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Удалить</h1>
@@ -22,6 +23,12 @@
         </dt>
         <dd class = "col-sm-10">
             @Html.DisplayFor(model => model.Ensemble.Name)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.CircumstancesExecution)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.CircumstancesExecution)
         </dd>
         <dt class = "col-sm-2">
             @Html.DisplayNameFor(model => model.Composition)

@@ -46,10 +46,10 @@ namespace musicShop.Controllers
         }
 
         // GET: Performances/Create
-        public IActionResult Create()
+        public IActionResult Create(int? ensembleId)
         {
             ViewData["CompositionId"] = new SelectList(_context.Compositions, "Id", "Name");
-            ViewData["EnsembleId"] = new SelectList(_context.Ensembles, "Id", "Name");
+            ViewBag.EnsembleName = _context.Ensembles.Find(ensembleId);
             return View();
         }
 
@@ -58,7 +58,7 @@ namespace musicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Date,EnsembleId,CompositionId")] Performance performance)
+        public async Task<IActionResult> Create([Bind("Id,Date,EnsembleId,CircumstancesExecution,CompositionId")] Performance performance)
         {
             if (ModelState.IsValid)
             {
@@ -67,12 +67,25 @@ namespace musicShop.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CompositionId"] = new SelectList(_context.Compositions, "Id", "Name", performance.CompositionId);
-            ViewData["EnsembleId"] = new SelectList(_context.Ensembles, "Id", "Name", performance.EnsembleId);
             return View(performance);
         }
 
+        public IActionResult SelectEnsemble(int? id, bool? fromCreate)
+        {
+            ViewBag.id = id;
+            ViewBag.fromCreate = fromCreate;
+            var ensembles = _context.Ensembles.ToList();
+            return View(ensembles);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SelectEnsemble(int ensembleId)
+        {
+            return View();
+        }
+
         // GET: Performances/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int? ensembleId)
         {
             if (id == null || _context.Performances == null)
             {
@@ -85,7 +98,8 @@ namespace musicShop.Controllers
                 return NotFound();
             }
             ViewData["CompositionId"] = new SelectList(_context.Compositions, "Id", "Name", performance.CompositionId);
-            ViewData["EnsembleId"] = new SelectList(_context.Ensembles, "Id", "Name", performance.EnsembleId);
+            ViewBag.id = id;
+            ViewBag.EnsembleName = _context.Ensembles.Find(ensembleId);
             return View(performance);
         }
 
@@ -94,7 +108,7 @@ namespace musicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,EnsembleId,CompositionId")] Performance performance)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Date,EnsembleId,CircumstancesExecution,CompositionId")] Performance performance)
         {
             if (id != performance.Id)
             {
@@ -122,7 +136,6 @@ namespace musicShop.Controllers
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CompositionId"] = new SelectList(_context.Compositions, "Id", "Name", performance.CompositionId);
-            ViewData["EnsembleId"] = new SelectList(_context.Ensembles, "Id", "Name", performance.EnsembleId);
             return View(performance);
         }
 
@@ -167,7 +180,7 @@ namespace musicShop.Controllers
 
         private bool PerformanceExists(int id)
         {
-          return _context.Performances.Any(e => e.Id == id);
+          return (_context.Performances?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
