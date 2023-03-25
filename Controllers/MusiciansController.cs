@@ -39,7 +39,9 @@ namespace musicShop.Controllers
                 return NotFound();
             }
 
-            var musician = await _context.Musicians.Include(m => m.Roles).Include(m => m.Ensembles)
+            var musician = await _context.Musicians
+                .Include(m => m.Roles)
+                .Include(m => m.Ensembles)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (musician == null)
             {

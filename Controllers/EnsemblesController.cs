@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using musicShop.Models;
+using musicShop.Models.ViewModels;
 
 namespace musicShop.Controllers
 {
@@ -21,7 +22,7 @@ namespace musicShop.Controllers
         // GET: Ensembles
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Ensembles.Include(e => e.TypeEnsemble);
+            var appDbContext = _context.Ensembles.Include(e => e.TypeEnsemble).Include(e => e.Musicians);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -35,13 +36,48 @@ namespace musicShop.Controllers
 
             var ensemble = await _context.Ensembles
                 .Include(e => e.TypeEnsemble)
+                .Include(e => e.Musicians)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ensemble == null)
             {
                 return NotFound();
             }
 
-            return View(ensemble);
+            EnsembleDetailsViewModel viewModel = new EnsembleDetailsViewModel();
+            viewModel.Ensemble = ensemble;
+
+            List<Musician> musicians = new List<Musician>();
+            foreach (var musician in ensemble.Musicians)
+                musicians.Add(await _context.Musicians.FindAsync(musician.Id));
+            viewModel.Musicians = musicians;
+
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> AddMusicianToEnsemble(int id)
+        {
+            ViewBag.EnsembleId = id;
+            Ensemble ensemble = await _context.Ensembles.Include(m => m.Musicians)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            List<Musician> musicians = _context.Musicians.ToList();
+            foreach (var musician in ensemble.Musicians)
+                musicians.Remove(musician);
+            return View(musicians);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddMusicianToEnsemble(int ensembleId, int musicianId)
+        {
+
+            Ensemble ensemble = _context.Ensembles.Include(sp => sp.Musicians).Include(sp => sp.TypeEnsemble).FirstOrDefault(sp => sp.Id == ensembleId);
+            Musician musician = _context.Musicians.Include(d => d.Roles).Include(d => d.Ensembles).FirstOrDefault(d => d.Id == musicianId);
+
+            ensemble.Musicians.Add(musician);
+            musician.Ensembles.Add(ensemble);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", new { id = ensembleId });
         }
 
         // GET: Ensembles/Create
