@@ -77,6 +77,7 @@ namespace musicShop.Controllers
             {
                 return NotFound();
             }
+            ViewBag.id = id;
             return View(composition);
         }
 

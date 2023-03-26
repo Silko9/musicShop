@@ -96,9 +96,9 @@ namespace musicShop.Controllers
         }
 
         // GET: Records/Create
-        public IActionResult Create()
+        public IActionResult Create(int? compositionId)
         {
-            ViewData["CompositionId"] = new SelectList(_context.Compositions, "Id", "Name");
+            ViewBag.Composition = _context.Compositions.Find(compositionId);
             return View();
         }
 
@@ -115,25 +115,39 @@ namespace musicShop.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompositionId"] = new SelectList(_context.Compositions, "Id", "Name", @record.CompositionId);
             return View(@record);
         }
 
+        public IActionResult SelectComposition(int? id, bool? fromCreate)
+        {
+            ViewBag.id = id;
+            ViewBag.fromCreate = fromCreate;
+            var composition = _context.Compositions.ToList();
+            return View(composition);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SelectComposition(int compositionId)
+        {
+            return View();
+        }
+
         // GET: Records/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, int? compositionId)
         {
             if (id == null || _context.Records == null)
             {
                 return NotFound();
             }
 
-            var @record = await _context.Records.FindAsync(id);
-            if (@record == null)
+            var record = await _context.Records.FindAsync(id);
+            if (record == null)
             {
                 return NotFound();
             }
-            ViewData["CompositionId"] = new SelectList(_context.Compositions, "Id", "Name", @record.CompositionId);
-            return View(@record);
+            ViewBag.id = id;
+            ViewBag.Composition = _context.Compositions.Find(compositionId);
+            return View(record);
         }
 
         // POST: Records/Edit/5

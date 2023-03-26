@@ -1,0 +1,72 @@
+﻿@model IEnumerable<musicShop.Models.Composition>
+
+@{
+    ViewData["Title"] = "Выбрать произведение";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Выбрать произведение</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.NameAuthor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SurnameAuthor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PatronymicAuthor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.DateCreate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NameAuthor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SurnameAuthor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PatronymicAuthor)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateCreate)
+                </td>
+                <td>
+                    @if (ViewBag.fromCreate == true)
+                    {
+                        <a asp-action="Create" asp-route-compositionId="@item.Id">Выбрать</a>
+                    }
+                    else{
+                        <a asp-action="Edit" asp-route-compositionId="@item.Id" asp-route-id="@ViewBag.id">Выбрать</a>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<div>
+    @if (ViewBag.fromCreate == true)
+    {
+        <a asp-action="Create">Вернуться назад к добавлению</a>
+    }
+    else{
+        <a asp-action="Edit" asp-route-id="@ViewBag.id">Вернуться назад к изменению</a>
+    }
+</div>
