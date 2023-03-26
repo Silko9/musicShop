@@ -54,9 +54,9 @@ namespace musicShop.Controllers
             List<Role> roles = new List<Role>();
             foreach (var role in musician.Roles)
                 roles.Add(await _context.Roles.FindAsync(role.Id));
-            List<Ensemble> ensembles = _context.Ensembles.Include(s => s.TypeEnsemble).ToList();
+            List<Ensemble> ensembles = new List<Ensemble>();
             foreach (var ensemble in musician.Ensembles)
-                ensembles.Add();
+                ensembles.Add(ensemble);
             viewModel.Roles = roles;
             viewModel.Ensembles = ensembles;
 

@@ -66,7 +66,9 @@ namespace musicShop.Controllers
                 .Include(sp => sp.Ensemble)
                 .Include(sp => sp.Composition)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            List<Record> records = _context.Records.ToList();
+            List<Record> records = _context.Records
+                .Include(p => p.Composition)
+                .ToList();
             foreach (var record in performance.Records)
                 records.Remove(record);
             return View(records);
