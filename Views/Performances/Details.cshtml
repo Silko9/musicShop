@@ -1,4 +1,4 @@
-﻿@model musicShop.Models.Performance
+﻿@model musicShop.Models.ViewModels.PerformanceDetailsViewModel
 
 @{
     ViewData["Title"] = "Подробности";
@@ -12,32 +12,89 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Date)
+            @Html.DisplayNameFor(model => model.Performance.Date)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Date)
+            @Html.DisplayFor(model => model.Performance.Date)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Ensemble)
+            @Html.DisplayNameFor(model => model.Performance.Ensemble)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ensemble.Name)
+            @Html.DisplayFor(model => model.Performance.Ensemble.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.CircumstancesExecution)
+            @Html.DisplayNameFor(model => model.Performance.CircumstancesExecution)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.CircumstancesExecution)
+            @Html.DisplayFor(model => model.Performance.CircumstancesExecution)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Composition)
+            @Html.DisplayNameFor(model => model.Performance.Composition)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Composition.Name)
+            @Html.DisplayFor(model => model.Performance.Composition.Name)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Изменить</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.Performance.Id">Изменить</a> |
     <a asp-action="Index">Вернуться назад</a>
 </div>
+
+<hr>
+<div class="container p-0">
+    <div class="row pb-3">
+        <div class="col-md-9">
+            <h4>Пластинки</h4>
+        </div>
+        <div class="col-md-3 text-end">
+            <a asp-action="AddRecordToPerformance" asp-route-id="@Model?.Performance.Id" class="btn btn-info">Добавить пластинку</a>
+        </div>
+
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Records.First().Number)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Records.First().RetailPrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Records.First().WholesalePrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Records.First().Composition)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Records)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RetailPrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.WholesalePrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Composition.Name)
+                </td>
+                <td>
+                    <a asp-controller="Records" asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
+                    <a asp-controller="Records" asp-action="Details" asp-route-id="@item.Id">Подробности</a> |
+                    <a asp-controller="Records" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

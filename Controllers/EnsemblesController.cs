@@ -35,7 +35,7 @@ namespace musicShop.Controllers
             }
 
             var ensemble = await _context.Ensembles
-                .Include(e => e.TypeEnsemble)
+                .Include(e => e.TypeEnsemble.Name)
                 .Include(e => e.Musicians)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ensemble == null)
@@ -58,6 +58,7 @@ namespace musicShop.Controllers
         {
             ViewBag.EnsembleId = id;
             Ensemble ensemble = await _context.Ensembles.Include(m => m.Musicians)
+                .Include(m => m.TypeEnsemble)
                 .FirstOrDefaultAsync(m => m.Id == id);
             List<Musician> musicians = _context.Musicians.ToList();
             foreach (var musician in ensemble.Musicians)

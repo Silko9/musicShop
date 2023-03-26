@@ -54,9 +54,9 @@ namespace musicShop.Controllers
             List<Role> roles = new List<Role>();
             foreach (var role in musician.Roles)
                 roles.Add(await _context.Roles.FindAsync(role.Id));
-            List<Ensemble> ensembles = new List<Ensemble>();
+            List<Ensemble> ensembles = _context.Ensembles.Include(s => s.TypeEnsemble).ToList();
             foreach (var ensemble in musician.Ensembles)
-                ensembles.Add(await _context.Ensembles.FindAsync(ensemble.Id));
+                ensembles.Add();
             viewModel.Roles = roles;
             viewModel.Ensembles = ensembles;
 
@@ -94,7 +94,7 @@ namespace musicShop.Controllers
             ViewBag.MusicianId = id;
             Musician musician = await _context.Musicians.Include(m => m.Ensembles)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            List<Ensemble> ensembles = _context.Ensembles.ToList();
+            List<Ensemble> ensembles = _context.Ensembles.Include(s => s.TypeEnsemble).ToList();
             foreach (var ensemble in musician.Ensembles)
                 ensembles.Remove(ensemble);
             return View(ensembles);
@@ -105,7 +105,7 @@ namespace musicShop.Controllers
         public async Task<IActionResult> AddEnsembleToMusician(int musicianId, int ensembleId)
         {
 
-            Ensemble ensemble = _context.Ensembles.Include(sp => sp.Musicians).FirstOrDefault(sp => sp.Id == ensembleId);
+            Ensemble ensemble = _context.Ensembles.Include(sp => sp.Musicians).Include(s => s.TypeEnsemble).FirstOrDefault(sp => sp.Id == ensembleId);
             Musician musician = _context.Musicians.Include(d => d.Ensembles).FirstOrDefault(d => d.Id == musicianId);
 
             musician.Ensembles.Add(ensemble);
