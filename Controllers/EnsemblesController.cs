@@ -35,7 +35,7 @@ namespace musicShop.Controllers
             }
 
             var ensemble = await _context.Ensembles
-                .Include(e => e.TypeEnsemble.Name)
+                .Include(e => e.TypeEnsemble)
                 .Include(e => e.Musicians)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ensemble == null)

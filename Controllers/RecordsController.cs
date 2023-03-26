@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using musicShop.Models;
+using musicShop.Models.ViewModels;
 
 namespace musicShop.Controllers
 {
@@ -21,7 +22,9 @@ namespace musicShop.Controllers
         // GET: Records
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Records.Include(p => p.Composition);
+            var appDbContext = _context.Records
+                .Include(p => p.Performances)
+                .Include(p => p.Composition);
             return View(await appDbContext.ToListAsync());
         }
 
@@ -34,6 +37,7 @@ namespace musicShop.Controllers
             }
 
             var @record = await _context.Records
+                .Include(p => p.Performances)
                 .Include(p => p.Composition)
                 .FirstOrDefaultAsync(m => m.Id == id);
 
@@ -48,9 +52,48 @@ namespace musicShop.Controllers
                 @record.Composition = await _context.Compositions.FirstOrDefaultAsync(c => c.Id == @record.CompositionId);
             }
 
-            return View(@record);
+            RecordDetailsViewModel viewModel = new RecordDetailsViewModel();
+            viewModel.Record = record;
+
+            List<Performance> performances = new List<Performance>();
+            foreach (var performance in record.Performances)
+                performances.Add(await _context.Performances.FindAsync(performance.Id));
+            viewModel.Performances = performances;
+
+            return View(viewModel);
         }
 
+        public async Task<IActionResult> AddPerformanceToRecord(int id)
+        {
+            ViewBag.RecordId = id;
+            Record record = await _context.Records
+                .Include(p => p.Performances)
+                .Include(p => p.Composition)
+                .FirstOrDefaultAsync(m => m.Id == id);
+            List<Performance> performances = _context.Performances
+                .Include(p => p.Composition)
+                .Include(m => m.Records)
+                .Include(sp => sp.Ensemble)
+                .ToList();
+            foreach (var performance in record.Performances)
+                performances.Remove(performance);
+            return View(performances);
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddPerformanceToRecord(int recordId, int performanceId)
+        {
+
+            Performance performance = _context.Performances.Include(sp => sp.Records).Include(sp => sp.Ensemble).Include(sp => sp.Composition).FirstOrDefault(sp => sp.Id == performanceId);
+            Record record = _context.Records.Include(d => d.Performances).Include(d => d.Composition).FirstOrDefault(d => d.Id == recordId);
+
+            performance.Records.Add(record);
+            record.Performances.Add(performance);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", new { id = recordId });
+        }
 
         // GET: Records/Create
         public IActionResult Create()
