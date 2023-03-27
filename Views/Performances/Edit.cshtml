@@ -29,10 +29,10 @@
                     }
                     else
                     {
-                        <input type="text" value="" class="form-control" readonly="readonly" />
+                        <input type="text" value="@Model.Ensemble.Name" class="form-control" readonly="readonly" />
+                        <input type="hidden" asp-for="EnsembleId" value="@Model.Ensemble.Id" class="form-control" />
                     }
                 </p>
-                <a asp-action="SelectEnsemble" asp-route-fromCreate="false" asp-route-id="@ViewBag.id" class="btn btn-secondary">Выбрать ансамбль</a>
             </div>
             <div class="form-group">
                 <label asp-for="CircumstancesExecution" class="control-label"></label>
@@ -49,10 +49,11 @@
                     }
                     else
                     {
-                        <input type="text" value="" class="form-control" readonly="readonly" />
+                        <input type="text" value="@Model.Composition.Name" class="form-control" readonly="readonly" />
+                        <input type="hidden" asp-for="CompositionId" value="@Model.Composition.Id" class="form-control" />
                     }
                 </p>
-                <a asp-action="SelectComposition" asp-route-fromCreate="false" asp-route-id="@ViewBag.id" class="btn btn-secondary">Выбрать произведение</a>
+                <a asp-action="SelectEnsemble" asp-route-fromCreate="false" asp-route-id="@ViewBag.id" class="btn btn-secondary">Выбрать другой ансамбль и произведение</a>
             </div>
             <div class="form-group">
                 <input type="submit" value="Сохранить" class="btn btn-primary" />

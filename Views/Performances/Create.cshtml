@@ -31,7 +31,7 @@
                         <input type="text" value="" class="form-control" readonly="readonly" />
                     }
                 </p>
-                <a asp-action="SelectEnsemble" asp-route-fromCreate="true" class="btn btn-secondary">Выбрать ансамбль</a>
+                @*<a asp-action="SelectEnsemble" asp-route-fromCreate="true" class="btn btn-secondary">Выбрать ансамбль</a>*@
             </div>
             <div class="form-group">
                 <label asp-for="CircumstancesExecution" class="control-label"></label>
@@ -51,7 +51,7 @@
                         <input type="text" value="" class="form-control" readonly="readonly" />
                     }
                 </p>
-                <a asp-action="SelectComposition" asp-route-fromCreate="true" class="btn btn-secondary">Выбрать произведение</a>
+                <a asp-action="SelectEnsemble" asp-route-fromCreate="true" class="btn btn-secondary">Выбрать другий ансамбль и произведение</a>
             </div>
             <div class="form-group">
                 <input type="submit" value="Добавить" class="btn btn-primary" />

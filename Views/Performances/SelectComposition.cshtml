@@ -50,11 +50,11 @@
                 <td>
                     @if (ViewBag.fromCreate == true)
                     {
-                        <a asp-action="Create" asp-route-compositionId="@item.Id">Выбрать</a>
+                        <a asp-action="Create" asp-route-compositionId="@item.Id" asp-route-ensembleId="@ViewBag.ensembleId">Выбрать</a>
                     }
                     else
                     {
-                        <a asp-action="Edit" asp-route-compositionId="@item.Id" asp-route-id="@ViewBag.id">Выбрать</a>
+                        <a asp-action="Edit" asp-route-compositionId="@item.Id" asp-route-ensembleId="@ViewBag.ensembleId" asp-route-id="@ViewBag.id">Выбрать</a>
                     }
                 </td>
             </tr>

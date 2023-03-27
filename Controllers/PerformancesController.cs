@@ -122,21 +122,25 @@ namespace musicShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SelectEnsemble(int ensembleId)
+        public async Task<IActionResult> SelectEnsemble(int ensembleId, int? id, bool? fromCreate)
         {
+            ViewBag.id = id;
+            ViewBag.ensembleId = ensembleId;
+            ViewBag.fromCreate = fromCreate;
             return View();
         }
 
-        public IActionResult SelectComposition(int? id, bool? fromCreate)
+        public IActionResult SelectComposition(int ensembleId, int? id, bool? fromCreate)
         {
             ViewBag.id = id;
+            ViewBag.ensembleId = ensembleId;
             ViewBag.fromCreate = fromCreate;
             var composition = _context.Compositions.ToList();
             return View(composition);
         }
 
         [HttpPost]
-        public async Task<IActionResult> SelectComposition(int compositionId)
+        public async Task<IActionResult> SelectComposition(int compositionId, int ensembleId)
         {
             return View();
         }
@@ -149,7 +153,10 @@ namespace musicShop.Controllers
                 return NotFound();
             }
 
-            var performance = await _context.Performances.FindAsync(id);
+            var performance = await _context.Performances
+                .Include(p => p.Ensemble)
+                .Include(p => p.Composition)
+                .FirstOrDefaultAsync(p => p.Id == id);
             if (performance == null)
             {
                 return NotFound();
