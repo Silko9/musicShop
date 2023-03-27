@@ -46,7 +46,10 @@ namespace musicShop.Controllers
             viewModel.Performances = _context.Performances
                 .Include(p => p.Composition)
                 .Include(p => p.Ensemble)
-                .Where(p => p.CompositionId == composition.Id); ;
+                .Where(p => p.CompositionId == composition.Id);
+            viewModel.Records = _context.Records
+                .Include(p => p.Composition)
+                .Where(p => p.CompositionId == composition.Id);
 
 
             return View(viewModel);
@@ -69,6 +72,27 @@ namespace musicShop.Controllers
         {
             Performance performance = _context.Performances.Find(performanceId);
             performance.CompositionId = compositionId;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", new { id = compositionId });
+        }
+
+        public async Task<IActionResult> AddRecordToComposition(int id)
+        {
+            ViewBag.CompositionId = id;
+            Composition composition = await _context.Compositions.FindAsync(id);
+            return View(_context.Records
+                .Include(p => p.Composition)
+                .Where(p => p.CompositionId != composition.Id)
+                .ToList());
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddRecordToComposition(int compositionId, int recordId)
+        {
+            Record record = _context.Records.Find(recordId);
+            record.CompositionId = compositionId;
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Details", new { id = compositionId });
