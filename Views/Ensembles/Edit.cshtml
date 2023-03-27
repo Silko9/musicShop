@@ -29,10 +29,11 @@
                     }
                     else
                     {
-                        <input type="text" value="" class="form-control" readonly="readonly" />
+                        <input type="text" value="@Model.TypeEnsemble.Name" class="form-control" readonly="readonly" />
+                        <input type="hidden" asp-for="TypeEnsembleId" value="@Model.TypeEnsemble.Id" class="form-control" />
                     }
                 </p>
-                <a asp-action="SelectTypeEnsemble" asp-route-id="@ViewBag.id" class="btn btn-secondary">Выбрать тип ансамбля</a>
+                <a asp-action="SelectTypeEnsemble" asp-route-id="@ViewBag.id" class="btn btn-secondary">Выбрать другой тип ансамбля</a>
             </div>
             <div class="form-group">
                 <input type="submit" value="Сохранить" class="btn btn-primary" />

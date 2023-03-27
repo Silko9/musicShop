@@ -114,7 +114,7 @@ namespace musicShop.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> SelectTypeEnsemble(int typeEnsembleId)
+        public async Task<IActionResult> SelectTypeEnsemble()
         {
             return View();
         }
@@ -127,15 +127,15 @@ namespace musicShop.Controllers
                 return NotFound();
             }
 
-            var ensemble = await _context.Ensembles.FindAsync(id);
+            var ensemble = await _context.Ensembles
+                .Include(p => p.TypeEnsemble)
+                .FirstOrDefaultAsync(d => d.Id == id);
             if (ensemble == null)
             {
                 return NotFound();
             }
             ViewBag.id = id;
             ViewBag.TypeEnsembleName = _context.TypeEnsembles.Find(typeEnsembleId);
-            //ViewData["TypeEnsembleId"] = new SelectList(_context.TypeEnsembles, "Id", "Name", ensemble.TypeEnsembleId);
-            //удалить если через время ни чего не поломается
             return View(ensemble);
         }
 
