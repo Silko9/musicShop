@@ -1,4 +1,4 @@
-﻿@model musicShop.Models.Composition
+﻿@model musicShop.Models.ViewModels.CompositionDetailsViewModel
 
 @{
     ViewData["Title"] = "Подробности";
@@ -11,38 +11,94 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Composition.Name)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Composition.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.NameAuthor)
+            @Html.DisplayNameFor(model => model.Composition.NameAuthor)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.NameAuthor)
+            @Html.DisplayFor(model => model.Composition.NameAuthor)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SurnameAuthor)
+            @Html.DisplayNameFor(model => model.Composition.SurnameAuthor)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SurnameAuthor)
+            @Html.DisplayFor(model => model.Composition.SurnameAuthor)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PatronymicAuthor)
+            @Html.DisplayNameFor(model => model.Composition.PatronymicAuthor)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PatronymicAuthor)
+            @Html.DisplayFor(model => model.Composition.PatronymicAuthor)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateCreate)
+            @Html.DisplayNameFor(model => model.Composition.DateCreate)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateCreate)
+            @Html.DisplayFor(model => model.Composition.DateCreate)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Изменить</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.Composition.Id">Изменить</a> |
     <a asp-action="Index">Вернуться назад</a>
 </div>
+
+<hr>
+<div class="container p-0">
+    <div class="row pb-3">
+        <div class="col-md-9">
+            <h4>Исполнения</h4>
+        </div>
+        <div class="col-md-3 text-end">
+            <a asp-action="AddPerformanceToComposition" asp-route-id="@Model.Composition.Id" class="btn btn-info">Добавить исполнение</a>
+        </div>
+
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Performances.First().Date)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Performances.First().Ensemble)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Performances.First().CircumstancesExecution)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Performances.First().Composition)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Performances)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Ensemble.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CircumstancesExecution)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Composition.Name)
+                </td>
+                <td>
+                    <a asp-controller="Performances" asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
+                    <a asp-controller="Performances" asp-action="Details" asp-route-id="@item.Id">Подробности</a> |
+                    <a asp-controller="Performances" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

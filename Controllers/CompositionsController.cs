@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using musicShop.Models;
+using musicShop.Models.ViewModels;
 
 namespace musicShop.Controllers
 {
@@ -33,13 +34,44 @@ namespace musicShop.Controllers
             }
 
             var composition = await _context.Compositions
+                //.Include(p => p.Performances)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (composition == null)
             {
                 return NotFound();
             }
 
-            return View(composition);
+            CompositionDetailsViewModel viewModel = new CompositionDetailsViewModel();
+            viewModel.Composition = composition;
+            viewModel.Performances = _context.Performances
+                .Include(p => p.Composition)
+                .Include(p => p.Ensemble)
+                .Where(p => p.CompositionId == composition.Id); ;
+
+
+            return View(viewModel);
+        }
+
+        public async Task<IActionResult> AddPerformanceToComposition(int id)
+        {
+            ViewBag.CompositionId = id;
+            Composition composition = await _context.Compositions.FindAsync(id);
+            return View(_context.Performances
+                .Include(p => p.Composition)
+                .Include(p => p.Ensemble)
+                .Where(p => p.CompositionId != composition.Id)
+                .ToList());
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> AddPerformanceToComposition(int compositionId, int performanceId)
+        {
+            Performance performance = _context.Performances.Find(performanceId);
+            performance.CompositionId = compositionId;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", new { id = compositionId });
         }
 
         // GET: Compositions/Create
