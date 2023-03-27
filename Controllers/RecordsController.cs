@@ -140,7 +140,9 @@ namespace musicShop.Controllers
                 return NotFound();
             }
 
-            var record = await _context.Records.FindAsync(id);
+            var record = await _context.Records
+                .Include(p => p.Composition)
+                .FirstOrDefaultAsync(d => d.Id == id);
             if (record == null)
             {
                 return NotFound();
