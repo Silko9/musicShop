@@ -68,6 +68,7 @@ namespace musicShop.Controllers
                 .FirstOrDefaultAsync(m => m.Id == id);
             List<Record> records = _context.Records
                 .Include(p => p.Composition)
+                .Where(p => p.CompositionId == performance.CompositionId)
                 .ToList();
             foreach (var record in performance.Records)
                 records.Remove(record);
@@ -113,35 +114,35 @@ namespace musicShop.Controllers
             return View(performance);
         }
 
-        public IActionResult SelectEnsemble(int? id, bool? fromCreate)
+        public IActionResult SelectEnsemble(int? id, bool? fromCreate, int? compositionId)
         {
             ViewBag.id = id;
             ViewBag.fromCreate = fromCreate;
+            ViewBag.compositionId = compositionId;
             var ensembles = _context.Ensembles.Include(p => p.TypeEnsemble).ToList();
             return View(ensembles);
         }
-
+        
         [HttpPost]
-        public async Task<IActionResult> SelectEnsemble(int ensembleId, int? id, bool? fromCreate)
+        public async Task<IActionResult> SelectEnsemble(int compositionId, int ensembleId)
         {
-            ViewBag.id = id;
-            ViewBag.ensembleId = ensembleId;
-            ViewBag.fromCreate = fromCreate;
             return View();
         }
 
-        public IActionResult SelectComposition(int ensembleId, int? id, bool? fromCreate)
+        public IActionResult SelectComposition(int? id, bool? fromCreate)
         {
             ViewBag.id = id;
-            ViewBag.ensembleId = ensembleId;
             ViewBag.fromCreate = fromCreate;
             var composition = _context.Compositions.ToList();
             return View(composition);
         }
 
         [HttpPost]
-        public async Task<IActionResult> SelectComposition(int compositionId, int ensembleId)
+        public async Task<IActionResult> SelectComposition(int compositionId, int? id, bool? fromCreate)
         {
+            ViewBag.id = id;
+            ViewBag.compositionId = compositionId;
+            ViewBag.fromCreate = fromCreate;
             return View();
         }
 
@@ -156,6 +157,7 @@ namespace musicShop.Controllers
             var performance = await _context.Performances
                 .Include(p => p.Ensemble)
                 .Include(p => p.Composition)
+                .Include(p => p.Records)
                 .FirstOrDefaultAsync(p => p.Id == id);
             if (performance == null)
             {

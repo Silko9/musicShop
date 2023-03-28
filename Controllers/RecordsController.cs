@@ -74,6 +74,7 @@ namespace musicShop.Controllers
                 .Include(p => p.Composition)
                 .Include(m => m.Records)
                 .Include(sp => sp.Ensemble)
+                .Where(p => p.CompositionId == record.CompositionId)
                 .ToList();
             foreach (var performance in record.Performances)
                 performances.Remove(performance);
@@ -142,6 +143,7 @@ namespace musicShop.Controllers
 
             var record = await _context.Records
                 .Include(p => p.Composition)
+                .Include(p => p.Performances)
                 .FirstOrDefaultAsync(d => d.Id == id);
             if (record == null)
             {
@@ -149,6 +151,8 @@ namespace musicShop.Controllers
             }
             ViewBag.id = id;
             ViewBag.Composition = _context.Compositions.Find(compositionId);
+            /*if (record.Performances.Count > 0)
+                ViewBag.count = true;*/
             return View(record);
         }
 

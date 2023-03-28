@@ -9,6 +9,11 @@
 
 <h4>Исполнения</h4>
 <hr />
+@if (Model.Records.Count > 0)
+{
+    <h4>Нельзя изменять произведение, пока есть хотя бы одно исполнение у пластинки</h4>
+    <hr />
+}
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Edit">
@@ -53,7 +58,11 @@
                         <input type="hidden" asp-for="CompositionId" value="@Model.Composition.Id" class="form-control" />
                     }
                 </p>
-                <a asp-action="SelectEnsemble" asp-route-fromCreate="false" asp-route-id="@ViewBag.id" class="btn btn-secondary">Выбрать другой ансамбль и произведение</a>
+                @if(Model.Records.Count == 0) {
+                    <a asp-action="SelectComposition" asp-route-fromCreate="false" asp-route-id="@ViewBag.id" class="btn btn-secondary">Выбрать другой ансамбль и произведение</a>
+                } else{
+                    <a asp-action="SelectEnsemble" asp-route-fromCreate="false" asp-route-id="@ViewBag.id" class="btn btn-secondary">Выбрать другой ансамбль</a>
+                }
             </div>
             <div class="form-group">
                 <input type="submit" value="Сохранить" class="btn btn-primary" />
