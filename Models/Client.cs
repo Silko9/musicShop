@@ -23,7 +23,14 @@ namespace musicShop.Models
         [Required, MaxLength(40), Display(Name = "Адрес"), DataType(DataType.Text)]
         public string Address { get; set; }
 
+        public ICollection<Order>? Orders { get; set; }
+
         [NotMapped]
         public bool? ToCreateOrder { get; set; }
+
+        public Client()
+        {
+            Orders = new List<Order>();
+        }
     }
 }

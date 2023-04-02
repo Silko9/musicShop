@@ -480,7 +480,7 @@ namespace musicShop.Migrations
             modelBuilder.Entity("musicShop.Models.Order", b =>
                 {
                     b.HasOne("musicShop.Models.Client", "Client")
-                        .WithMany()
+                        .WithMany("Orders")
                         .HasForeignKey("ClientId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -531,6 +531,11 @@ namespace musicShop.Migrations
                         .HasForeignKey("RecordsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("musicShop.Models.Client", b =>
+                {
+                    b.Navigation("Orders");
                 });
 
             modelBuilder.Entity("musicShop.Models.Delivery", b =>

@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using musicShop.Models;
+using musicShop.Models.ViewModels;
 
 namespace musicShop.Controllers
 {
@@ -38,8 +39,11 @@ namespace musicShop.Controllers
             {
                 return NotFound();
             }
+            ClientDetailsViewModel viewModel = new ClientDetailsViewModel();
+            viewModel.Client = client;
+            viewModel.Orders = _context.Orders.Where(p => p.ClientId == client.Id);
 
-            return View(client);
+            return View(viewModel);
         }
 
         // GET: Clients/Create

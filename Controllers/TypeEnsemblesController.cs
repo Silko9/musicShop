@@ -42,7 +42,7 @@ namespace musicShop.Controllers
             }
             TypeEnsembleDetailsViewModel viewModel = new TypeEnsembleDetailsViewModel();
             viewModel.TypeEnsemble = typeEnsemble;
-            viewModel.Ensembles = _context.Ensembles.Where(p => p.TypeEnsembleId == typeEnsemble.Id); ;
+            viewModel.Ensembles = _context.Ensembles.Where(p => p.TypeEnsembleId == typeEnsemble.Id);
 
             return View(viewModel);
         }

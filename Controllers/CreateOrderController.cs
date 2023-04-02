@@ -29,6 +29,16 @@ namespace musicShop.Controllers
             return View("ChooseAddress");
         }
 
+        public async Task<IActionResult> ChooseAddress(int id)
+        {
+            Client client = await _context.Clients.FindAsync(id);
+            if (client == null)
+                return NotFound();
+            ViewBag.ClientId = id;
+            ViewBag.Client = client;
+            return View("ChooseAddress");
+        }
+
         [HttpPost]
         public async Task<IActionResult> ChooseAddress(int clientId, string address, string date)
         {
