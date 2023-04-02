@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using musicShop.Models;
 
@@ -11,9 +12,10 @@ using musicShop.Models;
 namespace musicShop.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [Migration("20230402015125_addDeliveryToLogging")]
+    partial class addDeliveryToLogging
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -185,9 +187,11 @@ namespace musicShop.Migrations
                         .HasColumnType("int");
 
                     b.Property<int?>("DeliveryId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int?>("OrderId")
+                        .IsRequired()
                         .HasColumnType("int");
 
                     b.Property<int>("RecordId")
@@ -458,11 +462,15 @@ namespace musicShop.Migrations
                 {
                     b.HasOne("musicShop.Models.Delivery", "Delivery")
                         .WithMany("Loggings")
-                        .HasForeignKey("DeliveryId");
+                        .HasForeignKey("DeliveryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("musicShop.Models.Order", "Order")
                         .WithMany("Loggings")
-                        .HasForeignKey("OrderId");
+                        .HasForeignKey("OrderId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("musicShop.Models.Record", "Record")
                         .WithMany()

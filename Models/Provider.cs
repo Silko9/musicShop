@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace musicShop.Models
 {
@@ -15,5 +16,9 @@ namespace musicShop.Models
 
         [Required, MaxLength(10), Display(Name = "ИНН"), DataType(DataType.Text)]
         public string TIN { get; set; }
+
+
+        [NotMapped]
+        public bool? ToCreateDelivery { get; set; }
     }
 }

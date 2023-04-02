@@ -4,12 +4,8 @@
 }
 <h1>Выбор пластинок</h1>
 <div class="form-group">
-    <label class="control-label">ФИО покупателя</label>
-    <label class="control-label">@ViewBag.Client</label>
-</div>
-<div class="form-group">
-    <label class="control-label">Адрес доставки:</label>
-    <label class="control-label">@ViewBag.Address</label>
+    <label class="control-label">Наименование компании:</label>
+    <label class="control-label">@ViewBag.Provider</label>
 </div>
 <div class="form-group">
     <label class="control-label">Дата доставки:</label>
@@ -23,7 +19,7 @@
                     @Html.DisplayNameFor(model => model.Number)
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.RetailPrice)
+                    @Html.DisplayNameFor(model => model.WholesalePrice)
                 </th>
                 <th>
                     @Html.DisplayNameFor(model => model.Composition)
@@ -42,8 +38,8 @@
                         <input type="hidden" name="records[@i].Number" value="@item.Number" />
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.RetailPrice)
-                        <input type="hidden" name="records[@i].RetailPrice" value="@item.RetailPrice" />
+                        @Html.DisplayFor(modelItem => item.WholesalePrice)
+                        <input type="hidden" name="records[@i].WholesalePrice" value="@item.WholesalePrice" />
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Composition.Name)
@@ -57,8 +53,7 @@
         </tbody>
     </table>
     <div class="form-group pt-3">
-        <input type="hidden" name="ClientId" value="@ViewBag.ClientId" />
-        <input type="hidden" name="Address" value="@ViewBag.Address" />
+        <input type="hidden" name="ProviderId" value="@ViewBag.ProviderId" />
         <input type="hidden" name="Date" value="@ViewBag.Date" />
         <input type="submit" value="Далее" class="btn btn-primary" />
     </div>

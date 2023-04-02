@@ -4,45 +4,44 @@ using musicShop.Models;
 
 namespace musicShop.Controllers
 {
-    public class CreateOrderController : Controller
+    public class CreateDeliveryController : Controller
     {
         private readonly AppDbContext _context;
 
-        public CreateOrderController(AppDbContext context)
+        public CreateDeliveryController(AppDbContext context)
         {
             _context = context;
         }
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Clients.ToListAsync());
+            return View(await _context.Providers.ToListAsync());
         }
 
         [HttpPost]
-        public async Task<IActionResult> Index(int clientId)
+        public async Task<IActionResult> Index(int providerId)
         {
-            Client client = await _context.Clients.FindAsync(clientId);
-            if (client == null)
+            Provider provider = await _context.Providers.FindAsync(providerId);
+            if (provider == null)
                 return NotFound();
-            ViewBag.ClientId = clientId;
-            ViewBag.Client = client;
-            return View("ChooseAddress");
+            ViewBag.ProviderId = providerId;
+            ViewBag.Provider = provider;
+            return View("ChooseDate");
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChooseAddress(int clientId, string address, string date)
+        public async Task<IActionResult> ChooseDate(int providerId, string date)
         {
-            Client client = await _context.Clients.FindAsync(clientId);
-            ViewBag.ClientId = clientId;
-            ViewBag.Address = address;
+            Provider provider = await _context.Providers.FindAsync(providerId);
+            ViewBag.ProviderId = providerId;
             ViewBag.Date = date;
-            ViewBag.Client = $"{client.Name} {client.Surname} {client.Patronymic}";
+            ViewBag.Provider = provider.Name;
             var appDbContext = _context.Records.Include(p => p.Composition);
             return View("ChooseRecords", await appDbContext.ToListAsync());
         }
 
         [HttpPost]
-        public async Task<IActionResult> ChooseRecords(List<RecordSelection> records, int clientId, string address, string date)
+        public async Task<IActionResult> ChooseRecords(List<RecordSelection> records, int providerId, string date)
         {
             var selectedRecords = records.Where(r => r.Count > 0).ToList();
             ICollection<Logging> loggings = new List<Logging>();
@@ -50,16 +49,15 @@ namespace musicShop.Controllers
             DateTime dateDelivery = DateTime.ParseExact(date, "yyyy-MM-dd",
                                        System.Globalization.CultureInfo.InvariantCulture);
 
-            Order order = new Order
+            Delivery delivery = new Delivery
             {
                 Loggings = loggings,
-                Client = await _context.Clients.FindAsync(clientId),
-                ClientId = clientId,
-                Address = address,
+                Provider = await _context.Providers.FindAsync(providerId),
+                ProviderId = providerId,
                 DateDelivery = dateDelivery,
                 DateCreate = DateTime.Today.Date
             };
-            _context.Orders.Add(order);
+            _context.Deliveries.Add(delivery);
             _context.SaveChanges();
 
             foreach (var record in selectedRecords)
@@ -68,13 +66,13 @@ namespace musicShop.Controllers
                 {
                     Record = await _context.Records.FindAsync(record.Id),
                     Amount = record.Count,
-                    Order = await _context.Orders.FindAsync(order.Id)
+                    Delivery = await _context.Deliveries.FindAsync(delivery.Id)
                 };
                 _context.Loggings.Add(logging);
                 _context.SaveChanges();
             }
 
-            return View("ViewOrder", order);
+            return View("ViewDelivery", delivery);
         }
 
 

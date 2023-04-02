@@ -1,12 +1,9 @@
-﻿@model musicShop.Models.Order
+﻿@model musicShop.Models.Delivery
 
-<h2>Заказ сформирован!</h2>
+<h2>Поставка сформирована!</h2>
 
 <div>
-    <strong>Клиент:</strong> @Model.Client.Surname @Model.Client.Name @Model.Client.Patronymic
-</div>
-<div>
-    <strong>Адрес:</strong> @Model.Address
+    <strong>Компания:</strong> @Model.Provider.Name
 </div>
 <div>
     <strong>Дата оформления:</strong> @Model.DateCreate.Date
@@ -15,7 +12,7 @@
     <strong>Дата доставки:</strong> @Model.DateDelivery.Date
 </div>
 <div>
-    <strong>Позиции заказа:</strong>
+    <strong>Позиции поставки:</strong>
     <table class="table">
         <thead>
             <tr>
@@ -31,15 +28,15 @@
                 <tr>
                     <td>@logging.Record.Number</td>
                     <td>@logging.Amount</td>
-                    <td>@logging.Record.RetailPrice</td>
-                    <td>@(logging.Amount * logging.Record.RetailPrice)</td>
+                    <td>@logging.Record.WholesalePrice</td>
+                    <td>@(logging.Amount * logging.Record.WholesalePrice)</td>
                 </tr>
             }
         </tbody>
         <tfoot>
             <tr>
                 <td colspan="3" style="text-align:right;"><strong>Итоговая сумма:</strong></td>
-                <td>@Model.Loggings.Sum(l => l.Amount * l.Record.RetailPrice)</td>
+                <td>@Model.Loggings.Sum(l => l.Amount * l.Record.WholesalePrice)</td>
             </tr>
         </tfoot>
     </table>
