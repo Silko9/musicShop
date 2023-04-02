@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using musicShop.Models;
+using musicShop.Models.ViewModels;
 
 namespace musicShop.Controllers
 {
@@ -40,32 +41,12 @@ namespace musicShop.Controllers
             {
                 return NotFound();
             }
-
-            return View(order);
-        }
-
-        // GET: Orders/Create
-        public IActionResult Create()
-        {
-            ViewData["ClientId"] = new SelectList(_context.Clients, "Id", "Address");
-            return View();
-        }
-
-        // POST: Orders/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ClientId,DateCreate,DateDelivery,Address")] Order order)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.Add(order);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["ClientId"] = new SelectList(_context.Clients, "Id", "Address", order.ClientId);
-            return View(order);
+            OrderDetailsViewModel viewModel = new OrderDetailsViewModel();
+            viewModel.Order = order;
+            viewModel.Loggings = _context.Loggings.
+                Include(p => p.Record).
+                Where(p => p.OrderId == order.Id);
+            return View(viewModel);
         }
 
         // GET: Orders/Edit/5
@@ -81,7 +62,6 @@ namespace musicShop.Controllers
             {
                 return NotFound();
             }
-            ViewData["ClientId"] = new SelectList(_context.Clients, "Id", "Address", order.ClientId);
             return View(order);
         }
 
@@ -117,7 +97,6 @@ namespace musicShop.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ClientId"] = new SelectList(_context.Clients, "Id", "Address", order.ClientId);
             return View(order);
         }
 
