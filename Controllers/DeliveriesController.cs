@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using musicShop.Models;
+using musicShop.Models.ViewModels;
 
 namespace musicShop.Controllers
 {
@@ -40,14 +41,19 @@ namespace musicShop.Controllers
             {
                 return NotFound();
             }
-
+            DeliveryDetailsViewModel viewModel = new DeliveryDetailsViewModel();
+            viewModel.Delivery = delivery;
+            viewModel.Loggings = _context.Loggings.
+                Include(p => p.Record).
+                Where(p => p.DeliveryId == delivery.Id);
+            return View(viewModel);
             return View(delivery);
         }
 
         // GET: Deliveries/Create
         public IActionResult Create()
         {
-            ViewData["ProviderId"] = new SelectList(_context.Set<Provider>(), "Id", "LegalAddress");
+            ViewData["ProviderId"] = new SelectList(_context.Providers, "Id", "LegalAddress");
             return View();
         }
 
@@ -64,7 +70,7 @@ namespace musicShop.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProviderId"] = new SelectList(_context.Set<Provider>(), "Id", "LegalAddress", delivery.ProviderId);
+            ViewData["ProviderId"] = new SelectList(_context.Providers, "Id", "LegalAddress", delivery.ProviderId);
             return View(delivery);
         }
 
@@ -81,7 +87,7 @@ namespace musicShop.Controllers
             {
                 return NotFound();
             }
-            ViewData["ProviderId"] = new SelectList(_context.Set<Provider>(), "Id", "LegalAddress", delivery.ProviderId);
+            ViewData["ProviderId"] = new SelectList(_context.Providers, "Id", "LegalAddress", delivery.ProviderId);
             return View(delivery);
         }
 
@@ -117,7 +123,7 @@ namespace musicShop.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProviderId"] = new SelectList(_context.Set<Provider>(), "Id", "LegalAddress", delivery.ProviderId);
+            ViewData["ProviderId"] = new SelectList(_context.Providers, "Id", "LegalAddress", delivery.ProviderId);
             return View(delivery);
         }
 

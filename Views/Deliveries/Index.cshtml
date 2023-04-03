@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<musicShop.Models.Delivery>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Поставка";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Поставка</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Index" asp-controller="CreateDelivery">Новая поставка</a>
 </p>
 <table class="table">
     <thead>
@@ -38,9 +38,9 @@
                 @Html.DisplayFor(modelItem => item.DateDelivery)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
+                <a asp-action="Details" asp-route-id="@item.Id">Подробности</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
             </td>
         </tr>
 }

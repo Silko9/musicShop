@@ -1,37 +1,81 @@
-﻿@model musicShop.Models.Delivery
+﻿@model musicShop.Models.ViewModels.DeliveryDetailsViewModel
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Подробности";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<h1>Подробности</h1>
 
 <div>
-    <h4>Delivery</h4>
+    <h4>Поставка</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Provider)
+            @Html.DisplayNameFor(model => model.Delivery.Provider)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Provider.LegalAddress)
+            @Html.DisplayFor(model => model.Delivery.Provider.LegalAddress)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateCreate)
+            @Html.DisplayNameFor(model => model.Delivery.DateCreate)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateCreate)
+            @Html.DisplayFor(model => model.Delivery.DateCreate)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.DateDelivery)
+            @Html.DisplayNameFor(model => model.Delivery.DateDelivery)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.DateDelivery)
+            @Html.DisplayFor(model => model.Delivery.DateDelivery)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model?.Delivery.Id">Изменить</a> |
+    <a asp-action="Index">Вернуться назад</a>
 </div>
+
+<hr>
+<div class="container p-0">
+    <div class="row pb-3">
+        <div class="col-md-9">
+            <h4>Позиции</h4>
+        </div>
+        <div class="col-md-3 text-end">
+            <a asp-action="Create" asp-controller="Loggings" asp-route-id="@Model.Delivery.Id" asp-route-from="Deliveries" class="btn btn-info">Добавить позицию</a>
+        </div>
+    </div>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Loggings.First().Record)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Loggings.First().Amount)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Loggings)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Record.Number)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Amount)
+                </td>
+                <td>
+                    <a asp-controller="Loggings" asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
+                    <a asp-controller="Loggings" asp-action="Details" asp-route-id="@item.Id">Подробности</a> |
+                    <a asp-controller="Loggings" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -10,7 +10,7 @@ namespace musicShop.Models
         [Required, Display(Name = "Поставщик")]
         public int ProviderId { get; set; }
         [Display(Name = "Поставщик")]
-        public Provider Provider { get; set; }
+        public Provider? Provider { get; set; }
 
         public ICollection<Logging>? Loggings { get; set; }
 
