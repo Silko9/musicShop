@@ -1,13 +1,13 @@
 ﻿@model musicShop.Models.Provider
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Добавить";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h1>Добавить</h1>
 
-<h4>Provider</h4>
+<h4>Поставщик</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -31,14 +31,14 @@
             <input type="hidden" asp-for="ToCreateDelivery"
                    value="@ViewBag.ToCreateDelivery" />
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Добавить" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index">Вернуться назад</a>
 </div>
 
 @section Scripts {

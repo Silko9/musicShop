@@ -1,4 +1,4 @@
-﻿@model musicShop.Models.Provider
+﻿@model musicShop.Models.ViewModels.ProviderDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -12,26 +12,69 @@
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.DisplayNameFor(model => model.Provider.Name)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
+            @Html.DisplayFor(model => model.Provider.Name)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.LegalAddress)
+            @Html.DisplayNameFor(model => model.Provider.LegalAddress)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.LegalAddress)
+            @Html.DisplayFor(model => model.Provider.LegalAddress)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.TIN)
+            @Html.DisplayNameFor(model => model.Provider.TIN)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.TIN)
+            @Html.DisplayFor(model => model.Provider.TIN)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.Provider.Id">Edit</a> |
     <a asp-action="Index">Back to List</a>
 </div>
+
+<hr>
+<div class="container p-0">
+    <div class="row pb-3">
+        <div class="col-md-9">
+            <h4>Поставки</h4>
+        </div>
+        <div class="col-md-3 text-end">
+            <a asp-action="ChooseDate" asp-controller="CreateDelivery" asp-route-providerId="@Model.Provider.Id" class="btn btn-info">Оформить поставку</a>
+        </div>
+    </div>
+</div>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Deliveries.First().DateCreate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Deliveries.First().DateDelivery)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Deliveries)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateCreate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateDelivery)
+                </td>
+                <td>
+                    <a asp-controller="Deliveries" asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
+                    <a asp-controller="Deliveries" asp-action="Details" asp-route-id="@item.Id">Подробности</a> |
+                    <a asp-controller="Deliveries" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

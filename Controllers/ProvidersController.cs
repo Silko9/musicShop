@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using musicShop.Models;
+using musicShop.Models.ViewModels;
 
 namespace musicShop.Controllers
 {
@@ -40,8 +41,10 @@ namespace musicShop.Controllers
             {
                 return NotFound();
             }
-
-            return View(provider);
+            ProviderDetailsViewModel viewModel = new ProviderDetailsViewModel();
+            viewModel.Provider = provider;
+            viewModel.Deliveries = _context.Deliveries.Where(p => p.ProviderId == provider.Id);
+            return View(viewModel);
         }
 
         // GET: Providers/Create

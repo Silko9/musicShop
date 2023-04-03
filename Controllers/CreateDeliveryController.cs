@@ -29,6 +29,16 @@ namespace musicShop.Controllers
             return View("ChooseDate");
         }
 
+        public async Task<IActionResult> ChooseDate(int providerId)
+        {
+            Provider provider = await _context.Providers.FindAsync(providerId);
+            if (provider == null)
+                return NotFound();
+            ViewBag.ProviderId = providerId;
+            ViewBag.Provider = provider;
+            return View();
+        }
+
         [HttpPost]
         public async Task<IActionResult> ChooseDate(int providerId, string date)
         {
