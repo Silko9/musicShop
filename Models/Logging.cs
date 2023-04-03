@@ -22,10 +22,10 @@ namespace musicShop.Models
         [Display(Name = "Заказ")]
         public Order? Order { get; set; }
 
-        [Display(Name = "Поставщик")]
+        [Display(Name = "Поставка")]
         public int? DeliveryId { get; set; }
 
-        [Display(Name = "Поставщик")]
+        [Display(Name = "Поставка")]
         public Delivery? Delivery { get; set; }
     }
 }

@@ -60,9 +60,9 @@
         <div class="col-md-9">
             <h4>Позиции</h4>
         </div>
-        @*<div class="col-md-3 text-end">
-            <a asp-action="AddRoleToMusician" asp-route-id="@Model.Musician.Id" class="btn btn-info">Добавить роль</a>
-        </div>*@
+        <div class="col-md-3 text-end">
+            <a asp-action="Create" asp-controller="Loggings" asp-route-id="@Model.Order.Id" asp-route-from="Orders" class="btn btn-info">Добавить позицию</a>
+        </div>
 
     </div>
 </div>

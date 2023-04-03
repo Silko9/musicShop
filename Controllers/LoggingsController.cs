@@ -45,9 +45,11 @@ namespace musicShop.Controllers
         }
 
         // GET: Loggings/Create
-        public IActionResult Create()
+        public IActionResult Create(int? id, string? from)
         {
             ViewData["RecordId"] = new SelectList(_context.Records, "Id", "Number");
+            ViewBag.From = from;
+            ViewBag.Id = id;
             return View();
         }
 
@@ -56,12 +58,22 @@ namespace musicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,RecordId,Amount")] Logging logging)
+        public async Task<IActionResult> Create([Bind("RecordId,Amount")] Logging logging, int? idItem, string? from)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(logging);
                 await _context.SaveChangesAsync();
+                if (from == "Orders")
+                    logging.OrderId = idItem;
+                if (from == "Deliveries")
+                    logging.DeliveryId = idItem;
+                if (from != null)
+                {
+                    _context.Update(logging);
+                    await _context.SaveChangesAsync();
+                    return Redirect("~/" + from + "/Details/" + idItem);
+                }
                 return RedirectToAction(nameof(Index));
             }
             ViewData["RecordId"] = new SelectList(_context.Records, "Id", "Number", logging.RecordId);
