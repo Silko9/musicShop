@@ -65,9 +65,11 @@ namespace musicShop.Controllers
                 _context.Add(logging);
                 await _context.SaveChangesAsync();
                 if (from == "Orders")
-                    logging.OrderId = idItem;
+                    logging.TypeLoggingId = Const.ORDER_ID;
                 if (from == "Deliveries")
-                    logging.DeliveryId = idItem;
+                    logging.TypeLoggingId = Const.DELIVERY_ID;
+                if(idItem != null)
+                    logging.Operation = (int)idItem;
                 if (from != null)
                 {
                     _context.Update(logging);

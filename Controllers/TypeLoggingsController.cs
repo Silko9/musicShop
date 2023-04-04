@@ -6,99 +6,90 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using musicShop.Models;
-using musicShop.Models.ViewModels;
 
 namespace musicShop.Controllers
 {
-    public class DeliveriesController : Controller
+    public class TypeLoggingsController : Controller
     {
         private readonly AppDbContext _context;
 
-        public DeliveriesController(AppDbContext context)
+        public TypeLoggingsController(AppDbContext context)
         {
             _context = context;
         }
 
-        // GET: Deliveries
+        // GET: TypeLoggings
         public async Task<IActionResult> Index()
         {
-            var appDbContext = _context.Deliveries.Include(d => d.Provider);
-            return View(await appDbContext.ToListAsync());
+              return _context.TypeLogging != null ? 
+                          View(await _context.TypeLogging.ToListAsync()) :
+                          Problem("Entity set 'AppDbContext.TypeLogging'  is null.");
         }
 
-        // GET: Deliveries/Details/5
+        // GET: TypeLoggings/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Deliveries == null)
+            if (id == null || _context.TypeLogging == null)
             {
                 return NotFound();
             }
 
-            var delivery = await _context.Deliveries
-                .Include(d => d.Provider)
+            var typeLogging = await _context.TypeLogging
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (delivery == null)
+            if (typeLogging == null)
             {
                 return NotFound();
             }
-            DeliveryDetailsViewModel viewModel = new DeliveryDetailsViewModel();
-            viewModel.Delivery = delivery;
-            viewModel.Loggings = _context.Loggings.
-                Include(p => p.Record).
-                Where(p => p.TypeLoggingId == Const.DELIVERY_ID);
-            return View(viewModel);
-            return View(delivery);
+
+            return View(typeLogging);
         }
 
-        // GET: Deliveries/Create
+        // GET: TypeLoggings/Create
         public IActionResult Create()
         {
-            ViewData["ProviderId"] = new SelectList(_context.Providers, "Id", "LegalAddress");
             return View();
         }
 
-        // POST: Deliveries/Create
+        // POST: TypeLoggings/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,ProviderId,DateCreate,DateDelivery")] Delivery delivery)
+        public async Task<IActionResult> Create([Bind("Id,Name")] TypeLogging typeLogging)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(delivery);
+                _context.Add(typeLogging);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProviderId"] = new SelectList(_context.Providers, "Id", "LegalAddress", delivery.ProviderId);
-            return View(delivery);
+            return View(typeLogging);
         }
 
-        // GET: Deliveries/Edit/5
+        // GET: TypeLoggings/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Deliveries == null)
+            if (id == null || _context.TypeLogging == null)
             {
                 return NotFound();
             }
 
-            var delivery = await _context.Deliveries.FindAsync(id);
-            if (delivery == null)
+            var typeLogging = await _context.TypeLogging.FindAsync(id);
+            if (typeLogging == null)
             {
                 return NotFound();
             }
-            ViewData["ProviderId"] = new SelectList(_context.Providers, "Id", "LegalAddress", delivery.ProviderId);
-            return View(delivery);
+            return View(typeLogging);
         }
 
-        // POST: Deliveries/Edit/5
+        // POST: TypeLoggings/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,ProviderId,DateCreate,DateDelivery")] Delivery delivery)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name")] TypeLogging typeLogging)
         {
-            if (id != delivery.Id)
+            if (id != typeLogging.Id)
             {
                 return NotFound();
             }
@@ -107,12 +98,12 @@ namespace musicShop.Controllers
             {
                 try
                 {
-                    _context.Update(delivery);
+                    _context.Update(typeLogging);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!DeliveryExists(delivery.Id))
+                    if (!TypeLoggingExists(typeLogging.Id))
                     {
                         return NotFound();
                     }
@@ -123,51 +114,49 @@ namespace musicShop.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["ProviderId"] = new SelectList(_context.Providers, "Id", "LegalAddress", delivery.ProviderId);
-            return View(delivery);
+            return View(typeLogging);
         }
 
-        // GET: Deliveries/Delete/5
+        // GET: TypeLoggings/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null || _context.Deliveries == null)
+            if (id == null || _context.TypeLogging == null)
             {
                 return NotFound();
             }
 
-            var delivery = await _context.Deliveries
-                .Include(d => d.Provider)
+            var typeLogging = await _context.TypeLogging
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (delivery == null)
+            if (typeLogging == null)
             {
                 return NotFound();
             }
 
-            return View(delivery);
+            return View(typeLogging);
         }
 
-        // POST: Deliveries/Delete/5
+        // POST: TypeLoggings/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            if (_context.Deliveries == null)
+            if (_context.TypeLogging == null)
             {
-                return Problem("Entity set 'AppDbContext.Deliveries'  is null.");
+                return Problem("Entity set 'AppDbContext.TypeLogging'  is null.");
             }
-            var delivery = await _context.Deliveries.FindAsync(id);
-            if (delivery != null)
+            var typeLogging = await _context.TypeLogging.FindAsync(id);
+            if (typeLogging != null)
             {
-                _context.Deliveries.Remove(delivery);
+                _context.TypeLogging.Remove(typeLogging);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool DeliveryExists(int id)
+        private bool TypeLoggingExists(int id)
         {
-          return (_context.Deliveries?.Any(e => e.Id == id)).GetValueOrDefault();
+          return (_context.TypeLogging?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

@@ -78,7 +78,8 @@ namespace musicShop.Controllers
                 {
                     Record = await _context.Records.FindAsync(record.Id),
                     Amount = record.Count,
-                    Order = await _context.Orders.FindAsync(order.Id)
+                    TypeLoggingId = 0,
+                    Operation = order.Id
                 };
                 _context.Loggings.Add(logging);
                 _context.SaveChanges();

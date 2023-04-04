@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using musicShop.Models;
 
 namespace musicShop.Models
 {
@@ -24,5 +25,6 @@ base(options)
         public DbSet<Delivery> Deliveries { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Provider> Providers { get; set; }
+        public DbSet<TypeLogging> TypeLogging { get; set; }
     }
 }

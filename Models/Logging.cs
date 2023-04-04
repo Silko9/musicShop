@@ -16,16 +16,13 @@ namespace musicShop.Models
         [Required, Display(Name = "Кол-во")]
         public int Amount { get; set; }
 
-        [Display(Name = "Заказ")]
-        public int? OrderId { get; set; }
+        [Required, Display(Name = "Тип позиции")]
+        public int TypeLoggingId { get; set; }
 
-        [Display(Name = "Заказ")]
-        public Order? Order { get; set; }
+        [Display(Name = "Тип позиции")]
+        public TypeLogging? TypeLogging { get; set; }
 
-        [Display(Name = "Поставка")]
-        public int? DeliveryId { get; set; }
-
-        [Display(Name = "Поставка")]
-        public Delivery? Delivery { get; set; }
+        [Display(Name = "Операция")]
+        public int Operation { get; set; }
     }
 }

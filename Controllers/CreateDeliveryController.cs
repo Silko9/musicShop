@@ -76,7 +76,8 @@ namespace musicShop.Controllers
                 {
                     Record = await _context.Records.FindAsync(record.Id),
                     Amount = record.Count,
-                    Delivery = await _context.Deliveries.FindAsync(delivery.Id)
+                    TypeLoggingId = 1,
+                    Operation = delivery.Id
                 };
                 _context.Loggings.Add(logging);
                 _context.SaveChanges();
