@@ -1,13 +1,13 @@
 ﻿@model musicShop.Models.Logging
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Добавить";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Create</h1>
+<h1>Добавить</h1>
 
-<h4>Logging</h4>
+<h4>Позицию</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -16,8 +16,19 @@
             <input type="hidden" name="IdItem" value="@ViewBag.Id" />
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="RecordId" class="control-label"></label>
-                <select asp-for="RecordId" class ="form-control" asp-items="ViewBag.RecordId"></select>
+                <label class="control-label">Пластинка</label>
+                <p>
+                    @if (ViewBag.Record != null)
+                    {
+                        <input type="text" value="@ViewBag.Record.Number" class="form-control" readonly="readonly" />
+                        <input type="hidden" asp-for="RecordId" value="@ViewBag.Record.Id" class="form-control" />
+                    }
+                    else
+                    {
+                        <input type="text" value="" class="form-control" readonly="readonly" />
+                    }
+                </p>
+                <a asp-action="SelectRecord" asp-route-id="@ViewBag.Id" asp-route-fromCreate="true" asp-route-from="@ViewBag.From" class="btn btn-secondary">Выбрать другую пластинку</a>
             </div>
             <div class="form-group">
                 <label asp-for="Amount" class="control-label"></label>
@@ -25,14 +36,14 @@
                 <span asp-validation-for="Amount" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <input type="submit" value="Добавить" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-controller="@ViewBag.From" asp-action="Details" asp-route-id="@ViewBag.Id" >Вернуться назад</a>
 </div>
 
 @section Scripts {

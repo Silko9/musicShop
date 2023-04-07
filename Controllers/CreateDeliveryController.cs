@@ -74,15 +74,16 @@ namespace musicShop.Controllers
             {
                 Logging logging = new Logging
                 {
+                    RecordId = record.Id,
                     Record = await _context.Records.FindAsync(record.Id),
                     Amount = record.Count,
-                    TypeLoggingId = 1,
+                    TypeLoggingId = Const.DELIVERY_ID,
                     Operation = delivery.Id
                 };
                 _context.Loggings.Add(logging);
+                loggings.Add(logging);
                 _context.SaveChanges();
             }
-
             return View("ViewDelivery", delivery);
         }
 

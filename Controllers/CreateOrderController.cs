@@ -76,12 +76,14 @@ namespace musicShop.Controllers
             {
                 Logging logging = new Logging
                 {
+                    RecordId = record.Id,
                     Record = await _context.Records.FindAsync(record.Id),
                     Amount = record.Count,
-                    TypeLoggingId = 0,
+                    TypeLoggingId = Const.ORDER_ID,
                     Operation = order.Id
                 };
                 _context.Loggings.Add(logging);
+                loggings.Add(logging);
                 _context.SaveChanges();
             }
 

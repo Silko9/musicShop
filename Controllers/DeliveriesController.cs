@@ -45,7 +45,7 @@ namespace musicShop.Controllers
             viewModel.Delivery = delivery;
             viewModel.Loggings = _context.Loggings.
                 Include(p => p.Record).
-                Where(p => p.TypeLoggingId == Const.DELIVERY_ID);
+                Where(p => p.TypeLoggingId == Const.DELIVERY_ID && p.Operation == delivery.Id);
             return View(viewModel);
             return View(delivery);
         }

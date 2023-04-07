@@ -26,13 +26,14 @@ namespace musicShop.Controllers
         }
 
         // GET: Loggings/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int? id, string? from, int? fromId)
         {
             if (id == null || _context.Loggings == null)
             {
                 return NotFound();
             }
-
+            ViewBag.From = from;
+            ViewBag.Id = fromId;
             var logging = await _context.Loggings
                 .Include(l => l.Record)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -45,11 +46,11 @@ namespace musicShop.Controllers
         }
 
         // GET: Loggings/Create
-        public IActionResult Create(int? id, string? from)
+        public IActionResult Create(int? id, string? from, int? recordId)
         {
-            ViewData["RecordId"] = new SelectList(_context.Records, "Id", "Number");
             ViewBag.From = from;
             ViewBag.Id = id;
+            ViewBag.Record = _context.Records.Find(recordId);
             return View();
         }
 
@@ -62,40 +63,57 @@ namespace musicShop.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(logging);
-                await _context.SaveChangesAsync();
+                
                 if (from == "Orders")
                     logging.TypeLoggingId = Const.ORDER_ID;
                 if (from == "Deliveries")
                     logging.TypeLoggingId = Const.DELIVERY_ID;
                 if(idItem != null)
                     logging.Operation = (int)idItem;
+                _context.Add(logging);
+                await _context.SaveChangesAsync();
                 if (from != null)
-                {
-                    _context.Update(logging);
-                    await _context.SaveChangesAsync();
                     return Redirect("~/" + from + "/Details/" + idItem);
-                }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RecordId"] = new SelectList(_context.Records, "Id", "Number", logging.RecordId);
             return View(logging);
         }
 
+        public IActionResult SelectRecord(int? id, bool? fromCreate, string? from)
+        {
+            ViewBag.id = id;
+            ViewBag.fromCreate = fromCreate;
+            ViewBag.From = from;
+            var record = _context.Records.
+                Include(x => x.Composition).
+                ToList();
+            return View(record);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> SelectTypeEnsemble()
+        {
+            return View();
+        }
+
         // GET: Loggings/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int? id, string? from, int? recordId)
         {
             if (id == null || _context.Loggings == null)
             {
                 return NotFound();
             }
 
-            var logging = await _context.Loggings.FindAsync(id);
+            var logging = await _context.Loggings.
+                Include(p => p.Record).
+                FirstOrDefaultAsync(p => p.Id == id);
+            ViewBag.Id = id;
+            ViewBag.From = from;
+            ViewBag.Record = _context.Records.Find(recordId);
             if (logging == null)
             {
                 return NotFound();
             }
-            ViewData["RecordId"] = new SelectList(_context.Records, "Id", "Number", logging.RecordId);
             return View(logging);
         }
 
@@ -104,13 +122,12 @@ namespace musicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,RecordId,Amount")] Logging logging)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,RecordId,Amount,TypeLoggingId,Operation")] Logging logging, string? from)
         {
             if (id != logging.Id)
             {
                 return NotFound();
             }
-
             if (ModelState.IsValid)
             {
                 try
@@ -129,20 +146,22 @@ namespace musicShop.Controllers
                         throw;
                     }
                 }
+                if (from != null)
+                    return Redirect("~/" + from + "/Details/" + logging.Operation);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["RecordId"] = new SelectList(_context.Records, "Id", "Number", logging.RecordId);
-            return View(logging);
+            return await ReturnRedirect(logging);
         }
 
         // GET: Loggings/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        public async Task<IActionResult> Delete(int? id, string? from, int? fromId)
         {
             if (id == null || _context.Loggings == null)
             {
                 return NotFound();
             }
-
+            ViewBag.Id = fromId;
+            ViewBag.From = from;
             var logging = await _context.Loggings
                 .Include(l => l.Record)
                 .FirstOrDefaultAsync(m => m.Id == id);
@@ -170,12 +189,21 @@ namespace musicShop.Controllers
             }
             
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return await ReturnRedirect(logging);
+
         }
 
         private bool LoggingExists(int id)
         {
           return _context.Loggings.Any(e => e.Id == id);
+        }
+
+        private async Task<IActionResult> ReturnRedirect(Logging logging)
+        {
+            if (logging.TypeLoggingId == Const.ORDER_ID)
+                return Redirect("~/" + "Orders/Details/" + logging.Operation);
+            else
+                return Redirect("~/" + "Deliveries/Details/" + logging.Operation);
         }
     }
 }
