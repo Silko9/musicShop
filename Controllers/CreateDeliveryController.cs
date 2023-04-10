@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using musicShop.Models;
 
 namespace musicShop.Controllers
 {
+    [Authorize(Roles = "cashier, admin")]
     public class CreateDeliveryController : Controller
     {
         private readonly AppDbContext _context;

@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using musicShop.Areas.Identity.Data;
 
 namespace musicShop.Data;
 
-public class musicShopContext : IdentityDbContext<IdentityUser>
+public class musicShopContext : IdentityDbContext<MusicShopUser>
 {
     public musicShopContext(DbContextOptions<musicShopContext> options)
         : base(options)
