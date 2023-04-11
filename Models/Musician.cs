@@ -17,7 +17,7 @@ namespace musicShop.Models
         public string Patronymic { get; set; }
 
         [DataType(DataType.Text), Display(Name = "Фото")]
-        public string PhotePath { get; set; }
+        public string? PhotePath { get; set; }
 
         public ICollection<Role>? Roles { get; set; }
 

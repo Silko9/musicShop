@@ -89,9 +89,9 @@
                     {
                         var symbol = "|";
                         @symbol
-                        <a asp-controller="Musicians" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
-                        @symbol
                         <a asp-controller="Musicians" asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
+                        @symbol
+                        <a asp-controller="Musicians" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
                     }
                 </td>
             </tr>

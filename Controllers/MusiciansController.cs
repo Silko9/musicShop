@@ -17,10 +17,12 @@ namespace musicShop.Controllers
     public class MusiciansController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IWebHostEnvironment _appEnvironment;
 
-        public MusiciansController(AppDbContext context)
+        public MusiciansController(AppDbContext context, IWebHostEnvironment appEnvironment)
         {
             _context = context;
+            _appEnvironment = appEnvironment;
         }
 
         // GET: Musicians
@@ -61,6 +63,15 @@ namespace musicShop.Controllers
                 ensembles.Add(ensemble);
             viewModel.Roles = roles;
             viewModel.Ensembles = ensembles;
+
+            if (!string.IsNullOrEmpty(musician.PhotePath))
+            {
+                byte[] photodata =
+                System.IO.File.ReadAllBytes(_appEnvironment.WebRootPath + musician.PhotePath);
+                ViewBag.Photodata = photodata;
+            }
+            else
+                ViewBag.Photodata = null;
 
             return View(viewModel);
         }
@@ -134,11 +145,25 @@ namespace musicShop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "cashier, admin")]
-        public async Task<IActionResult> Create([Bind("Id,Name,Surname,Patronymic,PhotePath")] Musician musician)
+        public async Task<IActionResult> Create([Bind("Id,Name,Surname,Patronymic")] Musician musician, IFormFile? upload)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(musician);
+                await _context.SaveChangesAsync();
+
+                if (upload != null)
+                {
+                    string path = "/Files/musician" + musician.Id;
+                    using (var fileStream = new
+                    FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                    {
+                        await upload.CopyToAsync(fileStream);
+                    }
+                    musician.PhotePath = path;
+                }
+
+                _context.Update(musician);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -159,6 +184,16 @@ namespace musicShop.Controllers
             {
                 return NotFound();
             }
+
+            if (!string.IsNullOrEmpty(musician.PhotePath))
+            {
+                byte[] photodata =
+                System.IO.File.ReadAllBytes(_appEnvironment.WebRootPath + musician.PhotePath);
+                ViewBag.Photodata = photodata;
+            }
+            else
+                ViewBag.Photodata = null;
+
             return View(musician);
         }
 
@@ -168,7 +203,7 @@ namespace musicShop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "cashier, admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Surname,Patronymic,PhotePath")] Musician musician)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Surname,Patronymic")] Musician musician, IFormFile? upload, string? Photo)
         {
             if (id != musician.Id)
             {
@@ -177,6 +212,24 @@ namespace musicShop.Controllers
 
             if (ModelState.IsValid)
             {
+                if (upload != null)
+                {
+                    string path = "/Files/musician" + id;
+                    using (var fileStream = new
+                    FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                    {
+                        await upload.CopyToAsync(fileStream);
+                    }
+                    if (!string.IsNullOrEmpty(musician.PhotePath))
+                    {
+                        System.IO.File.Delete(_appEnvironment.WebRootPath +
+                        musician.PhotePath);
+                    }
+                    musician.PhotePath = path;
+                }
+                else
+                    musician.PhotePath = Photo;
+
                 try
                 {
                     _context.Update(musician);
@@ -231,8 +284,12 @@ namespace musicShop.Controllers
             if (musician != null)
             {
                 _context.Musicians.Remove(musician);
+                if (!string.IsNullOrEmpty(musician.PhotePath))
+                {
+                    System.IO.File.Delete(_appEnvironment.WebRootPath + musician.PhotePath);
+                }
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

@@ -6,6 +6,11 @@
 
 <h1>Подробности</h1>
 
+@if (ViewBag.Photodata != null)
+    {
+        <img class="mt-4 mb-4" width="400" src="data:image/jpeg;base64,@(Convert.ToBase64String(ViewBag.Photodata))">
+    }
+
 <div>
     <h4>Музыкант</h4>
     <hr />
@@ -27,12 +32,6 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Musician.Patronymic)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Musician.PhotePath)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Musician.PhotePath)
         </dd>
     </dl>
 </div>
@@ -82,9 +81,9 @@
                     {
                         var symbol = "|";
                         @symbol
-                        <a asp-controller="Roles" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
-                        @symbol
                         <a asp-controller="Roles" asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
+                        @symbol
+                        <a asp-controller="Roles" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
                     }
                 </td>
             </tr>
@@ -135,9 +134,9 @@
                     {
                         var symbol = "|";
                         @symbol
-                        <a asp-controller="Ensembles" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
-                        @symbol
                         <a asp-controller="Ensembles" asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
+                        @symbol
+                        <a asp-controller="Ensembles" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
                     }
                 </td>
             </tr>
