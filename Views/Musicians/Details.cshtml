@@ -1,7 +1,7 @@
 ﻿@model musicShop.Models.ViewModal.MusicianDetailsViewModel
 @{
     ViewData["Title"] = "Подробности";
-    Layout = "~/Views/Shared/_Layout.cshtml";   
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Подробности</h1>
@@ -10,34 +10,38 @@
     <h4>Музыкант</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Musician.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Musician.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Musician.Surname)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Musician.Surname)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Musician.Patronymic)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Musician.Patronymic)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Musician.PhotePath)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Musician.PhotePath)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Musician.Id">Изменить</a> |
+    @if (User.IsInRole("admin") || User.IsInRole("cashier"))
+    {
+        var symbol = "|";
+        <a asp-action="Edit" asp-route-id="@Model?.Musician.Id">Изменить</a> @symbol
+    }
     <a asp-action="Index">Вернуться назад</a>
 </div>
 
@@ -47,10 +51,12 @@
         <div class="col-md-9">
             <h4>Роли</h4>
         </div>
-        <div class="col-md-3 text-end">
-            <a asp-action="AddRoleToMusician" asp-route-id="@Model.Musician.Id" class="btn btn-info">Добавить роль</a>
-        </div>
-
+        @if (User.IsInRole("admin") || User.IsInRole("cashier"))
+        {
+            <div class="col-md-3 text-end">
+                <a asp-action="AddRoleToMusician" asp-route-id="@Model.Musician.Id" class="btn btn-info">Добавить роль</a>
+            </div>
+        }
     </div>
 </div>
 
@@ -71,9 +77,15 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    <a asp-controller="Roles" asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
-                    <a asp-controller="Roles" asp-action="Details" asp-route-id="@item.Id">Подробности</a> |
-                    <a asp-controller="Roles" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                    <a asp-controller="Roles" asp-action="Details" asp-route-id="@item.Id">Подробности</a>
+                    @if (User.IsInRole("admin") || User.IsInRole("cashier"))
+                    {
+                        var symbol = "|";
+                        @symbol
+                        <a asp-controller="Roles" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                        @symbol
+                        <a asp-controller="Roles" asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
+                    }
                 </td>
             </tr>
         }
@@ -86,10 +98,12 @@
         <div class="col-md-9">
             <h4>Ансамбли</h4>
         </div>
-        <div class="col-md-3 text-end">
-            <a asp-action="AddEnsembleToMusician" asp-route-id="@Model.Musician.Id" class="btn btn-info">Добавить ансамбль</a>
-        </div>
-
+        @if (User.IsInRole("admin") || User.IsInRole("cashier"))
+        {
+            <div class="col-md-3 text-end">
+                <a asp-action="AddEnsembleToMusician" asp-route-id="@Model.Musician.Id" class="btn btn-info">Добавить ансамбль</a>
+            </div>
+        }
     </div>
 </div>
 
@@ -116,9 +130,15 @@
                     @Html.DisplayFor(modelItem => item.TypeEnsemble)
                 </td>
                 <td>
-                    <a asp-controller="Ensembles" asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
-                    <a asp-controller="Ensembles" asp-action="Details" asp-route-id="@item.Id">Подробности</a> |
-                    <a asp-controller="Ensembles" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                    <a asp-controller="Ensembles" asp-action="Details" asp-route-id="@item.Id">Подробности</a>
+                    @if (User.IsInRole("admin") || User.IsInRole("cashier"))
+                    {
+                        var symbol = "|";
+                        @symbol
+                        <a asp-controller="Ensembles" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                        @symbol
+                        <a asp-controller="Ensembles" asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
+                    }
                 </td>
             </tr>
         }

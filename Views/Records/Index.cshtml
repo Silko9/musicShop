@@ -43,9 +43,15 @@
                 @Html.DisplayFor(modelItem => item.Composition.Name)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Подробности</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                    <a asp-action="Details" asp-route-id="@item.Id">Подробности</a>
+                    @if (User.IsInRole("admin") || User.IsInRole("cashier"))
+                    {
+                        var symbol = "|";
+                        @symbol
+                        <a asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                        @symbol
+                        <a asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
+                    }
             </td>
         </tr>
 }

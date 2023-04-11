@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -55,6 +57,7 @@ namespace musicShop.Controllers
             return View(viewModel);
         }
 
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> AddPerformanceToComposition(int id)
         {
             ViewBag.CompositionId = id;
@@ -68,6 +71,7 @@ namespace musicShop.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> AddPerformanceToComposition(int compositionId, int performanceId)
         {
             Performance performance = _context.Performances.Find(performanceId);
@@ -77,6 +81,7 @@ namespace musicShop.Controllers
             return RedirectToAction("Details", new { id = compositionId });
         }
 
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> AddRecordToComposition(int id)
         {
             ViewBag.CompositionId = id;
@@ -89,6 +94,7 @@ namespace musicShop.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> AddRecordToComposition(int compositionId, int recordId)
         {
             Record record = _context.Records.Find(recordId);
@@ -99,6 +105,7 @@ namespace musicShop.Controllers
         }
 
         // GET: Compositions/Create
+        [Authorize(Roles = "cashier, admin")]
         public IActionResult Create()
         {
             return View();
@@ -109,6 +116,7 @@ namespace musicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> Create([Bind("Id,Name,NameAuthor,SurnameAuthor,PatronymicAuthor,DateCreate")] Composition composition)
         {
             if (ModelState.IsValid)
@@ -121,6 +129,7 @@ namespace musicShop.Controllers
         }
 
         // GET: Compositions/Edit/5
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Compositions == null)
@@ -142,6 +151,7 @@ namespace musicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,NameAuthor,SurnameAuthor,PatronymicAuthor,DateCreate")] Composition composition)
         {
             if (id != composition.Id)
@@ -173,6 +183,7 @@ namespace musicShop.Controllers
         }
 
         // GET: Compositions/Delete/5
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Compositions == null)
@@ -193,6 +204,7 @@ namespace musicShop.Controllers
         // POST: Compositions/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Compositions == null)

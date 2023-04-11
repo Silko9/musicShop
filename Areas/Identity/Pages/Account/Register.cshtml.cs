@@ -138,7 +138,7 @@ namespace musicShop.Areas.Identity.Pages.Account
                     if (!await _roleManager.RoleExistsAsync("guest"))
                         await _roleManager.CreateAsync(new IdentityRole("guest"));
 
-                    await _userManager.AddToRoleAsync(user, "guest");
+                    await _userManager.AddToRoleAsync(user, "cashier");
 
                     var userId = await _userManager.GetUserIdAsync(user);
 

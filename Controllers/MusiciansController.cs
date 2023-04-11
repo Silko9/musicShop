@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.CodeAnalysis;
@@ -63,6 +65,7 @@ namespace musicShop.Controllers
             return View(viewModel);
         }
 
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> AddRoleToMusician(int id)
         {
             ViewBag.MusicianId = id;
@@ -76,6 +79,7 @@ namespace musicShop.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> AddRoleToMusician(int musicianId, int roleId)
         {
 
@@ -89,6 +93,7 @@ namespace musicShop.Controllers
             return RedirectToAction("Details", new { id = musicianId });
         }
 
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> AddEnsembleToMusician(int id)
         {
             ViewBag.MusicianId = id;
@@ -102,6 +107,7 @@ namespace musicShop.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> AddEnsembleToMusician(int musicianId, int ensembleId)
         {
 
@@ -116,6 +122,7 @@ namespace musicShop.Controllers
         }
 
         // GET: Musicians/Create
+        [Authorize(Roles = "cashier, admin")]
         public IActionResult Create()
         {
             return View();
@@ -126,6 +133,7 @@ namespace musicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> Create([Bind("Id,Name,Surname,Patronymic,PhotePath")] Musician musician)
         {
             if (ModelState.IsValid)
@@ -138,6 +146,7 @@ namespace musicShop.Controllers
         }
 
         // GET: Musicians/Edit/5
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null || _context.Musicians == null)
@@ -158,6 +167,7 @@ namespace musicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Surname,Patronymic,PhotePath")] Musician musician)
         {
             if (id != musician.Id)
@@ -189,6 +199,7 @@ namespace musicShop.Controllers
         }
 
         // GET: Musicians/Delete/5
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Musicians == null)
@@ -209,6 +220,7 @@ namespace musicShop.Controllers
         // POST: Musicians/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Musicians == null)

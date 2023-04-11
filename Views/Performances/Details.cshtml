@@ -11,34 +11,38 @@
     <h4>Исполнения</h4>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Performance.Date)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Performance.Date)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Performance.Ensemble)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Performance.Ensemble.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Performance.CircumstancesExecution)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Performance.CircumstancesExecution)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Performance.Composition)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Performance.Composition.Name)
         </dd>
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Performance.Id">Изменить</a> |
+    @if (User.IsInRole("admin") || User.IsInRole("cashier"))
+    {
+        var symbol = "|";
+        <a asp-action="Edit" asp-route-id="@Model?.Performance.Id">Изменить</a> @symbol
+    }
     <a asp-action="Index">Вернуться назад</a>
 </div>
 
@@ -48,10 +52,12 @@
         <div class="col-md-9">
             <h4>Пластинки</h4>
         </div>
-        <div class="col-md-3 text-end">
-            <a asp-action="AddRecordToPerformance" asp-route-id="@Model?.Performance.Id" class="btn btn-info">Добавить пластинку</a>
-        </div>
-
+        @if (User.IsInRole("admin") || User.IsInRole("cashier"))
+        {
+            <div class="col-md-3 text-end">
+                <a asp-action="AddRecordToPerformance" asp-route-id="@Model?.Performance.Id" class="btn btn-info">Добавить пластинку</a>
+            </div>
+        }
     </div>
 </div>
 
@@ -90,9 +96,15 @@
                     @Html.DisplayFor(modelItem => item.Composition)
                 </td>
                 <td>
-                    <a asp-controller="Records" asp-action="Edit" asp-route-id="@item.Id">Изменить</a> |
-                    <a asp-controller="Records" asp-action="Details" asp-route-id="@item.Id">Подробности</a> |
-                    <a asp-controller="Records" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                    <a asp-controller="Records" asp-action="Details" asp-route-id="@item.Id">Подробности</a>
+                    @if (User.IsInRole("admin") || User.IsInRole("cashier"))
+                    {
+                        var symbol = "|";
+                        @symbol
+                        <a asp-controller="Records" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                        @symbol
+                        <a asp-controller="Records" asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
+                    }
                 </td>
             </tr>
         }

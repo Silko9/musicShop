@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -54,6 +56,7 @@ namespace musicShop.Controllers
             return View(viewModel);
         }
 
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> AddMusicianToEnsemble(int id)
         {
             ViewBag.EnsembleId = id;
@@ -68,6 +71,7 @@ namespace musicShop.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> AddMusicianToEnsemble(int ensembleId, int musicianId)
         {
 
@@ -82,6 +86,7 @@ namespace musicShop.Controllers
         }
 
         // GET: Ensembles/Create
+        [Authorize(Roles = "cashier, admin")]
         public IActionResult Create(int? typeEnsembleId)
         {
             ViewBag.TypeEnsembleName = _context.TypeEnsembles.Find(typeEnsembleId);
@@ -93,6 +98,7 @@ namespace musicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> Create([Bind("Id,Name,TypeEnsembleId")] Ensemble ensemble)
         {
             if (ModelState.IsValid)
@@ -105,6 +111,7 @@ namespace musicShop.Controllers
             return View(ensemble);
         }
 
+        [Authorize(Roles = "cashier, admin")]
         public IActionResult SelectTypeEnsemble(int? id, bool? fromCreate)
         {
             ViewBag.id = id;
@@ -114,12 +121,14 @@ namespace musicShop.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> SelectTypeEnsemble()
         {
             return View();
         }
 
         // GET: Ensembles/Edit/5
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> Edit(int? id, int? typeEnsembleId)
         {
             if (id == null || _context.Ensembles == null)
@@ -144,6 +153,7 @@ namespace musicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Name,TypeEnsembleId")] Ensemble ensemble)
         {
             if (id != ensemble.Id)
@@ -175,6 +185,7 @@ namespace musicShop.Controllers
         }
 
         // GET: Ensembles/Delete/5
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null || _context.Ensembles == null)
@@ -196,6 +207,7 @@ namespace musicShop.Controllers
         // POST: Ensembles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             if (_context.Ensembles == null)
