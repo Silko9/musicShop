@@ -15,10 +15,12 @@ namespace musicShop.Controllers
     public class RecordsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly IWebHostEnvironment _appEnvironment;
 
-        public RecordsController(AppDbContext context)
+        public RecordsController(AppDbContext context, IWebHostEnvironment appEnvironment)
         {
             _context = context;
+            _appEnvironment = appEnvironment;
         }
 
         // GET: Records
@@ -61,6 +63,15 @@ namespace musicShop.Controllers
             foreach (var performance in record.Performances)
                 performances.Add(await _context.Performances.FindAsync(performance.Id));
             viewModel.Performances = performances;
+
+            if (!string.IsNullOrEmpty(record.phote))
+            {
+                byte[] photodata =
+                System.IO.File.ReadAllBytes(_appEnvironment.WebRootPath + record.phote);
+                ViewBag.Photodata = photodata;
+            }
+            else
+                ViewBag.Photodata = null;
 
             return View(viewModel);
         }
@@ -114,11 +125,23 @@ namespace musicShop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "cashier, admin")]
-        public async Task<IActionResult> Create([Bind("Id,Number,RetailPrice,WholesalePrice,CompositionId")] Record @record)
+        public async Task<IActionResult> Create([Bind("Id,Number,RetailPrice,WholesalePrice,CompositionId")] Record @record, IFormFile? upload)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(@record);
+                await _context.SaveChangesAsync();
+                if (upload != null)
+                {
+                    string path = "/Files/record" + record.Id;
+                    using (var fileStream = new
+                    FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                    {
+                        await upload.CopyToAsync(fileStream);
+                    }
+                    record.phote = path;
+                }
+                _context.Update(@record);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
@@ -158,10 +181,16 @@ namespace musicShop.Controllers
             {
                 return NotFound();
             }
+            if (!string.IsNullOrEmpty(record.phote))
+            {
+                byte[] photodata =
+                System.IO.File.ReadAllBytes(_appEnvironment.WebRootPath + record.phote);
+                ViewBag.Photodata = photodata;
+            }
+            else
+                ViewBag.Photodata = null;
             ViewBag.id = id;
             ViewBag.Composition = _context.Compositions.Find(compositionId);
-            /*if (record.Performances.Count > 0)
-                ViewBag.count = true;*/
             return View(record);
         }
 
@@ -171,7 +200,7 @@ namespace musicShop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "cashier, admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Number,RetailPrice,WholesalePrice,CompositionId")] Record @record)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Number,RetailPrice,WholesalePrice,CompositionId")] Record @record, IFormFile? upload, string? Photo)
         {
             if (id != @record.Id)
             {
@@ -180,6 +209,23 @@ namespace musicShop.Controllers
 
             if (ModelState.IsValid)
             {
+                if (upload != null)
+                {
+                    string path = "/Files/record" + id;
+                    using (var fileStream = new
+                    FileStream(_appEnvironment.WebRootPath + path, FileMode.Create))
+                    {
+                        await upload.CopyToAsync(fileStream);
+                    }
+                    if (!string.IsNullOrEmpty(record.phote))
+                    {
+                        System.IO.File.Delete(_appEnvironment.WebRootPath +
+                        record.phote);
+                    }
+                    record.phote = path;
+                }
+                else
+                    record.phote = Photo;
                 try
                 {
                     _context.Update(@record);

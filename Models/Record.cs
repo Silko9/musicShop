@@ -24,6 +24,9 @@ namespace musicShop.Models
         [Display(Name = "Произведение")]
         public Composition? Composition { get; set; }
 
+        [Display(Name = "Фото")]
+        public string? phote { get; set; }
+
         public Record()
         {
             Performances = new List<Performance>();
