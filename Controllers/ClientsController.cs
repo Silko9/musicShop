@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using musicShop.Data;
 using musicShop.Models;
 using musicShop.Models.ViewModels;
 
@@ -15,10 +16,12 @@ namespace musicShop.Controllers
     public class ClientsController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly musicShopContext _contextUser;
 
-        public ClientsController(AppDbContext context)
+        public ClientsController(AppDbContext context, musicShopContext contextUser)
         {
             _context = context;
+            _contextUser = contextUser;
         }
 
         // GET: Clients
@@ -63,7 +66,7 @@ namespace musicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Surname,Patronymic,PhoneNumber,Address, ToCreateOrder")] Client client)
+        public async Task<IActionResult> Create([Bind("Id,Name,Surname,Patronymic,PhoneNumber,Address,Email,ToCreateOrder")] Client client)
         {
             if (ModelState.IsValid)
             {
@@ -98,7 +101,7 @@ namespace musicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Surname,Patronymic,PhoneNumber,Address")] Client client)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Surname,Patronymic,PhoneNumber,Address,Email")] Client client)
         {
             if (id != client.Id)
             {
@@ -160,7 +163,14 @@ namespace musicShop.Controllers
             {
                 _context.Clients.Remove(client);
             }
-            
+            var user = await _contextUser.Users.FindAsync(client.UserId);
+            if (user != null)
+            {
+                user.ClientId = null;
+                _contextUser.Users.Update(user);
+            }
+
+            await _contextUser.SaveChangesAsync();
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }

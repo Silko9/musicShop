@@ -20,10 +20,15 @@ namespace musicShop.Models
         [Required, MaxLength(11), Display(Name = "Телефон"), DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
+        [Required, MaxLength(20), Display(Name = "Email"), DataType(DataType.EmailAddress)]
+        public string Email { get; set; }
+
         [Required, MaxLength(40), Display(Name = "Адрес"), DataType(DataType.Text)]
         public string Address { get; set; }
 
         public ICollection<Order>? Orders { get; set; }
+
+        public string? UserId { get; set; }
 
         [NotMapped]
         public bool? ToCreateOrder { get; set; }

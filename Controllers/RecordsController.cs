@@ -282,6 +282,8 @@ namespace musicShop.Controllers
             if (@record != null)
             {
                 _context.Records.Remove(@record);
+                if (!string.IsNullOrEmpty(record.phote))
+                    System.IO.File.Delete(_appEnvironment.WebRootPath + record.phote);
             }
             
             await _context.SaveChangesAsync();

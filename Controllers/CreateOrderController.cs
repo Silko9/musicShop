@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using musicShop.Data;
 using musicShop.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace musicShop.Controllers
 {
@@ -9,14 +11,18 @@ namespace musicShop.Controllers
     public class CreateOrderController : Controller
     {
         private readonly AppDbContext _context;
+        private readonly musicShopContext _contextUser;
 
-        public CreateOrderController(AppDbContext context)
+        public CreateOrderController(AppDbContext context, musicShopContext contextUser)
         {
             _context = context;
+            _contextUser = contextUser;
         }
 
         public async Task<IActionResult> Index()
         {
+            string userId = ((System.Security.Principal.IIdentity)HttpContext.User.Identity).Name;
+
             return View(await _context.Clients.ToListAsync());
         }
 

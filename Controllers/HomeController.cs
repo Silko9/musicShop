@@ -15,6 +15,12 @@ namespace musicShop.Controllers
 
         public IActionResult Index()
         {
+            string userId = ((System.Security.Principal.IIdentity)HttpContext.User.Identity).Name;
+            if (userId != null)
+                ViewBag.IsUser = true;
+            else
+                ViewBag.IsUser = false;
+
             return View();
         }
 

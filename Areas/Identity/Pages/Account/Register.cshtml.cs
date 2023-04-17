@@ -17,8 +17,11 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using musicShop.Areas.Identity.Data;
+using musicShop.Controllers;
+using musicShop.Models;
 
 namespace musicShop.Areas.Identity.Pages.Account
 {
@@ -30,8 +33,8 @@ namespace musicShop.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<MusicShopUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         //private readonly IEmailSender _emailSender;
-
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly AppDbContext _context;
 
 
         public RegisterModel(
@@ -40,7 +43,8 @@ namespace musicShop.Areas.Identity.Pages.Account
             SignInManager<MusicShopUser> signInManager,
             ILogger<RegisterModel> logger,
             //IEmailSender emailSender,
-            RoleManager<IdentityRole> roleManager)
+            RoleManager<IdentityRole> roleManager,
+            AppDbContext context)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -49,6 +53,7 @@ namespace musicShop.Areas.Identity.Pages.Account
             _logger = logger;
             //_emailSender = emailSender;
             _roleManager = roleManager;
+            _context = context;
         }
 
         /// <summary>
@@ -79,17 +84,32 @@ namespace musicShop.Areas.Identity.Pages.Account
             [Required]
             [DataType(DataType.Text)]
             [Display(Name = "Имя")]
-            public string FirstName { get; set; }
+            public string Name { get; set; }
 
             [Required]
             [DataType(DataType.Text)]
             [Display(Name = "Фамилия")]
-            public string LastName { get; set; }
+            public string Surname { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Отчество")]
+            public string Patronymic { get; set; }
 
             [Required]
             [EmailAddress]
             [Display(Name = "Email")]
             public string Email { get; set; }
+
+            [Required]
+            [DataType(DataType.PhoneNumber)]
+            [Display(Name = "Телефон")]
+            public string PhoneNumber { get; set; }
+
+            [Required]
+            [DataType(DataType.Text)]
+            [Display(Name = "Адрес")]
+            public string Address { get; set; }
 
             [Required]
             [StringLength(100, ErrorMessage = "The {0} must be at least {2} and at max {1} characters long.", MinimumLength = 6)]
@@ -118,8 +138,11 @@ namespace musicShop.Areas.Identity.Pages.Account
             {
                 MusicShopUser user = CreateUser();
 
-                user.FirstName = Input.FirstName;
-                user.LastName = Input.LastName;
+                user.Name = Input.Name;
+                user.Surname = Input.Surname;
+                user.Patronymic = Input.Patronymic;
+                user.Address = Input.Address;
+                user.PhoneNumber = Input.PhoneNumber;
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -138,9 +161,21 @@ namespace musicShop.Areas.Identity.Pages.Account
                     if (!await _roleManager.RoleExistsAsync("guest"))
                         await _roleManager.CreateAsync(new IdentityRole("guest"));
 
-                    await _userManager.AddToRoleAsync(user, "cashier");
+                    await _userManager.AddToRoleAsync(user, "guest");
 
-                    var userId = await _userManager.GetUserIdAsync(user);
+                    string userId = await _userManager.GetUserIdAsync(user);
+
+                    Client client = new Client();
+                    client.Name = Input.Name;
+                    client.Surname = Input.Surname;
+                    client.Patronymic = Input.Patronymic;
+                    client.Address = Input.Address;
+                    client.PhoneNumber = Input.PhoneNumber;
+                    client.Email = Input.Email;
+                    client.UserId = userId;
+
+                    _context.Add(client);
+                    await _context.SaveChangesAsync();
 
                     /*var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
@@ -159,7 +194,7 @@ namespace musicShop.Areas.Identity.Pages.Account
                     }
                     else
                     {*/
-                        await _signInManager.SignInAsync(user, isPersistent: false);
+                    await _signInManager.SignInAsync(user, isPersistent: false);
                         return LocalRedirect(returnUrl);
                     //}
                 }
