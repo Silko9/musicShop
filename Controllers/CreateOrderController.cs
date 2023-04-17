@@ -4,10 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using musicShop.Data;
 using musicShop.Models;
 using Microsoft.AspNetCore.Identity;
+using musicShop.Areas.Identity.Data;
+using System.Data;
 
 namespace musicShop.Controllers
 {
-    [Authorize(Roles = "cashier, admin")]
+    [Authorize]
     public class CreateOrderController : Controller
     {
         private readonly AppDbContext _context;
@@ -21,9 +23,12 @@ namespace musicShop.Controllers
 
         public async Task<IActionResult> Index()
         {
-            string userId = ((System.Security.Principal.IIdentity)HttpContext.User.Identity).Name;
-
-            return View(await _context.Clients.ToListAsync());
+            var user = User.Identity.Name;
+            Client client = await _context.Clients.Where(p => p.Email == user).FirstAsync();
+            if (client.Email != null)
+                return await ChooseAddress(client.Id);
+            else
+                return View(await _context.Clients.ToListAsync());
         }
 
         [HttpPost]

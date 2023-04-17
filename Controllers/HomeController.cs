@@ -17,9 +17,9 @@ namespace musicShop.Controllers
         {
             string userId = ((System.Security.Principal.IIdentity)HttpContext.User.Identity).Name;
             if (userId != null)
-                ViewBag.IsUser = true;
+                ViewBag.IsUser = "true";
             else
-                ViewBag.IsUser = false;
+                ViewBag.IsUser = "false";
 
             return View();
         }

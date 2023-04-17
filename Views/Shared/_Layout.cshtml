@@ -22,7 +22,7 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Главная</a>
                         </li>
-                        @if (User.IsInRole("admin") || User.IsInRole("cashier") || ViewBag.IsUser)
+                        @if (User.IsInRole("admin") || User.IsInRole("cashier") || ViewBag.IsUser == "true")
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="CreateOrder" asp-action="Index">Новый заказ</a>
