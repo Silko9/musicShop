@@ -34,6 +34,7 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Delivery.Id">Изменить</a> |
     <a asp-action="Index">Вернуться назад</a>
+    <a asp-controller="ReportDelivery" asp-action="Index" asp-route-id="@Model.Delivery.Id">Скачать отчет</a>
 </div>
 
 <hr>

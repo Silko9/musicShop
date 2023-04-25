@@ -52,6 +52,7 @@
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.Order.Id">Изменить</a> |
     <a asp-action="Index">Вернуться назад</a>
+    <a asp-controller="ReportOrder" asp-action="Index" asp-route-id="@Model.Order.Id">Скачать отчет</a>
 </div>
 
 <hr>

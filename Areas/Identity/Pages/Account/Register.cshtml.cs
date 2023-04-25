@@ -165,7 +165,12 @@ namespace musicShop.Areas.Identity.Pages.Account
 
                     string userId = await _userManager.GetUserIdAsync(user);
 
-                    Client client = new Client();
+                    Client client;
+                    /*if (_context.Clients.Where(p => p.Email == Input.Email).Count() >= 1)
+                        client = await _context.Clients.Where(p => p.Email == Input.Email).FirstAsync();
+                    else*/
+                        client = new Client();
+
                     client.Name = Input.Name;
                     client.Surname = Input.Surname;
                     client.Patronymic = Input.Patronymic;

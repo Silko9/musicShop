@@ -24,11 +24,14 @@ namespace musicShop.Controllers
         public async Task<IActionResult> Index()
         {
             var user = User.Identity.Name;
-            Client client = await _context.Clients.Where(p => p.Email == user).FirstAsync();
-            if (client.Email != null)
-                return await ChooseAddress(client.Id);
-            else
-                return View(await _context.Clients.ToListAsync());
+            Client client;
+            if (_context.Clients.Where(p => p.Email == user).Count() >= 1)
+            {
+                client = await _context.Clients.Where(p => p.Email == user).FirstAsync();
+                if (client.Email != null)
+                    return await ChooseAddress(client.Id);
+            }
+              return View(await _context.Clients.ToListAsync());
         }
 
         [HttpPost]

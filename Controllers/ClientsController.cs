@@ -66,7 +66,7 @@ namespace musicShop.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Surname,Patronymic,PhoneNumber,Address,Email,ToCreateOrder")] Client client)
+        public async Task<IActionResult> Create([Bind("Id,Name,Surname,Patronymic,PhoneNumber,Address,ToCreateOrder, Email")] Client client)
         {
             if (ModelState.IsValid)
             {
