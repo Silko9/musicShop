@@ -19,6 +19,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using MimeKit;
 using musicShop.Areas.Identity.Data;
 using musicShop.Controllers;
 using musicShop.Models;
@@ -32,10 +33,8 @@ namespace musicShop.Areas.Identity.Pages.Account
         private readonly IUserStore<MusicShopUser> _userStore;
         private readonly IUserEmailStore<MusicShopUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
-        //private readonly IEmailSender _emailSender;
         private readonly RoleManager<IdentityRole> _roleManager;
         private readonly AppDbContext _context;
-
 
         public RegisterModel(
             UserManager<MusicShopUser> userManager,
@@ -161,15 +160,11 @@ namespace musicShop.Areas.Identity.Pages.Account
                     if (!await _roleManager.RoleExistsAsync("guest"))
                         await _roleManager.CreateAsync(new IdentityRole("guest"));
 
-                    await _userManager.AddToRoleAsync(user, "cashier");
+                    await _userManager.AddToRoleAsync(user, "guest");
 
                     string userId = await _userManager.GetUserIdAsync(user);
 
-                    Client client;
-                    /*if (_context.Clients.Where(p => p.Email == Input.Email).Count() >= 1)
-                        client = await _context.Clients.Where(p => p.Email == Input.Email).FirstAsync();
-                    else*/
-                        client = new Client();
+                    Client client = new Client();
 
                     client.Name = Input.Name;
                     client.Surname = Input.Surname;
@@ -178,10 +173,8 @@ namespace musicShop.Areas.Identity.Pages.Account
                     client.PhoneNumber = Input.PhoneNumber;
                     client.Email = Input.Email;
                     client.UserId = userId;
-
                     _context.Add(client);
                     await _context.SaveChangesAsync();
-
                     /*var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
                     var callbackUrl = Url.Page(
@@ -213,6 +206,7 @@ namespace musicShop.Areas.Identity.Pages.Account
             return Page();
         }
 
+       
         private MusicShopUser CreateUser()
         {
             try

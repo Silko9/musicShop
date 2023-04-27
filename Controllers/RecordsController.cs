@@ -35,6 +35,7 @@ namespace musicShop.Controllers
         // GET: Records/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            var contexPerformances = _context.Performances.Include(p => p.Ensemble);
             if (id == null)
             {
                 return NotFound();
@@ -61,7 +62,7 @@ namespace musicShop.Controllers
 
             List<Performance> performances = new List<Performance>();
             foreach (var performance in record.Performances)
-                performances.Add(await _context.Performances.FindAsync(performance.Id));
+                performances.Add(contexPerformances.First(p => p.Id == performance.Id));
             viewModel.Performances = performances;
 
             if (!string.IsNullOrEmpty(record.phote))

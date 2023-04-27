@@ -77,9 +77,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Performances.First().CircumstancesExecution)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Performances.First().Composition)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -91,13 +88,10 @@
                     @Html.DisplayFor(modelItem => item.Date)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Ensemble)
+                    @Html.DisplayFor(modelItem => item.Ensemble.Name)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.CircumstancesExecution)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Composition)
                 </td>
                 <td>
                     <a asp-controller="Performances" asp-action="Details" asp-route-id="@item.Id">Подробности</a>

@@ -29,7 +29,7 @@ namespace musicShop.Controllers
         }
 
 
-        public FileResult GetReport(int id)
+        private FileResult GetReport(int id)
         {
             var context = _context.Orders.Include(p => p.Client).Include(p => p.Loggings);
             var contextLog = _context.Loggings.Include(P => P.Record);

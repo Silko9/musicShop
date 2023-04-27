@@ -57,13 +57,6 @@
         <div class="col-md-9">
             <h4>Исполнения</h4>
         </div>
-        @if (User.IsInRole("admin") || User.IsInRole("cashier"))
-        {
-            <div class="col-md-3 text-end">
-                <a asp-action="AddPerformanceToComposition" asp-route-id="@Model.Composition.Id" class="btn btn-info">Добавить исполнение</a>
-            </div>
-        }
-
     </div>
 </div>
 <table class="table">
@@ -77,9 +70,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Performances.First().CircumstancesExecution)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Performances.First().Composition)
             </th>
             <th></th>
         </tr>
@@ -96,9 +86,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.CircumstancesExecution)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Composition.Name)
                 </td>
                 <td>
                     <a asp-controller="Performances" asp-action="Details" asp-route-id="@item.Id">Подробности</a>
@@ -122,13 +109,6 @@
         <div class="col-md-9">
             <h4>Пластинки</h4>
         </div>
-        @if (User.IsInRole("admin") || User.IsInRole("cashier"))
-        {
-            <div class="col-md-3 text-end">
-                <a asp-action="AddRecordToComposition" asp-route-id="@Model.Composition.Id" class="btn btn-info">Добавить пластинку</a>
-            </div>
-        }
-
     </div>
 </div>
 <table class="table">
@@ -142,9 +122,6 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Records.First().WholesalePrice)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Records.First().Composition)
             </th>
             <th></th>
         </tr>
@@ -161,9 +138,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.WholesalePrice)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Composition.Name)
                 </td>
                 <td>
                     <a asp-controller="Records" asp-action="Details" asp-route-id="@item.Id">Подробности</a>

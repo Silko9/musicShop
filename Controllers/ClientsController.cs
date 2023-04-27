@@ -10,6 +10,13 @@ using musicShop.Data;
 using musicShop.Models;
 using musicShop.Models.ViewModels;
 
+using MimeKit;
+using MailKit.Net.Smtp;
+using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.UI.V4.Pages.Account.Internal;
+using musicShop.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity;
+
 namespace musicShop.Controllers
 {
     [Authorize(Roles = "cashier, admin")]
@@ -17,11 +24,17 @@ namespace musicShop.Controllers
     {
         private readonly AppDbContext _context;
         private readonly musicShopContext _contextUser;
+        private readonly UserManager<MusicShopUser> _userManager;
+        private readonly ILogger<RegisterModel> _logger;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public ClientsController(AppDbContext context, musicShopContext contextUser)
+        public ClientsController(AppDbContext context, musicShopContext contextUser, UserManager<MusicShopUser> userManager, ILogger<RegisterModel> logger, RoleManager<IdentityRole> roleManager)
         {
             _context = context;
             _contextUser = contextUser;
+            _userManager = userManager;
+            _roleManager = roleManager;
+            _logger = logger;
         }
 
         // GET: Clients
@@ -72,12 +85,75 @@ namespace musicShop.Controllers
             {
                 _context.Add(client);
                 await _context.SaveChangesAsync();
-                if (client.ToCreateOrder == true)
-                    return RedirectToAction("Index", "CreateOrder");
-                else
-                    return RedirectToAction(nameof(Index));
+
+                var user = new MusicShopUser { UserName = client.Email, Email = client.Email };
+                user.Name = client.Name;
+                user.Surname = client.Surname;
+                user.Patronymic = client.Patronymic;
+                user.Address = client.Address;
+                user.PhoneNumber = client.PhoneNumber;
+                string pass = GeneratePass();
+                var result = await _userManager.CreateAsync(user, pass);
+
+                if (result.Succeeded)
+                {
+
+                    _logger.LogInformation("User created a new account with password.");
+
+                    if (!await _roleManager.RoleExistsAsync("admin"))
+                        await _roleManager.CreateAsync(new IdentityRole("admin"));
+
+                    if (!await _roleManager.RoleExistsAsync("cashier"))
+                        await _roleManager.CreateAsync(new IdentityRole("cashier"));
+
+                    if (!await _roleManager.RoleExistsAsync("guest"))
+                        await _roleManager.CreateAsync(new IdentityRole("guest"));
+
+                    await _userManager.AddToRoleAsync(user, "guest");
+                    await _userManager.UpdateAsync(user);
+
+                    SendEmailAsync(client.Email, "Администрация musicshop", "Ваш пароль для входа на сайт musicshop: " + pass);
+
+                    if (client.ToCreateOrder == true)
+                        return RedirectToAction("Index", "CreateOrder");
+                    else
+                        return RedirectToAction(nameof(Index));
+                }
             }
-            return View(client);
+            return RedirectToAction(nameof(Index));
+        }
+        private string GeneratePass()
+        {
+            string iPass = "";
+            string[] arr = { "1", "2", "3", "4", "5", "6", "7", "8", "9", "B", "C", "D", "F", "G", "H", "J", "K", "L", "M", "N", "P", "Q", "R", "S", "T", "V", "W", "X", "Z", "b", "c", "d", "f", "g", "h", "j", "k", "m", "n", "p", "q", "r", "s", "t", "v", "w", "x", "z", "A", "E", "U", "Y", "a", "e", "i", "o", "u", "y" };
+            Random rnd = new Random();
+            for (int i = 0; i < 10; i = i + 1)
+                iPass = iPass + arr[rnd.Next(0, 57)];
+            return iPass;
+        }
+        public async Task SendEmailAsync(string email, string subject, string message)
+        {
+            using var emailMessage = new MimeMessage();
+
+            emailMessage.From.Add(new MailboxAddress("Администрация сайта", "musicshop_pin120@mail.ru"));
+            emailMessage.To.Add(new MailboxAddress("", email));
+            emailMessage.Subject = subject;
+            emailMessage.Body = new TextPart(MimeKit.Text.TextFormat.Html)
+            {
+                Text = message
+            };
+
+            using (var client = new SmtpClient())
+            {
+                await client.ConnectAsync("smtp.mail.ru", 25, false);
+                await client.AuthenticateAsync("musicshop_pin120@mail.ru", "heXU9myL39f6MkF3DAC2");
+                await client.SendAsync(emailMessage);
+
+                await client.DisconnectAsync(true);
+            }
+            //M3qgfm_@D9iHBBQ
+            //vEu*VUMnMVV7;Ns
+            //heXU9myL39f6MkF3DAC2
         }
 
         // GET: Clients/Edit/5

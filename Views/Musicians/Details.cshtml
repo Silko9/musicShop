@@ -126,7 +126,7 @@
                     @Html.DisplayFor(modelItem => item.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.TypeEnsemble)
+                    @Html.DisplayFor(modelItem => item.TypeEnsemble.Name)
                 </td>
                 <td>
                     <a asp-controller="Ensembles" asp-action="Details" asp-route-id="@item.Id">Подробности</a>

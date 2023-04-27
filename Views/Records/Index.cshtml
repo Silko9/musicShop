@@ -8,6 +8,10 @@
 
 <p>
     <a asp-action="SelectComposition" asp-route-fromCreate="true">Добавить</a>
+@if (User.IsInRole("admin") || User.IsInRole("cashier"))
+{
+    <a asp-controller="ReportRecords" asp-action="Index">Скачать отчет</a>
+}
 </p>
 <table class="table">
     <thead>

@@ -54,9 +54,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.Musicians.First().Patronymic)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Musicians.First().PhotePath)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -72,9 +69,6 @@
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Patronymic)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PhotePath)
                 </td>
                 <td>
                     <a asp-controller="Musicians" asp-action="Details" asp-route-id="@item.Id">Подробности</a>

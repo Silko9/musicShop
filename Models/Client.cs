@@ -20,7 +20,7 @@ namespace musicShop.Models
         [Required, MaxLength(11), Display(Name = "Телефон"), DataType(DataType.PhoneNumber)]
         public string PhoneNumber { get; set; }
 
-        [Required, MaxLength(20), Display(Name = "Email"), DataType(DataType.EmailAddress)]
+        [Required, MaxLength(40), Display(Name = "Email"), DataType(DataType.EmailAddress)]
         public string Email { get; set; }
 
         [Required, MaxLength(40), Display(Name = "Адрес"), DataType(DataType.Text)]

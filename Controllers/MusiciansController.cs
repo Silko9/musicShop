@@ -38,6 +38,8 @@ namespace musicShop.Controllers
         // GET: Musicians/Details/5
         public async Task<IActionResult> Details(int? id)
         {
+            var contextEnsemble = _context.Ensembles.Include(p => p.TypeEnsemble);
+
             if (id == null || _context.Musicians == null)
             {
                 return NotFound();
@@ -60,7 +62,7 @@ namespace musicShop.Controllers
                 roles.Add(await _context.Roles.FindAsync(role.Id));
             List<Ensemble> ensembles = new List<Ensemble>();
             foreach (var ensemble in musician.Ensembles)
-                ensembles.Add(ensemble);
+                ensembles.Add(contextEnsemble.First(p => p.Id == ensemble.Id));
             viewModel.Roles = roles;
             viewModel.Ensembles = ensembles;
 
