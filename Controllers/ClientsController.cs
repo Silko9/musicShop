@@ -131,7 +131,7 @@ namespace musicShop.Controllers
                 iPass = iPass + arr[rnd.Next(0, 57)];
             return iPass;
         }
-        public async Task SendEmailAsync(string email, string subject, string message)
+        private async Task SendEmailAsync(string email, string subject, string message)
         {
             using var emailMessage = new MimeMessage();
 

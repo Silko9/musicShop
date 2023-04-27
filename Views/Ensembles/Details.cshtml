@@ -85,7 +85,7 @@
                         @symbol
                         <a asp-controller="Musicians" asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
                         @symbol
-                        <a asp-controller="Musicians" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                        <a asp-controller="Ensembles" asp-action="DeleteRelationMusician" asp-route-musicianId="@item.Id" asp-route-ensembleId="@Model.Ensemble.Id">Удалить связь</a>
                     }
                 </td>
             </tr>

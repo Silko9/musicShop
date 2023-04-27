@@ -112,6 +112,19 @@ namespace musicShop.Controllers
             return RedirectToAction("Details", new { id = recordId });
         }
 
+        [Authorize(Roles = "cashier, admin")]
+        public async Task<IActionResult> DeleteRelationPerformance(int recordId, int performanceId)
+        {
+            Record record = _context.Records.Include(p => p.Performances).First(p => p.Id == recordId);
+            Performance performance = _context.Performances.Include(p => p.Records).First(s => s.Id == performanceId);
+
+            record.Performances.Remove(performance);
+            performance.Records.Remove(record);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", new { id = recordId });
+        }
+
         // GET: Records/Create
         [Authorize(Roles = "cashier, admin")]
         public IActionResult Create(int? compositionId)

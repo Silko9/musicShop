@@ -83,7 +83,7 @@
                         @symbol
                         <a asp-controller="Roles" asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
                         @symbol
-                        <a asp-controller="Roles" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                        <a asp-controller="Musicians" asp-action="DeleteRelationRole" asp-route-roleId="@item.Id" asp-route-musicianId="@Model.Musician.Id">Удалить связь</a>
                     }
                 </td>
             </tr>
@@ -136,7 +136,7 @@
                         @symbol
                         <a asp-controller="Ensembles" asp-action="Edit" asp-route-id="@item.Id">Изменить</a>
                         @symbol
-                        <a asp-controller="Ensembles" asp-action="Delete" asp-route-id="@item.Id">Удалить</a>
+                        <a asp-controller="Musicians" asp-action="DeleteRelationEnsemble" asp-route-ensembleId="@item.Id" asp-route-musicianId="@Model.Musician.Id">Удалить связь</a>
                     }
                 </td>
             </tr>

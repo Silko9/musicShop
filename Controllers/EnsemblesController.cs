@@ -85,6 +85,19 @@ namespace musicShop.Controllers
             return RedirectToAction("Details", new { id = ensembleId });
         }
 
+        [Authorize(Roles = "cashier, admin")]
+        public async Task<IActionResult> DeleteRelationMusician(int musicianId, int ensembleId)
+        {
+            Musician musician = _context.Musicians.Include(p => p.Ensembles).First(p => p.Id == musicianId);
+            Ensemble ensemble = _context.Ensembles.Include(p => p.Musicians).First(s => s.Id == ensembleId);
+
+            musician.Ensembles.Remove(ensemble);
+            ensemble.Musicians.Remove(musician);
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Details", new { id = ensembleId });
+        }
+
         // GET: Ensembles/Create
         [Authorize(Roles = "cashier, admin")]
         public IActionResult Create(int? typeEnsembleId)
