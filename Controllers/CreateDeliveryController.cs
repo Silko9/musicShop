@@ -69,6 +69,9 @@ namespace musicShop.Controllers
                 DateDelivery = dateDelivery,
                 DateCreate = DateTime.Today.Date
             };
+
+            if (selectedRecords.Count == 0) return View("ViewDelivery", delivery);
+
             _context.Deliveries.Add(delivery);
             _context.SaveChanges();
 
@@ -82,6 +85,8 @@ namespace musicShop.Controllers
                     TypeLoggingId = Const.DELIVERY_ID,
                     Operation = delivery.Id
                 };
+                logging.Record.Amount = logging.Record.Amount + record.Count;
+                _context.Records.Update(logging.Record);
                 _context.Loggings.Add(logging);
                 loggings.Add(logging);
                 _context.SaveChanges();

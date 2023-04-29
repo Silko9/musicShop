@@ -17,8 +17,14 @@ namespace musicShop.Models
         [Required, MaxLength(10), Display(Name = "ИНН"), DataType(DataType.Text)]
         public string TIN { get; set; }
 
+        public ICollection<Delivery>? Deliveries { get; set; }
+
 
         [NotMapped]
         public bool? ToCreateDelivery { get; set; }
+        public Provider()
+        {
+            Deliveries = new List<Delivery>();
+        }
     }
 }

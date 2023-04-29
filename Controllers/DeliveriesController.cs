@@ -157,9 +157,13 @@ namespace musicShop.Controllers
             {
                 return Problem("Entity set 'AppDbContext.Deliveries'  is null.");
             }
-            var delivery = await _context.Deliveries.FindAsync(id);
+            var context = _context.Deliveries.Include(p => p.Loggings);
+            var delivery = context.First(p => p.Id == id);
             if (delivery != null)
             {
+                List<Logging> loggings = delivery.Loggings.ToList();
+                foreach (var item in loggings)
+                    _context.Loggings.Remove(item);
                 _context.Deliveries.Remove(delivery);
             }
             

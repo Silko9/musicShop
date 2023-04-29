@@ -153,7 +153,7 @@ namespace musicShop.Controllers
                 return NotFound();
             }
 
-            var typeEnsemble = await _context.TypeEnsembles
+            var typeEnsemble = await _context.TypeEnsembles.Include(p => p.Ensembles)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (typeEnsemble == null)
             {

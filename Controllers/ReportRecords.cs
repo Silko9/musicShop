@@ -51,13 +51,13 @@ namespace musicShop.Controllers
 
             foreach (Record record in context)
             {
-                worksheet.Cells[count + 2, 2].Value = record.Number;
-                worksheet.Cells[count + 2, 3].Value = record.RetailPrice;
-                worksheet.Cells[count + 2 , 4].Value = record.WholesalePrice;
-                worksheet.Cells[count + 2, 5].Value = record.Composition.Name;
-                worksheet.Cells[count + 2, 6].Value = 0;
+                worksheet.Cells[count + 3, 2].Value = record.Number;
+                worksheet.Cells[count + 3, 3].Value = record.RetailPrice;
+                worksheet.Cells[count + 3 ,4].Value = record.WholesalePrice;
+                worksheet.Cells[count + 3, 5].Value = record.Composition.Name;
+                worksheet.Cells[count + 3, 6].Value = record.Amount;
 
-                worksheet.Cells[count + 2, 1].Value = ++count;
+                worksheet.Cells[count + 3, 1].Value = ++count;
             }
 
             excelPackage.SaveAs(fr);

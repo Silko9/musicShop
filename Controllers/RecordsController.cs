@@ -139,7 +139,7 @@ namespace musicShop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "cashier, admin")]
-        public async Task<IActionResult> Create([Bind("Id,Number,RetailPrice,WholesalePrice,CompositionId")] Record @record, IFormFile? upload)
+        public async Task<IActionResult> Create([Bind("Id,Number,RetailPrice,WholesalePrice,CompositionId,Amount")] Record @record, IFormFile? upload)
         {
             if (ModelState.IsValid)
             {
@@ -214,7 +214,7 @@ namespace musicShop.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "cashier, admin")]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Number,RetailPrice,WholesalePrice,CompositionId")] Record @record, IFormFile? upload, string? Photo)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Number,RetailPrice,WholesalePrice,CompositionId,Amount")] Record @record, IFormFile? upload, string? Photo)
         {
             if (id != @record.Id)
             {
@@ -258,7 +258,6 @@ namespace musicShop.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompositionId"] = new SelectList(_context.Compositions, "Id", "Name", @record.CompositionId);
             return View(@record);
         }
 
@@ -273,6 +272,7 @@ namespace musicShop.Controllers
 
             var @record = await _context.Records
                 .Include(p => p.Composition)
+                .Include(p => p.Performances)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (@record == null)
             {

@@ -1,46 +1,55 @@
 ﻿@model musicShop.Models.Delivery
+@if (Model.Loggings.Count > 0)
+{
+    <h2>Поставка сформирована!</h2>
 
-<h2>Поставка сформирована!</h2>
-
-<div>
-    <strong>Компания:</strong> @Model.Provider.Name
-</div>
-<div>
-    <strong>Дата оформления:</strong> @Model.DateCreate.Date
-</div>
-<div>
-    <strong>Дата доставки:</strong> @Model.DateDelivery.Date
-</div>
-<div>
-    <strong>Позиции поставки:</strong>
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Пластинка</th>
-                <th>Кол-во</th>
-                <th>Цена</th>
-                <th>Сумма</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var logging in Model.Loggings)
-            {
+    <div>
+        <strong>Компания:</strong> @Model.Provider.Name
+    </div>
+    <div>
+        <strong>Дата оформления:</strong> @Model.DateCreate.Date
+    </div>
+    <div>
+        <strong>Дата доставки:</strong> @Model.DateDelivery.Date
+    </div>
+    <div>
+        <strong>Позиции поставки:</strong>
+        <table class="table">
+            <thead>
                 <tr>
-                    <td>@logging.Record.Number</td>
-                    <td>@logging.Amount</td>
-                    <td>@logging.Record.WholesalePrice</td>
-                    <td>@(logging.Amount * logging.Record.WholesalePrice)</td>
+                    <th>Пластинка</th>
+                    <th>Кол-во</th>
+                    <th>Цена</th>
+                    <th>Сумма</th>
                 </tr>
-            }
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="3" style="text-align:right;"><strong>Итоговая сумма:</strong></td>
-                <td>@Model.Loggings.Sum(l => l.Amount * l.Record.WholesalePrice)</td>
-            </tr>
-        </tfoot>
-    </table>
-</div>
+            </thead>
+            <tbody>
+                @foreach (var logging in Model.Loggings)
+                {
+                    <tr>
+                        <td>@logging.Record.Number</td>
+                        <td>@logging.Amount</td>
+                        <td>@logging.Record.WholesalePrice</td>
+                        <td>@(
+                            logging.Amount * logging.Record.WholesalePrice
+                            )</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" style="text-align:right;"><strong>Итоговая сумма:</strong></td>
+                    <td>@Model.Loggings.Sum(l => l.Amount * l.Record.WholesalePrice)</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+}
+else
+{
+    <h2>Доставка не сформирована!</h2>
+    <h2>Ни одна пластинка не была выбрана!</h2>
+}
 <div>
     <a href="/">Вернуться на главную</a>
 </div>

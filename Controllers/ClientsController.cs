@@ -215,7 +215,7 @@ namespace musicShop.Controllers
                 return NotFound();
             }
 
-            var client = await _context.Clients
+            var client = await _context.Clients.Include(p => p.Orders)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (client == null)
             {

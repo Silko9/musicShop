@@ -70,7 +70,7 @@ namespace musicShop.Controllers
         [HttpPost]
         public async Task<IActionResult> ChooseRecords(List<RecordSelection> records, int clientId, string address, string date)
         {
-            var selectedRecords = records.Where(r => r.Count > 0).ToList();
+            List<RecordSelection> selectedRecords = records.Where(r => r.Count > 0).ToList();
             ICollection<Logging> loggings = new List<Logging>();
 
             DateTime dateDelivery = DateTime.ParseExact(date, "yyyy-MM-dd",
@@ -85,6 +85,9 @@ namespace musicShop.Controllers
                 DateDelivery = dateDelivery,
                 DateCreate = DateTime.Today.Date
             };
+
+            if (selectedRecords.Count == 0) return View("ViewOrder", order);
+
             _context.Orders.Add(order);
             _context.SaveChanges();
 
@@ -98,6 +101,8 @@ namespace musicShop.Controllers
                     TypeLoggingId = Const.ORDER_ID,
                     Operation = order.Id
                 };
+                logging.Record.Amount = logging.Record.Amount - record.Count;
+                _context.Records.Update(logging.Record);
                 _context.Loggings.Add(logging);
                 loggings.Add(logging);
                 _context.SaveChanges();

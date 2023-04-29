@@ -137,7 +137,7 @@ namespace musicShop.Controllers
                 return NotFound();
             }
 
-            var provider = await _context.Providers
+            var provider = await _context.Providers.Include(p => p.Deliveries)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (provider == null)
             {

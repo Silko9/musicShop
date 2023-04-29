@@ -193,6 +193,10 @@ namespace musicShop.Controllers
 
             var composition = await _context.Compositions
                 .FirstOrDefaultAsync(m => m.Id == id);
+            List<Record> records = _context.Records.Where(p => p.CompositionId == composition.Id).ToList();
+            List<Performance> performances = _context.Performances.Where(p => p.CompositionId == composition.Id).ToList();
+            if (records.Count() == 0 && performances.Count() == 0) ViewBag.isDelete = "true";
+
             if (composition == null)
             {
                 return NotFound();

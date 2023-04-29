@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using musicShop.Models;
 
@@ -11,9 +12,10 @@ using musicShop.Models;
 namespace musicShop.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppContextModelSnapshot : ModelSnapshot
+    [Migration("20230428173237_addAmountToClient")]
+    partial class addAmountToClient
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -475,7 +477,7 @@ namespace musicShop.Migrations
             modelBuilder.Entity("musicShop.Models.Delivery", b =>
                 {
                     b.HasOne("musicShop.Models.Provider", "Provider")
-                        .WithMany("Deliveries")
+                        .WithMany()
                         .HasForeignKey("ProviderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -593,11 +595,6 @@ namespace musicShop.Migrations
             modelBuilder.Entity("musicShop.Models.Order", b =>
                 {
                     b.Navigation("Loggings");
-                });
-
-            modelBuilder.Entity("musicShop.Models.Provider", b =>
-                {
-                    b.Navigation("Deliveries");
                 });
 
             modelBuilder.Entity("musicShop.Models.TypeEnsemble", b =>

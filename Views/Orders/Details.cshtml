@@ -90,11 +90,6 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Amount)
                 </td>
-                <td>
-                    <a asp-controller="Loggings" asp-action="Edit" asp-route-fromId="@Model.Order.Id" asp-route-id="@item.Id" asp-route-from="Orders">Изменить</a> |
-                    <a asp-controller="Loggings" asp-action="Details" asp-route-fromId="@Model.Order.Id" asp-route-id="@item.Id" asp-route-from="Orders">Подробности</a> |
-                    <a asp-controller="Loggings" asp-action="Delete" asp-route-fromId="@Model.Order.Id" asp-route-id="@item.Id" asp-route-from="Orders">Удалить</a>
-                </td>
             </tr>
         }
     </tbody>

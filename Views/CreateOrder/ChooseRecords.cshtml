@@ -28,31 +28,50 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Composition)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
                 <th></th>
             </tr>
         </thead>
         <tbody>
+            @{int count = 0;}
             @for (var i = 0; i < Model.Count(); i++)
             {
-                var item = Model.ElementAt(i);
-                <tr>
-                    <input type="hidden" name="records[@i].Id" value="@item.Id" />
+                Record item = new Record();
+                for (int j = i + count; j < Model.Count(); j++)
+                {
+                    item = Model.ElementAt(j + count);
+                    if (item.Amount > 0) {
+                        count++;
+                        break;
+                    }
+                }
+                if (item.Id == 0) break;
+                @if (true)
+                {
+                    <tr>
+                        <input type="hidden" name="records[@i].Id" value="@item.Id" />
                     <td>
                         @Html.DisplayFor(modelItem => item.Number)
                         <input type="hidden" name="records[@i].Number" value="@item.Number" />
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.RetailPrice)
-                        <input type="hidden" name="records[@i].RetailPrice" value="@item.RetailPrice" />
+                        <input type="hidden" name="records[@i].RetailPrice" value="@item.RetailPrice"/>
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Composition.Name)
                         <input type="hidden" name="records[@i].CompositionName" value="@item.Composition.Name" />
                     </td>
                     <td>
-                        <input type="number" name="records[@i].Count" value="0" />
+                        @Html.DisplayFor(modelItem => item.Amount)
                     </td>
-                </tr>
+                    <td>
+                        <input type="number" name="records[@i].Count" value="0" min="0" max="@item.Amount" />
+                    </td>
+                    </tr>
+                }
             }
         </tbody>
     </table>

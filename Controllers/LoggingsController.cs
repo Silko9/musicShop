@@ -10,7 +10,7 @@ using musicShop.Models;
 
 namespace musicShop.Controllers
 {
-    [Authorize(Roles = "cashier, admin")]
+    [Authorize(Roles = "admin")]
     public class LoggingsController : Controller
     {
         private readonly AppDbContext _context;

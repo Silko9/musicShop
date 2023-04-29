@@ -24,6 +24,9 @@
                 <th>
                     @Html.DisplayNameFor(model => model.Composition)
                 </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Amount)
+                </th>
                 <th></th>
             </tr>
         </thead>
@@ -31,8 +34,8 @@
             @for (var i = 0; i < Model.Count(); i++)
             {
                 var item = Model.ElementAt(i);
-                <tr>
-                    <input type="hidden" name="records[@i].Id" value="@item.Id" />
+                    <tr>
+                        <input type="hidden" name="records[@i].Id" value="@item.Id" />
                     <td>
                         @Html.DisplayFor(modelItem => item.Number)
                         <input type="hidden" name="records[@i].Number" value="@item.Number" />
@@ -44,6 +47,10 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.Composition.Name)
                         <input type="hidden" name="records[@i].CompositionName" value="@item.Composition.Name" />
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Amount)
+                        <input type="hidden" value="@item.Amount" />
                     </td>
                     <td>
                         <input type="number" name="records[@i].Count" value="0" />

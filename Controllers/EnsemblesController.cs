@@ -208,6 +208,7 @@ namespace musicShop.Controllers
 
             var ensemble = await _context.Ensembles
                 .Include(e => e.TypeEnsemble)
+                .Include(p => p.Performances)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (ensemble == null)
             {

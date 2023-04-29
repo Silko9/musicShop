@@ -130,9 +130,13 @@ namespace musicShop.Controllers
             {
                 return Problem("Entity set 'AppDbContext.Orders'  is null.");
             }
-            var order = await _context.Orders.FindAsync(id);
+            var context = _context.Orders.Include(p => p.Loggings);
+            var order = context.First(p => p.Id == id);
             if (order != null)
             {
+                List<Logging> loggings = order.Loggings.ToList();
+                foreach (var item in loggings)
+                    _context.Loggings.Remove(item);
                 _context.Orders.Remove(order);
             }
             

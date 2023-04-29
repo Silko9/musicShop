@@ -32,9 +32,17 @@
         </dd>
     </dl>
     
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
+    @if (Model.Deliveries.Count() == 0)
+    {
+        <form asp-action="Delete">
+            <input type="hidden" asp-for="Id" />
         <input type="submit" value="Удалить" class="btn btn-danger" /> |
         <a asp-action="Index">Вернуться назад</a>
-    </form>
+        </form>
+    }
+    else
+    {
+        <h4>Нельзя удалить поставщика, пока есть связанные поставки!</h4>
+        <a asp-action="Index">Вернуться назад</a>
+    }
 </div>

@@ -71,11 +71,6 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Amount)
                 </td>
-                <td>
-                    <a asp-controller="Loggings" asp-action="Edit" asp-route-fromId="@Model.Delivery.Id" asp-route-id="@item.Id" asp-route-from="Deliveries">Изменить</a> |
-                    <a asp-controller="Loggings" asp-action="Details" asp-route-fromId="@Model.Delivery.Id" asp-route-id="@item.Id" asp-route-from="Deliveries">Подробности</a> |
-                    <a asp-controller="Loggings" asp-action="Delete" asp-route-fromId="@Model.Delivery.Id" asp-route-id="@item.Id" asp-route-from="Deliveries">Удалить</a>
-                </td>
             </tr>
         }
     </tbody>
