@@ -12,10 +12,14 @@ namespace musicShop.Models
         [Required, MaxLength(10), Display(Name = "Номер"), DataType(DataType.Text)]
         public string Number { get; set; }
 
-        [Required, Display(Name = "Розничная цена"), DataType(DataType.Currency)]
+        [Required, Display(Name = "Розничная цена")]
+        //[DataType(DataType.Currency)]
+        [RegularExpression(@"^\d+(\.\d+)?$", ErrorMessage = "Неверный формат числа")]
         public decimal RetailPrice { get; set; }
 
-        [Required, Display(Name = "Оптовая цена"), DataType(DataType.Currency)]
+        [Required, Display(Name = "Оптовая цена")]
+        //[DataType(DataType.Currency)]
+        [RegularExpression(@"^\d+(\.\d+)?$", ErrorMessage = "Неверный формат числа")]
         public decimal WholesalePrice { get; set; }
 
         public ICollection<Performance>? Performances { get; set; }

@@ -5,6 +5,7 @@ using musicShop.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using musicShop.Areas.Identity.Data;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -55,4 +56,7 @@ app.MapControllerRoute(
 
 app.MapRazorPages();
 
+
+
 app.Run();
+

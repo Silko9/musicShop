@@ -3,7 +3,7 @@
 @{
     ViewData["Title"] = "Добавить";
 }
-
+<globalization culture="en-US" uiCulture="en" />
 <h1>Добавить</h1>
 
 <h4>Пластинку</h4>
@@ -20,12 +20,12 @@
             </div>
             <div class="form-group">
                 <label asp-for="RetailPrice" class="control-label"></label>
-                <input asp-for="RetailPrice" class="form-control" />
+                <input asp-for="RetailPrice" type="number" class="form-control" />
                 <span asp-validation-for="RetailPrice" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="WholesalePrice" class="control-label"></label>
-                <input asp-for="WholesalePrice" class="form-control" />
+                <input asp-for="WholesalePrice" type="text" class="form-control" />
                 <span asp-validation-for="WholesalePrice" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -62,3 +62,4 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+

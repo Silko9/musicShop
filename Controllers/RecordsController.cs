@@ -141,8 +141,8 @@ namespace musicShop.Controllers
         [Authorize(Roles = "cashier, admin")]
         public async Task<IActionResult> Create([Bind("Id,Number,RetailPrice,WholesalePrice,CompositionId,Amount")] Record @record, IFormFile? upload)
         {
-            if (ModelState.IsValid)
-            {
+            /*if (ModelState.IsValid)
+            {*/
                 _context.Add(@record);
                 await _context.SaveChangesAsync();
                 if (upload != null)
@@ -158,7 +158,7 @@ namespace musicShop.Controllers
                 _context.Update(@record);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
-            }
+            //}
             return View(@record);
         }
 

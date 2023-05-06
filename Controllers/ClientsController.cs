@@ -189,6 +189,17 @@ namespace musicShop.Controllers
                 try
                 {
                     _context.Update(client);
+                    MusicShopUser user = _contextUser.Users.First(p => p.Email == client.Email);
+                    if(user != null)
+                    {
+                        user.Name = client.Name;
+                        user.Surname = client.Surname;
+                        user.Patronymic = client.Patronymic;
+                        user.PhoneNumber = client.PhoneNumber;
+                        user.Address = client.Address;
+                        _contextUser.Update(user);
+                    }
+                    await _contextUser.SaveChangesAsync();
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -238,13 +249,20 @@ namespace musicShop.Controllers
             if (client != null)
             {
                 _context.Clients.Remove(client);
+                var user = await _contextUser.Users.FindAsync(client.UserId);
+                if (user != null)
+                {
+                    user.ClientId = null;
+                    _contextUser.Users.Update(user);
+                    IdentityRole role = _contextUser.Roles.First(p => p.Name == "guest");
+                    if (_contextUser.UserRoles.First(p => p.UserId == user.Id && p.RoleId == role.Id) != null)
+                    {
+                        _contextUser.Users.Remove(user);
+                        _contextUser.SaveChanges();
+                    }
+                }
             }
-            var user = await _contextUser.Users.FindAsync(client.UserId);
-            if (user != null)
-            {
-                user.ClientId = null;
-                _contextUser.Users.Update(user);
-            }
+
 
             await _contextUser.SaveChangesAsync();
             await _context.SaveChangesAsync();
