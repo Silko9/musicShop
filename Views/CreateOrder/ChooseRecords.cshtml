@@ -36,19 +36,19 @@
         </thead>
         <tbody>
             @{int count = 0;}
-            @for (var i = 0; i < Model.Count(); i++)
+            @for (var i = 0; i + count < Model.Count(); i++)
             {
                 Record item = new Record();
                 for (int j = i + count; j < Model.Count(); j++)
                 {
-                    item = Model.ElementAt(j + count);
-                    if (item.Amount > 0) {
-                        count++;
+                    item = Model.ElementAt(j);
+                    if (item.Amount > 0)
                         break;
-                    }
+                    else
+                        count++;
                 }
                 if (item.Id == 0) break;
-                @if (true)
+                @if (item.Amount > 0)
                 {
                     <tr>
                         <input type="hidden" name="records[@i].Id" value="@item.Id" />

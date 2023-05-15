@@ -1,4 +1,5 @@
-﻿@model IEnumerable<musicShop.Models.Record>
+﻿@using Org.BouncyCastle.Asn1.Ocsp;
+@model IEnumerable<musicShop.Models.Record>
 
 @{
     ViewData["Title"] = "Пластинки";
@@ -8,11 +9,18 @@
 
 <p>
     <a asp-action="SelectComposition" asp-route-fromCreate="true">Добавить</a>
+</p>
 @if (User.IsInRole("admin") || User.IsInRole("cashier"))
 {
-    <a asp-controller="ReportRecords" asp-action="Index">Скачать отчет</a>
+    <p>
+        <a asp-controller="ReportRecords" asp-action="Index" asp-route-year="0">Скачать отчет в наличие</a>
+    </p>
+    <p>
+        <form asp-controller="ReportRecords" asp-action="Index">
+            <input type="submit" value="Скачать отчет топ продаж"> за год <input type="number" name="year" value="@DateTime.Now.Year" min="2000" max="@DateTime.Now.Year" />
+        </form>
+    </p>
 }
-</p>
 <table class="table">
     <thead>
         <tr>
