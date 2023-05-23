@@ -7,11 +7,11 @@
 
 <h1>Пластинки</h1>
 
-<p>
-    <a asp-action="SelectComposition" asp-route-fromCreate="true">Добавить</a>
-</p>
 @if (User.IsInRole("admin") || User.IsInRole("cashier"))
 {
+    <p>
+        <a asp-action="SelectComposition" asp-route-fromCreate="true">Добавить</a>
+    </p>
     <p>
         <a asp-controller="ReportRecords" asp-action="Index" asp-route-year="0">Скачать отчет в наличие</a>
     </p>
@@ -30,9 +30,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.RetailPrice)
             </th>
+            @if (User.IsInRole("admin") || User.IsInRole("cashier"))
+{
             <th>
                 @Html.DisplayNameFor(model => model.WholesalePrice)
             </th>
+}
             <th>
                 @Html.DisplayNameFor(model => model.Composition)
             </th>
@@ -51,9 +54,12 @@
             <td>
                 @Html.DisplayFor(modelItem => item.RetailPrice)
             </td>
+                @if (User.IsInRole("admin") || User.IsInRole("cashier"))
+                {
             <td>
                 @Html.DisplayFor(modelItem => item.WholesalePrice)
             </td>
+                }
             <td>
                 @Html.DisplayFor(modelItem => item.Composition.Name)
             </td>

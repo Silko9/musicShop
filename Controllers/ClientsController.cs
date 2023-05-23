@@ -255,7 +255,8 @@ namespace musicShop.Controllers
                     user.ClientId = null;
                     _contextUser.Users.Update(user);
                     IdentityRole role = _contextUser.Roles.First(p => p.Name == "guest");
-                    if (_contextUser.UserRoles.First(p => p.UserId == user.Id && p.RoleId == role.Id) != null)
+                    var check = _contextUser.UserRoles.FirstOrDefault(p => p.UserId == user.Id && p.RoleId == role.Id);
+                    if (check != null)
                     {
                         _contextUser.Users.Remove(user);
                         _contextUser.SaveChanges();

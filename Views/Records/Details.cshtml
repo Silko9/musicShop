@@ -27,12 +27,15 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Record.RetailPrice)
         </dd>
+        @if (User.IsInRole("admin") || User.IsInRole("cashier"))
+{
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Record.WholesalePrice)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Record.WholesalePrice)
         </dd>
+}
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Record.Composition)
         </dt>

@@ -7,9 +7,12 @@
 
 <h1>Исполнение</h1>
 
-<p>
-    <a asp-action="SelectComposition" asp-route-fromCreate="true">Добавить</a>
-</p>
+@if (User.IsInRole("admin") || User.IsInRole("cashier"))
+{
+    <p>
+        <a asp-action="SelectComposition" asp-route-fromCreate="true">Добавить</a>
+    </p>
+}
 <table class="table">
     <thead>
         <tr>

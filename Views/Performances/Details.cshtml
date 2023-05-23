@@ -70,9 +70,12 @@
             <th>
                 @Html.DisplayNameFor(model => model.Records.First().RetailPrice)
             </th>
+            @if (User.IsInRole("admin") || User.IsInRole("cashier"))
+{
             <th>
                 @Html.DisplayNameFor(model => model.Records.First().WholesalePrice)
             </th>
+}
             <th></th>
         </tr>
     </thead>
@@ -86,9 +89,12 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.RetailPrice)
                 </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.WholesalePrice)
+                @if (User.IsInRole("admin") || User.IsInRole("cashier"))
+                {
+                    <td>
+                        @Html.DisplayFor(modelItem => item.WholesalePrice)
                 </td>
+                }
                 <td>
                     <a asp-controller="Records" asp-action="Details" asp-route-id="@item.Id">Подробности</a>
                     @if (User.IsInRole("admin") || User.IsInRole("cashier"))
