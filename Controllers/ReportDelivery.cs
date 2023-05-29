@@ -61,10 +61,10 @@ namespace musicShop.Controllers
             {
                 worksheet.Cells[startLine, 4].Value = log.Record.Number;
                 worksheet.Cells[startLine, 5].Value = log.Amount;
-                worksheet.Cells[startLine, 6].Value = log.Record.RetailPrice;
-                worksheet.Cells[startLine, 7].Value = log.Record.RetailPrice * log.Amount;
+                worksheet.Cells[startLine, 6].Value = log.Record.WholesalePrice;
+                worksheet.Cells[startLine, 7].Value = log.Record.WholesalePrice * log.Amount;
 
-                sum += (int)log.Record.RetailPrice * (int)log.Amount;
+                sum += (int)log.Record.WholesalePrice * (int)log.Amount;
                 startLine++;
             }
             worksheet.Cells[5, 2].Value = sum;

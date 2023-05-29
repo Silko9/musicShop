@@ -14,13 +14,13 @@ namespace musicShop.Models
 
         [Required, Display(Name = "Розничная цена")]
         //[DataType(DataType.Currency)]
-        [RegularExpression(@"^\d+(\.\d+)?$", ErrorMessage = "Неверный формат числа")]
-        public decimal RetailPrice { get; set; }
+        //[RegularExpression(@"^\d+(\.\d+)?$", ErrorMessage = "Неверный формат числа")]
+        public int RetailPrice { get; set; }
 
         [Required, Display(Name = "Оптовая цена")]
         //[DataType(DataType.Currency)]
-        [RegularExpression(@"^\d+(\.\d+)?$", ErrorMessage = "Неверный формат числа")]
-        public decimal WholesalePrice { get; set; }
+        //[RegularExpression(@"^\d+(\.\d+)?$", ErrorMessage = "Неверный формат числа")]
+        public int WholesalePrice { get; set; }
 
         public ICollection<Performance>? Performances { get; set; }
 

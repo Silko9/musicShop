@@ -249,7 +249,7 @@ namespace musicShop.Controllers
             if (client != null)
             {
                 _context.Clients.Remove(client);
-                var user = await _contextUser.Users.FindAsync(client.UserId);
+                var user = await _contextUser.Users.FirstAsync(p => p.Email == client.Email);
                 if (user != null)
                 {
                     user.ClientId = null;

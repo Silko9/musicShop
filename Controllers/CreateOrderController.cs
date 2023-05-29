@@ -29,7 +29,7 @@ namespace musicShop.Controllers
             {
                 client = await _context.Clients.Where(p => p.Email == user).FirstAsync();
                 if (client.Email != null)
-                    return await ChooseAddress(client.Id);
+                    return await ChooseAddress(client.Id, false);
             }
               return View(await _context.Clients.ToListAsync());
         }
@@ -42,22 +42,35 @@ namespace musicShop.Controllers
                 return NotFound();
             ViewBag.ClientId = clientId;
             ViewBag.Client = client;
+            ViewBag.DateError = false;
             return View("ChooseAddress");
         }
 
-        public async Task<IActionResult> ChooseAddress(int id)
+        public async Task<IActionResult> ChooseAddress(int id, bool dateError)
         {
             Client client = await _context.Clients.FindAsync(id);
             if (client == null)
                 return NotFound();
             ViewBag.ClientId = id;
             ViewBag.Client = client;
+            ViewBag.DateError = dateError;
             return View("ChooseAddress");
         }
 
         [HttpPost]
         public async Task<IActionResult> ChooseAddress(int clientId, string address, string date)
         {
+            DateTime selectedDate;
+            if (!DateTime.TryParse(date, out selectedDate))
+            {
+                return RedirectToAction("ChooseAddress", new { id = clientId, dateError = true });
+            }
+
+            if (selectedDate.Date < DateTime.Today)
+            {
+                return RedirectToAction("ChooseAddress", new { id = clientId, dateError = true });
+            }
+
             Client client = await _context.Clients.FindAsync(clientId);
             ViewBag.ClientId = clientId;
             ViewBag.Address = address;

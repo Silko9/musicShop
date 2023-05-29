@@ -25,7 +25,7 @@
             @Html.DisplayNameFor(model => model.Record.RetailPrice)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Record.RetailPrice)
+            @Html.DisplayFor(model => model.Record.RetailPrice) Руб
         </dd>
         @if (User.IsInRole("admin") || User.IsInRole("cashier"))
 {
@@ -33,7 +33,7 @@
             @Html.DisplayNameFor(model => model.Record.WholesalePrice)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Record.WholesalePrice)
+            @Html.DisplayFor(model => model.Record.WholesalePrice) Руб
         </dd>
 }
         <dt class="col-sm-2">

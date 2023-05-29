@@ -11,6 +11,9 @@
 			<input type="text" name="Address" class="form-control" value="@ViewBag.Client.Address" />
 		</div>
 		<label class="control-label col-md-4">Дата доставки:</label>
+		@if(ViewBag.DateError){
+		<h4>Выбранная дата доставки не может быть ранее текущей даты.</h4>
+		}
 		<div class="col-md-8">
 			<input type="date" name="Date" class="form-control"/>
 		</div>

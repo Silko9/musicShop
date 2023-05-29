@@ -23,10 +23,6 @@ namespace musicShop.Controllers
             _env = env;
         }
 
-       /* public async Task<IActionResult> Index()
-        {
-            return GetReport(0);
-        }*/
         public async Task<IActionResult> Index(int year)
         {
             return GetReport(year);
@@ -95,7 +91,7 @@ namespace musicShop.Controllers
                         if (logg.RecordId == record.Id && logg.TypeLoggingId == Const.ORDER_ID)
                         {
                             Order order = contexOrder.First(o => o.Id == logg.Operation);
-                            if(order.DateCreate.Year == year)
+                            if(order.DateDelivery.Year == year)
                                 amount += logg.Amount;
                         }
                     }

@@ -19,7 +19,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1 flex-wrap">
-                        @if (User.IsInRole("admin") || User.IsInRole("cashier") || ViewBag.IsUser == "true")
+                        @if (User.IsInRole("admin") || User.IsInRole("cashier") || ViewBag.IsUser == "true" || User.IsInRole("guest"))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="CreateOrder" asp-action="Index">Новый заказ</a>
@@ -58,10 +58,13 @@
                                     <a class="dropdown-item" href="@Url.Action("Index", "Providers")">Поставщики</a>
                                     <a class="dropdown-item" href="@Url.Action("Index", "Orders")">Заказы</a>
                                     <a class="dropdown-item" href="@Url.Action("Index", "Deliveries")">Поставки</a>
+                                    @if (User.IsInRole("admin"))
+                                    {
+                                        <a class="dropdown-item" href="@Url.Action("Index", "TypeLoggings")">Тип операции</a>
+                                    }
                                 </div>
                             </li>
                         }
-                       
                     </ul>
                 </div>
                 <div class="navbar-collapse collapse d-sm-inline-flex flex-sm-row-reverse">

@@ -28,22 +28,35 @@ namespace musicShop.Controllers
                 return NotFound();
             ViewBag.ProviderId = providerId;
             ViewBag.Provider = provider;
+            ViewBag.DateError = false;
             return View("ChooseDate");
         }
 
-        public async Task<IActionResult> ChooseDate(int providerId)
+        public async Task<IActionResult> ChooseDate(int providerId, bool dateError)
         {
             Provider provider = await _context.Providers.FindAsync(providerId);
             if (provider == null)
                 return NotFound();
             ViewBag.ProviderId = providerId;
             ViewBag.Provider = provider;
+            ViewBag.DateError = dateError;
             return View();
         }
 
         [HttpPost]
         public async Task<IActionResult> ChooseDate(int providerId, string date)
         {
+            DateTime selectedDate;
+            if (!DateTime.TryParse(date, out selectedDate))
+            {
+                return RedirectToAction("ChooseDate", new { providerId = providerId, dateError = true });
+            }
+
+            if (selectedDate.Date < DateTime.Today)
+            {
+                return RedirectToAction("ChooseDate", new { providerId = providerId, dateError = true });
+            }
+
             Provider provider = await _context.Providers.FindAsync(providerId);
             ViewBag.ProviderId = providerId;
             ViewBag.Date = date;

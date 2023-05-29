@@ -17,7 +17,7 @@
     </p>
     <p>
         <form asp-controller="ReportRecords" asp-action="Index">
-            <input type="submit" value="Скачать отчет топ продаж"> за год <input type="number" name="year" value="@DateTime.Now.Year" min="2000" max="@DateTime.Now.Year" />
+            <input type="submit" value="Скачать отчет топ продаж"> за год <input type="number" name="year" value="@DateTime.Now.Year" min="2000" />
         </form>
     </p>
 }
@@ -52,12 +52,12 @@
                 @Html.DisplayFor(modelItem => item.Number)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RetailPrice)
+                @Html.DisplayFor(modelItem => item.RetailPrice) Руб
             </td>
                 @if (User.IsInRole("admin") || User.IsInRole("cashier"))
                 {
             <td>
-                @Html.DisplayFor(modelItem => item.WholesalePrice)
+                @Html.DisplayFor(modelItem => item.WholesalePrice) Руб
             </td>
                 }
             <td>
